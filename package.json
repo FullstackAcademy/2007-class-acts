@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/FullstackAcademy/2007-class-acts/issues"
   },
-  "homepage": "https://github.com/FullstackAcademy/2007-class-acts#readme"
+  "homepage": "https://github.com/FullstackAcademy/2007-class-acts#readme",
+  "dependencies": {
+    "pg": "^8.4.1",
+    "sequelize": "^6.3.5"
+  }
 }
