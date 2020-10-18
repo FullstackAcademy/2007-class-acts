@@ -47,15 +47,9 @@ User.hasOne(Cart)
 
 Artwork.belongsToMany(Cart, {through: 'cartItem'})
 
-//use below to check the associations were created right in PG; replace later with sync and seed stuff
-
-/*
 const syncDB = async()=> {
   await db.sync({ force: true });
 };
-
-syncDB();
-*/
 
 module.exports = {
   db,
@@ -67,5 +61,6 @@ module.exports = {
   Review,
   Cart,
   Session,
-  Order
+  Order,
+  syncDB
 }
