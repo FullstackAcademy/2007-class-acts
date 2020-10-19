@@ -1,4 +1,5 @@
 const { STRING, INTEGER, UUID, UUIDV4, } = require("sequelize")
+const { defaultImagePath } = require('../../constants')
 const db = require('../db')
 
 const ShopImage = db.define('shopImage', {
@@ -7,7 +8,10 @@ const ShopImage = db.define('shopImage', {
     defaultValue: UUIDV4,
     primaryKey: true
   },
-  imageURL: STRING,
+  imageURL: {
+    type: STRING,
+    defaultValue: defaultImagePath
+  },
   order: INTEGER
 })
 

@@ -7,9 +7,19 @@ const User = db.define('user', {
     defaultValue: UUIDV4,
     primaryKey: true
   },
-  email: STRING,
+  email: {
+    type: STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true
+    }
+  },
   password: STRING,
-  isAdmin: BOOLEAN
+  isAdmin: {
+    type: BOOLEAN,
+    defaultValue: false
+  }
 })
 
 module.exports = User

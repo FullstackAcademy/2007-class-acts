@@ -10,7 +10,8 @@ const {
   Review,
   Cart,
   Session,
-  Order
+  Order,
+  OrderItem
 } = require('./models')
 
 Artwork.belongsTo(Artist)
@@ -39,8 +40,9 @@ Session.belongsTo(User)
 User.hasMany(Order)
 Order.belongsTo(User)
 
-Order.belongsToMany(Artwork, {through: 'artworkOrder'})
-Artwork.belongsToMany(Order, {through: 'artworkOrder'})
+Order.hasMany(OrderItem)
+Artwork.hasMany(OrderItem)
+OrderItem.belongsTo(Order)
 
 Cart.belongsTo(User)
 User.hasOne(Cart)
@@ -62,5 +64,6 @@ module.exports = {
   Cart,
   Session,
   Order,
+  OrderItem,
   syncDB
 }
