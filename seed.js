@@ -270,4 +270,6 @@ const seed = async () => {
 
 }
 
-seed()
+// seed()
+
+module.exports = seed;
