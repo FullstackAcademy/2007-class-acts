@@ -47,9 +47,9 @@ export class AllArtwork extends Component {
             this.props.artworks.map(artwork => {
               // functionality dependent on GET /api/artworks route including artist, shopImage, etc.
               return (
-                <div className="tile" id={ artwork.id }>
+                <div className="tile" id={ artwork.id } key= { artwork.id }>
                   {/* TBU: Will add rotating images */}
-                  <img src={ artwork.shopImage.imageURL } />
+                  <img src={ artwork.shopImages[0].imageURL } />
                   <div className="art-description">
                     <p>{ artwork.title }</p>
                     <p>{ artwork.artist.name }</p>

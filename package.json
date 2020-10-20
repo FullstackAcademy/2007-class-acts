@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "npm run build-watch & npm run start-server & node seed",
+    "start-dev": "npm run build-watch & npm run start-server",
+    "start-dev-seed": "node seed & npm run build-watch & npm run start-server",
     "start-server": "nodemon main.js",
     "build-watch": "webpack -w"
   },

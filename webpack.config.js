@@ -1,8 +1,9 @@
 module.exports = {
+	mode: "development",
 	entry: ["./client/main.js"],
 	output: {
 		path: __dirname,
-		filename: "./server/public/bundle.js",
+		filename: "server/public/bundle.js",
 	},
 	resolve: {
 		extensions: [".js", ".jsx"],
