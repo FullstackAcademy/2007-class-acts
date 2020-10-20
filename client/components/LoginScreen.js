@@ -17,12 +17,13 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <div className="login-form">
-        <form onSubmt={this.handleLogin}>
-          <h2>Sign in</h2>
+      <div className="container login">
+        <form id="login-form" onSubmit={this.handleLogin}>
+          <h2>Log in</h2>
+          <hr />
           <input name="username" placeholder="Username" />
           <input name="password" type="password" placeholder="Password" />
-          <button type="submit" className="login-button">Sign in </button>
+          <button type="submit" id="login-button">Log in </button>
         </form>
       </div>
     )
