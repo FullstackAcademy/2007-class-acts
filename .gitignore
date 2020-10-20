@@ -1,4 +1,6 @@
 node_modules
-/server/qpublic/bundle.js*
+server/public/bundle.js
+server/public/bundle.js.map
+server/public/bundle.js.LICENSE.txt
 
 .DS_Store
