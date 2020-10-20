@@ -10,8 +10,7 @@ const {
   Review,
   Cart,
   Session,
-  Order,
-  OrderItem
+  Order
 } = require('./models')
 
 Artwork.belongsTo(Artist)
@@ -40,9 +39,8 @@ Session.belongsTo(User)
 User.hasMany(Order)
 Order.belongsTo(User)
 
-Order.hasMany(OrderItem)
-Artwork.hasMany(OrderItem)
-OrderItem.belongsTo(Order)
+Order.belongsToMany(Artwork, {through: 'artworkOrder'})
+Artwork.belongsToMany(Order, {through: 'artworkOrder'})
 
 Cart.belongsTo(User)
 User.hasOne(Cart)
@@ -50,7 +48,8 @@ User.hasOne(Cart)
 Artwork.belongsToMany(Cart, {through: 'cartItem'})
 
 const syncDB = async()=> {
-  await db.sync({ force: true });
+  // Took out force: true so the db didn't drop the seeded data every time
+  await db.sync(/*{ force: true }*/);
 };
 
 module.exports = {
@@ -64,6 +63,5 @@ module.exports = {
   Cart,
   Session,
   Order,
-  OrderItem,
   syncDB
 }
