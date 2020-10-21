@@ -42,3 +42,16 @@
   margin: 0;
 }
 
+.art-grid {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.tile {
+  padding: 1rem;
+}
+
+.tile > img {
+  max-width: 250px;
+  max-height: 250px;
+}
