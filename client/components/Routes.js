@@ -14,6 +14,7 @@ const Routes = () => {
           <Link to="/">Home</Link>
           <Link to="/artwork">All Art</Link>
           <Link to="/cart">My Cart</Link>
+          <Link to="/login">Login</Link>
         </nav>
         <Switch>
           <Route exact path="/artwork" component={AllArtwork} />
