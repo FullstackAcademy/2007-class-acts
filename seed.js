@@ -187,7 +187,7 @@ const seed = async () => {
 
   //first sync the DB
 
-  await syncDB()
+  await syncDB(true)
 
   //create each artwork in the dB and dump to an array
 
@@ -227,7 +227,7 @@ const seed = async () => {
 
   const imageURLarray = []
   for(let i = 0; i < 40; i++) {
-    imageURLarray[i] = `/public/img/${i}.jpg`
+    imageURLarray[i] = `/img/${i}.jpg`
   }
 
   const images = await Promise.all(imageURLarray.map(imageURL => {
@@ -270,6 +270,6 @@ const seed = async () => {
 
 }
 
-//seed()
+seed()
 
 module.exports = seed;

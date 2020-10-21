@@ -1,4 +1,5 @@
 module.exports = {
+	mode: "development",
 	entry: ["./client/main.js"],
 	output: {
 		path: __dirname,
