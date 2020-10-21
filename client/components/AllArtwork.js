@@ -67,8 +67,7 @@ export class AllArtwork extends Component {
               return (
                 <div className="tile" id={ artwork.id } key= { artwork.id }>
                   {/* TBU: Will add rotating images */}
-                  {/* <img src={ artwork.shopImages[0].imageURL } /> */}
-                  <img src={ require('../../server/public/img/1.jpg') } />
+                  <img src={ artwork.shopImages[0].imageURL } />
                   <div className="art-description">
                     <p className="artwork-title">{ artwork.title }</p>
                     <p>{ artwork.artist.name }</p>
