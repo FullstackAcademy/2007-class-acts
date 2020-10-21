@@ -49,8 +49,9 @@ User.hasOne(Cart)
 
 Artwork.belongsToMany(Cart, {through: 'cartItem'})
 
-const syncDB = async()=> {
-  await db.sync({ force: true });
+const syncDB = async(forceSeed = false)=> {
+  // Took out force: true so the db didn't drop the seeded data every time
+  await db.sync({ force: forceSeed });
 };
 
 module.exports = {
