@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ARTWORKS, FILTER_ARTWORKS_ARTIST, FILTER_ARTWORKS_GENRE } from './actionConstants';
+import { GET_ARTWORKS } from './actionConstants';
 
 // ACTION CREATORS
 export const _getArtworks = artworks => {
@@ -9,22 +9,6 @@ export const _getArtworks = artworks => {
   }
 };
 
-export const _filterArtworksArtist = (category, value) => {
-  return {
-    type: FILTER_ARTWORKS_ARTIST,
-    category,
-    value
-  }
-}
-
-export const _filterArtworksGenre = (category, value) => {
-  return {
-    type: FILTER_ARTWORKS_GENRE,
-    category,
-    value
-  }
-}
-
 // THUNK CREATORS
 export const getArtworks = () => {
   return async (dispatch) => {
@@ -33,9 +17,22 @@ export const getArtworks = () => {
   }
 };
 
-export const filterArtworks = (category, value) => {
-  return (dispatch) => {
-    category === 'artist' ? dispatch(_filterArtworksArtist(category, value)) : dispatch(_filterArtworksGenre(category, value));
+export const filterArtworks = (filterObj) => {
+  return async (dispatch) => {
+    let artworks = (await axios.get('/api/artworks')).data;
+    if (filterObj.artist !== "") {
+      artworks = artworks.filter(art => {
+        return art.artist.id === filterObj.artist
+      });
+    }
+    if (filterObj.genre !== "") {
+      artworks = artworks.filter(art => {
+        return art.genres
+          .map(genre => genre.id)
+          .includes(filterObj.genre)
+      });
+    }
+    dispatch(_getArtworks(artworks));
   }
 }
 
@@ -43,14 +40,6 @@ export default function artworksReducer(state = [], action) {
   switch (action.type) {
     case GET_ARTWORKS:
       return action.artworks;
-    case FILTER_ARTWORKS_ARTIST:
-      return state.filter(art => art[action.category].id === action.value);
-    case FILTER_ARTWORKS_GENRE:
-      return state.filter(art => {
-        return art[action.category]
-          .map(genre => genre.id)
-          .includes(action.value)
-      });
     default:
       return state;
   }

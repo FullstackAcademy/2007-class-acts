@@ -10,6 +10,10 @@ import { getGenres } from '../redux/genres';
 export class AllArtwork extends Component {
   constructor() {
     super();
+    this.state = {
+      artist: '',
+      genre: ''
+    }
     this.changeFilter = this.changeFilter.bind(this);
   }
   componentDidMount() {
@@ -17,13 +21,15 @@ export class AllArtwork extends Component {
     this.props.getArtists();
     this.props.getGenres();
   }
-  changeFilter(ev) {
-    const category = ev.target.name === 'genre' ? 'genres' : 'artist'
-    if (ev.target.value === 'DEFAULT') {
-      this.props.getArtworks()
-    } else {
-      this.props.filterArtworks(category, ev.target.value)
-    }
+  async changeFilter(ev) {
+    const value = ev.target.value === 'DEFAULT' ? '' : ev.target.value;
+    await this.setState({
+      [ev.target.name]: value
+    });
+    this.props.filterArtworks({
+      artist: this.state.artist,
+      genre: this.state.genre
+    });
   }
   render() {
     const { changeFilter } = this;
@@ -31,24 +37,22 @@ export class AllArtwork extends Component {
       <div>
         <div className="art-filters">
           <select name="artist" id="artist" defaultValue="DEFAULT" onChange={ changeFilter }>
-            <option value="DEFAULT">-- Select an Artist --</option>
+            <option value="DEFAULT">ARTIST</option>
             { this.props.artists ?
               this.props.artists.map(artist => {
                 return (
-                  // TBU: Add in the number of artworks that match criteria in ()
-                  // Will need express route for /api/artists/:id/artworks or something
-                  <option value={ artist.id } key={ artist.id }>{ artist.name }</option>
+                  <option value={ artist.id } key={ artist.id }>{ artist.name } ({ artist.artworks.length })</option>
                 )
               }) :
               <option value="N/A">---</option>
             }
           </select>
           <select name="genre" id="genre" defaultValue="DEFAULT" onChange={ changeFilter }>
-            <option value="DEFAULT">-- Select a Genre --</option>
+            <option value="DEFAULT">GENRE</option>
             { this.props.genres ?
               this.props.genres.map(genre => {
                 return (
-                  <option value={ genre.id } key={ genre.id }>{ genre.name }</option>
+                  <option value={ genre.id } key={ genre.id }>{ genre.name } ({ genre.artworks.length })</option>
                 )
               }) :
               <option value="N/A">---</option>
@@ -64,11 +68,11 @@ export class AllArtwork extends Component {
                 <div className="tile" id={ artwork.id } key= { artwork.id }>
                   {/* TBU: Will add rotating images */}
                   {/* <img src={ artwork.shopImages[0].imageURL } /> */}
-                  <img src='../../server/public/img/1.jpg' />
+                  <img src={ require('../../server/public/img/1.jpg') } />
                   <div className="art-description">
-                    <p>{ artwork.title }</p>
+                    <p className="artwork-title">{ artwork.title }</p>
                     <p>{ artwork.artist.name }</p>
-                    <p>{ artwork.price }</p>
+                    <p>${ artwork.price }</p>
                   </div>
                 </div>
               )
@@ -92,7 +96,7 @@ const mapDispatchToProps = dispatch => {
     getArtworks: () => dispatch(getArtworks()),
     getArtists: () => dispatch(getArtists()),
     getGenres: () => dispatch(getGenres()),
-    filterArtworks: (category, value) => dispatch(filterArtworks(category, value))
+    filterArtworks: (filterObj) => dispatch(filterArtworks(filterObj))
   }
 }
 

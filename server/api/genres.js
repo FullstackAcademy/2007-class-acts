@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { Genre } = require('../db')
+const { Genre, Artwork } = require('../db')
 
 router.get('/', async (req, res, next) => {
-  const genres = await Genre.findAll()
+  const genres = await Genre.findAll({ include: [Artwork] })
   res.send(genres)
 })
 

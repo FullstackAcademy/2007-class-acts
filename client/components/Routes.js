@@ -11,10 +11,10 @@ const Routes = () => {
     <Router>
       <div>
         <nav>
-          <Link to="/">Home</Link>
-          <Link to="/artwork">All Art</Link>
-          <Link to="/cart">My Cart</Link>
-          <Link to="/login">Login</Link>
+          {/* <Link to="/" style={{ color: "white" }}>HOME</Link> */}
+          <Link to="/artwork" style={{ color: "white" }}>COLLECTION</Link>
+          <Link to="/cart" style={{ color: "white" }}>CART</Link>
+          <Link to="/login" style={{ color: "white" }}>LOGIN</Link>
         </nav>
         <Switch>
           <Route exact path="/artwork" component={AllArtwork} />
