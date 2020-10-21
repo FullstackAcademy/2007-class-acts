@@ -3,22 +3,35 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // FILES
-import { getArtworks } from '../redux/artworks';
+import { getArtworks, filterArtworks } from '../redux/artworks';
 import { getArtists } from '../redux/artists';
 import { getGenres } from '../redux/genres';
 
 export class AllArtwork extends Component {
+  constructor() {
+    super();
+    this.changeFilter = this.changeFilter.bind(this);
+  }
   componentDidMount() {
     this.props.getArtworks();
     this.props.getArtists();
     this.props.getGenres();
   }
-
+  changeFilter(ev) {
+    const category = ev.target.name === 'genre' ? 'genres' : 'artist'
+    if (ev.target.value === 'DEFAULT') {
+      this.props.getArtworks()
+    } else {
+      this.props.filterArtworks(category, ev.target.value)
+    }
+  }
   render() {
+    const { changeFilter } = this;
     return(
       <div>
         <div className="art-filters">
-          <select name="artist" id="artist">
+          <select name="artist" id="artist" defaultValue="DEFAULT" onChange={ changeFilter }>
+            <option value="DEFAULT">-- Select an Artist --</option>
             { this.props.artists ?
               this.props.artists.map(artist => {
                 return (
@@ -30,7 +43,8 @@ export class AllArtwork extends Component {
               <option value="N/A">---</option>
             }
           </select>
-          <select name="genre" id="genre">
+          <select name="genre" id="genre" defaultValue="DEFAULT" onChange={ changeFilter }>
+            <option value="DEFAULT">-- Select a Genre --</option>
             { this.props.genres ?
               this.props.genres.map(genre => {
                 return (
@@ -43,13 +57,14 @@ export class AllArtwork extends Component {
           {/* TBU: Add in another drop-down for Medium */}
         </div>
         <div className="art-grid">
-          { this.props.artworks ?
+          {/* TBU: display "Sorry no artworks found" when filters return 0 results */}
+          { (this.props.artworks || this.props.artworks.length === 0) ?
             this.props.artworks.map(artwork => {
-              // functionality dependent on GET /api/artworks route including artist, shopImage, etc.
               return (
                 <div className="tile" id={ artwork.id } key= { artwork.id }>
                   {/* TBU: Will add rotating images */}
-                  <img src={ artwork.shopImages[0].imageURL } />
+                  {/* <img src={ artwork.shopImages[0].imageURL } /> */}
+                  <img src='../../server/public/img/1.jpg' />
                   <div className="art-description">
                     <p>{ artwork.title }</p>
                     <p>{ artwork.artist.name }</p>
@@ -77,6 +92,7 @@ const mapDispatchToProps = dispatch => {
     getArtworks: () => dispatch(getArtworks()),
     getArtists: () => dispatch(getArtists()),
     getGenres: () => dispatch(getGenres()),
+    filterArtworks: (category, value) => dispatch(filterArtworks(category, value))
   }
 }
 

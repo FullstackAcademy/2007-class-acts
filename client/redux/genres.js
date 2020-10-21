@@ -12,7 +12,7 @@ export const _getGenres = genres => {
 // THUNK CREATORS
 export const getGenres = () => {
   return async (dispatch) => {
-    const genres = await axios.get('/api/genres'); // ROUTE TBD @ZAINA
+    const genres = await axios.get('/api/genres');
     dispatch(_getGenres(genres.data));
   }
 };
