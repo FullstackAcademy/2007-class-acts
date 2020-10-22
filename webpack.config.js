@@ -22,10 +22,6 @@ module.exports = {
 					presets: ["@babel/preset-react"],
 				},
 			},
-			{
-				test: /\.(jpg|jpeg|png)$/,
-				loader: "url-loader",
-			},
 		],
 	},
 }
