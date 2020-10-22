@@ -1,3 +1,48 @@
+* {
+}
+/* --- NAV BAR  --- */
+nav {
+  background-color: black;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 3.5rem;
+  font-family: 'Barlow', sans-serif;
+}
+
+/* --- ALL ARTWORK  --- */
+.art-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.art-filters select {
+  margin: 1rem;
+  font-family: 'Barlow', sans-serif;
+}
+
+.art-grid {
+  display: flex;
+  flex-flow: row wrap;
+  font-family: 'Roboto', sans-serif;
+  justify-content: center;
+}
+
+.tile {
+  padding: 2rem;
+  width: 250px;
+  height: 350px;
+}
+
+.tile > img {
+  max-width: 250px;
+  max-height: 250px;
+}
+
+.artwork-title {
+  font-weight: 1000;
+}
 /* --- LOGIN SCREEN  --- */
 .login.container {
   display: flex;
@@ -42,16 +87,5 @@
   margin: 0;
 }
 
-.art-grid {
-  display: flex;
-  flex-flow: row wrap;
-}
 
-.tile {
-  padding: 1rem;
-}
 
-.tile > img {
-  max-width: 250px;
-  max-height: 250px;
-}

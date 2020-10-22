@@ -6,35 +6,77 @@ import { connect } from 'react-redux';
 import { getArtworks } from '../redux/artworks';
 import { getArtists } from '../redux/artists';
 import { getGenres } from '../redux/genres';
+import ArtworkGrid from './ArtworkGrid';
 
 export class AllArtwork extends Component {
-  componentDidMount() {
-    this.props.getArtworks();
-    this.props.getArtists();
-    this.props.getGenres();
+  constructor() {
+    super();
+    this.state = {
+      artworks: [],
+      artist: '',
+      genre: '',
+      artists: '',
+      genres: ''
+    }
+    this.changeFilter = this.changeFilter.bind(this);
   }
-
+  async componentDidMount() {
+    await this.props.getArtworks();
+    await this.props.getArtists();
+    await this.props.getGenres();
+    this.setState({
+      artworks: this.props.artworks,
+      artists: this.props.artists,
+      genres: this.props.genres
+    });
+  }
+  async changeFilter(ev) {
+    const value = ev.target.value === 'DEFAULT' ? '' : ev.target.value;
+    await this.setState({
+      [ev.target.name]: value,
+      artworks: this.props.artworks,
+      artists: this.props.artists,
+      genres: this.props.genres
+    });
+    if (this.state.artist !== '') {
+      await this.setState({
+        artworks: this.state.artworks.filter(art => art.artist.id === this.state.artist),
+        // artists: this.state.artists.filter(artist => artist.id !== this.state.artist)
+      });
+    }
+    if (this.state.genre !== '') {
+      await this.setState({
+        artworks: this.state.artworks.filter(art => {
+          return art.genres
+            .map(genre => genre.id)
+            .includes(this.state.genre)
+        }),
+        // genres: this.state.genres.filter(genre => genre.id !== this.state.genre)
+      });
+    }
+  }
   render() {
+    const { changeFilter } = this;
     return(
       <div>
         <div className="art-filters">
-          <select name="artist" id="artist">
-            { this.props.artists ?
-              this.props.artists.map(artist => {
+          <select name="artist" id="artist" defaultValue="DEFAULT" onChange={ changeFilter }>
+            <option value="DEFAULT">ARTIST</option>
+            { this.state.artists ?
+              this.state.artists.map(artist => {
                 return (
-                  // TBU: Add in the number of artworks that match criteria in ()
-                  // Will need express route for /api/artists/:id/artworks or something
-                  <option value={ artist.id } key={ artist.id }>{ artist.name }</option>
+                  <option value={ artist.id } key={ artist.id }>{ artist.name } ({ artist.artworks.length })</option>
                 )
               }) :
               <option value="N/A">---</option>
             }
           </select>
-          <select name="genre" id="genre">
-            { this.props.genres ?
-              this.props.genres.map(genre => {
+          <select name="genre" id="genre" defaultValue="DEFAULT" onChange={ changeFilter }>
+            <option value="DEFAULT">GENRE</option>
+            { this.state.genres ?
+              this.state.genres.map(genre => {
                 return (
-                  <option value={ genre.id } key={ genre.id }>{ genre.name }</option>
+                  <option value={ genre.id } key={ genre.id }>{ genre.name } ({ genre.artworks.length })</option>
                 )
               }) :
               <option value="N/A">---</option>
@@ -42,24 +84,7 @@ export class AllArtwork extends Component {
           </select>
           {/* TBU: Add in another drop-down for Medium */}
         </div>
-        <div className="art-grid">
-          { this.props.artworks ?
-            this.props.artworks.map(artwork => {
-              // functionality dependent on GET /api/artworks route including artist, shopImage, etc.
-              return (
-                <div className="tile" id={ artwork.id } key= { artwork.id }>
-                  {/* TBU: Will add rotating images */}
-                  <img src={ artwork.shopImages[0].imageURL } />
-                  <div className="art-description">
-                    <p>{ artwork.title }</p>
-                    <p>{ artwork.artist.name }</p>
-                    <p>{ artwork.price }</p>
-                  </div>
-                </div>
-              )
-            }) : <h2>Sorry, no artwork found.</h2>
-          }
-        </div>
+        <ArtworkGrid artworks={ this.state.artworks } />
       </div>
     )
   }

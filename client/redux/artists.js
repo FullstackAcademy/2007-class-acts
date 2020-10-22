@@ -12,7 +12,7 @@ export const _getArtists = artists => {
 // THUNK CREATORS
 export const getArtists = () => {
   return async (dispatch) => {
-    const artists = await axios.get('/api/artists'); // ROUTE TBD @ZAINA
+    const artists = await axios.get('/api/artists');
     dispatch(_getArtists(artists.data));
   }
 };
