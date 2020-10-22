@@ -1,5 +1,6 @@
 const { STRING,  UUID, UUIDV4, BOOLEAN } = require("sequelize")
-const db = require('../db')
+const db = require('../db');
+const Session = require("./Session");
 
 const User = db.define('user', {
   id: {

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 // FILES
 import AllArtwork from './AllArtwork';
 import LoginScreen from './LoginScreen'
+import NewUser from './NewUser'
 
 const Routes = () => {
   return (
@@ -19,6 +20,7 @@ const Routes = () => {
         <Switch>
           <Route exact path="/artwork" component={AllArtwork} />
           <Route exact path="/login" component={LoginScreen} />
+          <Route exact path="/newuser" component={NewUser} />
         </Switch>
       </div>
     </Router>
