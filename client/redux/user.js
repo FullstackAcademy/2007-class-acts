@@ -1,0 +1,29 @@
+import axios from 'axios'
+import { SET_USER } from './actionConstants'
+
+
+//ACTION CREATOR
+export const setUser = (user) => ({
+  type: SET_USER,
+  user
+})
+
+//THUNK CREATOR
+export const getUser = (sessionId) => {
+  return async (dispatch) => {
+    const user = await axios.get(`/api/users/${sessionId}`)
+    dispatch(setUser(user.data))
+  }
+}
+
+export default function userReducer(state = {}, action) {
+  switch (action.type) {
+    case SET_USER:
+      return action.user;
+    default:
+      return state
+  }
+}
+
+
+

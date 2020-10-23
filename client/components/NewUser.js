@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import {Link, Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setUser }from '../redux/user'
 
 
-class LoginScreen extends Component {
+class NewUser extends Component {
   constructor() {
     super()
     this.state = {
@@ -19,10 +21,12 @@ class LoginScreen extends Component {
     ev.preventDefault()
     try {
       const res = await axios.post('/api/users', { ...this.state })
-      console.log(res.data)
+      const user = res.data
+      this.props.setUser(user)
       this.setState({...this.state, redirect: true})
     } catch(e) {
-      console.log(e.response.data)
+      //do some error handling
+      console.log(e.response.data.message)
     }
   }
 
@@ -32,7 +36,7 @@ class LoginScreen extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to='/artwork'/>;
+      return <Redirect to='/'/>;
     }
     return (
       <div className="container login">
@@ -51,4 +55,12 @@ class LoginScreen extends Component {
   }
 }
 
-export default LoginScreen
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUser: (user) => dispatch(setUser(user)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(NewUser);
+

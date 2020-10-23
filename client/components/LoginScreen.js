@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import {Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 class LoginScreen extends Component {
@@ -16,6 +16,7 @@ class LoginScreen extends Component {
 
   async handleLogin(ev) {
     ev.preventDefault()
+    //do some logging in stuff
     console.log(this.state)
   }
 

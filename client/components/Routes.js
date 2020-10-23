@@ -6,17 +6,13 @@ import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import AllArtwork from './AllArtwork';
 import LoginScreen from './LoginScreen'
 import NewUser from './NewUser'
+import Navbar from './Navbar'
 
 const Routes = () => {
   return (
     <Router>
       <div>
-        <nav>
-          {/* <Link to="/" style={{ color: "white" }}>HOME</Link> */}
-          <Link to="/" style={{ color: "white" }}>COLLECTION</Link>
-          <Link to="/cart" style={{ color: "white" }}>CART</Link>
-          <Link to="/login" style={{ color: "white" }}>LOGIN</Link>
-        </nav>
+        <Navbar/>
         <Switch>
           <Route exact path="/" component={AllArtwork} />
           <Route exact path="/login" component={LoginScreen} />
