@@ -24,7 +24,7 @@ render() {
         <Link to="/cart" style={{ color: "white" }}>CART</Link>
         { isLoggedIn ?
             isAdmin ?
-              <Link to="/admin" style={{ color: "white" }}>ADMIN</Link> :
+              <Link to="/account" style={{ color: "white" }}>ADMIN</Link> :
               <Link to="/account" style={{ color: "white" }}>ACCOUNT</Link> :
          <Link to="/login" style={{ color: "white" }}>LOGIN</Link>
         }
