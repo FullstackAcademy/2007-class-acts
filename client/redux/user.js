@@ -16,6 +16,13 @@ export const getUser = (sessionId) => {
   }
 }
 
+export const destroySession = (sessionId) => {
+  return async (dispatch) => {
+    await axios.delete(`/api/users/${sessionId}`)
+    dispatch(setUser({}))
+  }
+}
+
 export default function userReducer(state = {}, action) {
   switch (action.type) {
     case SET_USER:
