@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:artworkId', async (req, res, next) => {
   try {
-    const artwork = await Artwork.findByPk(req.params.artworkId, {include: [Artist]})
+    const artwork = await Artwork.findByPk(req.params.artworkId, {include: [Artist, ShopImage]})
     res.send(artwork)
   }
   catch(err) {
