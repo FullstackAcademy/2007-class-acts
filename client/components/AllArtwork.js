@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { getArtworks } from '../redux/artworks';
 import { getArtists } from '../redux/artists';
 import { getGenres } from '../redux/genres';
+import { mediums } from '../../server/constants';
 import ArtworkGrid from './ArtworkGrid';
 
 export class AllArtwork extends Component {
@@ -16,7 +17,8 @@ export class AllArtwork extends Component {
       artist: '',
       genre: '',
       artists: '',
-      genres: ''
+      genres: '',
+      medium: ''
     }
     this.changeFilter = this.changeFilter.bind(this);
   }
@@ -34,14 +36,11 @@ export class AllArtwork extends Component {
     const value = ev.target.value === 'DEFAULT' ? '' : ev.target.value;
     await this.setState({
       [ev.target.name]: value,
-      artworks: this.props.artworks,
-      artists: this.props.artists,
-      genres: this.props.genres
+      artworks: this.props.artworks
     });
     if (this.state.artist !== '') {
       await this.setState({
         artworks: this.state.artworks.filter(art => art.artist.id === this.state.artist),
-        // artists: this.state.artists.filter(artist => artist.id !== this.state.artist)
       });
     }
     if (this.state.genre !== '') {
@@ -50,8 +49,12 @@ export class AllArtwork extends Component {
           return art.genres
             .map(genre => genre.id)
             .includes(this.state.genre)
-        }),
-        // genres: this.state.genres.filter(genre => genre.id !== this.state.genre)
+        })
+      });
+    }
+    if (this.state.medium !== '') {
+      await this.setState({
+        artworks: this.state.artworks.filter(art => art.medium === this.state.medium)
       });
     }
   }
@@ -82,7 +85,16 @@ export class AllArtwork extends Component {
               <option value="N/A">---</option>
             }
           </select>
-          {/* TBU: Add in another drop-down for Medium */}
+          <select name="medium" id="medium" defaultValue="DEFAULT" onChange={ changeFilter }>
+            <option value="DEFAULT">MEDIUM</option>
+            { mediums.map(media => {
+                const numArt = this.state.artworks.filter(art => art.medium === media).length;
+                return (
+                  <option value={ media } key={ media }>{ media } ({ numArt })</option>
+                )
+              })
+            }
+          </select>
         </div>
         <ArtworkGrid artworks={ this.state.artworks } />
       </div>
