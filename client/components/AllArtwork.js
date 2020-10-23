@@ -94,7 +94,8 @@ const mapStateToProps = state => {
   return {
     artworks: state.artworks,
     artists: state.artists,
-    genres: state.genres
+    genres: state.genres,
+    user: state.user
   }
 }
 const mapDispatchToProps = dispatch => {
