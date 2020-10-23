@@ -14,6 +14,19 @@ router.get('/:sessionId', async (req, res, next) => {
   }
 })
 
+router.delete('/:sessionId', async (req, res, next) => {
+  try {
+    await Session.destroy({
+      where: {
+        id: req.params.sessionId
+      }
+    })
+    res.status(205).send()
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/', async (req, res) => {
   const { email, password } = req.body;
   const hashedPW = await bcrypt.hash(password, 10)

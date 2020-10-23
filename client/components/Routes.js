@@ -8,6 +8,7 @@ import SingleArtwork from './SingleArtwork'
 import LoginScreen from './LoginScreen'
 import NewUser from './NewUser'
 import Navbar from './Navbar'
+import Account from './Account'
 
 const Routes = () => {
   return (
@@ -19,6 +20,7 @@ const Routes = () => {
           <Route exact path="/artworks/:id" component={SingleArtwork} />
           <Route exact path="/login" component={LoginScreen} />
           <Route exact path="/newuser" component={NewUser} />
+          <Route exact path="/account" component={Account} />
         </Switch>
       </div>
     </Router>
