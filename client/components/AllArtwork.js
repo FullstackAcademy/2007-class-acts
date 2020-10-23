@@ -15,15 +15,18 @@ export class AllArtwork extends Component {
       artworks: [],
       artist: '',
       genre: '',
-      artists: '',
-      genres: ''
+      artists: [],
+      genres: []
     }
     this.changeFilter = this.changeFilter.bind(this);
   }
   async componentDidMount() {
-    await this.props.getArtworks();
-    await this.props.getArtists();
-    await this.props.getGenres();
+    //added this condition so the data doesn't reload
+    if(this.props.artworks.length === 0) {
+      await this.props.getArtworks();
+      await this.props.getArtists();
+      await this.props.getGenres();
+    }
     this.setState({
       artworks: this.props.artworks,
       artists: this.props.artists,
