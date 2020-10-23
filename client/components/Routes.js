@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
 // FILES
 import AllArtwork from './AllArtwork';
+import SingleArtwork from './SingleArtwork'
 import LoginScreen from './LoginScreen'
 import NewUser from './NewUser'
 
@@ -19,6 +20,7 @@ const Routes = () => {
         </nav>
         <Switch>
           <Route exact path="/" component={AllArtwork} />
+          <Route exact path="/artworks/:id" component={SingleArtwork} />
           <Route exact path="/login" component={LoginScreen} />
           <Route exact path="/newuser" component={NewUser} />
         </Switch>
