@@ -33,7 +33,7 @@ nav {
   height: 350px;
 }
 
-.tile > img {
+.tile > a > img {
   max-width: 250px;
   max-height: 250px;
 }
@@ -84,6 +84,3 @@ nav {
 #login-form h2 {
   margin: 0;
 }
-
-
-

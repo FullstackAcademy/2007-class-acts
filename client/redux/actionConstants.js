@@ -4,3 +4,4 @@ export const GET_GENRES = 'GET_GENRES';
 
 
 export const SET_USER = 'SET_USER'
+export const GET_ARTWORK = 'GET_ARTWORK';

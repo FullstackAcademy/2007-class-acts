@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 
 const ArtworkGrid = ({ artworks }) => {
   return (
@@ -9,7 +10,10 @@ const ArtworkGrid = ({ artworks }) => {
             return (
               <div className="tile" id={ artwork.id } key= { artwork.id }>
                 {/* TBU: Will add rotating images */}
-                <img src={ artwork.shopImages[0].imageURL } />
+                <Link to={`/artworks/${artwork.id}`} >
+                  <img src={artwork.shopImages[0].imageURL } />  
+                </Link>
+                
                 <div className="art-description">
                   <p className="artwork-title">{ artwork.title }</p>
                   <p>{ artwork.artist.name }</p>
