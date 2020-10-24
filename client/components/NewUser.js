@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { setUser }from '../redux/user'
 
 
-class LoginScreen extends Component {
+class NewUser extends Component {
   constructor() {
     super()
     this.state = {
@@ -19,9 +19,8 @@ class LoginScreen extends Component {
 
   async handleLogin(ev) {
     ev.preventDefault()
-    //do some logging in stuff
     try {
-      const res = await axios.post('/api/users/login', { ...this.state })
+      const res = await axios.post('/api/users', { ...this.state })
       const user = res.data
       this.props.setUser(user)
       this.setState({...this.state, redirect: true})
@@ -42,13 +41,13 @@ class LoginScreen extends Component {
     return (
       <div className="container login">
         <form id="login-form" onSubmit={this.handleLogin}>
-          <h2>Log in</h2>
+          <h2>Create A New Account</h2>
           <hr />
           <input name="email" placeholder="Email" onChange={this.handleChange}/>
           <input name="password" type="password" placeholder="Password" onChange={this.handleChange}/>
-          <button type="submit" id="login-button">Log in </button>
+          <button type="submit" id="login-button">Create Account</button>
           <hr />
-          <Link to="/newuser">Create an account!</Link>
+          <Link to="/login">Log in</Link>
           <hr />
         </form>
       </div>
@@ -56,10 +55,12 @@ class LoginScreen extends Component {
   }
 }
 
+
 const mapDispatchToProps = dispatch => {
   return {
     setUser: (user) => dispatch(setUser(user)),
   }
 }
 
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default connect(null, mapDispatchToProps)(NewUser);
+

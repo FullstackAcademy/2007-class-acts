@@ -18,16 +18,19 @@ export class AllArtwork extends Component {
       genres: '',
       artist: '',
       genre: '',
-      medium: '',
+      medium: ''
     }
     this.changeFilter = this.changeFilter.bind(this);
     this.search = this.search.bind(this);
     this.reset = this.reset.bind(this);
   }
   async componentDidMount() {
-    await this.props.getArtworks();
-    await this.props.getArtists();
-    await this.props.getGenres();
+    //added this condition so the data doesn't reload
+    if(this.props.artworks.length === 0) {
+      await this.props.getArtworks();
+      await this.props.getArtists();
+      await this.props.getGenres();
+    }
     this.setState({
       artworks: this.props.artworks,
       artists: this.props.artists,
@@ -128,7 +131,8 @@ const mapStateToProps = state => {
   return {
     artworks: state.artworks,
     artists: state.artists,
-    genres: state.genres
+    genres: state.genres,
+    user: state.user
   }
 }
 const mapDispatchToProps = dispatch => {
