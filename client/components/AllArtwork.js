@@ -18,11 +18,7 @@ export class AllArtwork extends Component {
       genres: '',
       artist: '',
       genre: '',
-<<<<<<< HEAD
-      medium: '',
-=======
       medium: ''
->>>>>>> 207b750ce590fc373c71f698a76fea8c5ea3ae4c
     }
     this.changeFilter = this.changeFilter.bind(this);
     this.search = this.search.bind(this);
