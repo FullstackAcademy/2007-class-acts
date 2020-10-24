@@ -1,5 +1,7 @@
 * {
+  font-family: 'Roboto', sans-serif;
 }
+
 /* --- NAV BAR  --- */
 nav {
   background-color: black;
@@ -11,6 +13,31 @@ nav {
 }
 
 /* --- ALL ARTWORK  --- */
+.top-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.top-section input {
+  font-family: 'Barlow', sans-serif;
+  max-height: 1rem;
+  width: 10rem;
+  margin: 1rem
+}
+
+.top-section button {
+  font-family: 'Barlow', sans-serif;
+  max-height: 2rem;
+}
+
+.side-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .art-filters {
   display: flex;
   justify-content: center;
@@ -20,6 +47,7 @@ nav {
 .art-filters select {
   margin: 1rem;
   font-family: 'Barlow', sans-serif;
+  max-width: 6rem;
 }
 
 .art-grid {

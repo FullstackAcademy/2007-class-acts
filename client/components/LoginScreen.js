@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import {Link } from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setUser }from '../redux/user'
 
 
 class LoginScreen extends Component {
@@ -8,7 +10,8 @@ class LoginScreen extends Component {
     super()
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      redirect: false
     }
     this.handleLogin = this.handleLogin.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -16,7 +19,16 @@ class LoginScreen extends Component {
 
   async handleLogin(ev) {
     ev.preventDefault()
-    console.log(this.state)
+    //do some logging in stuff
+    try {
+      const res = await axios.post('/api/users/login', { ...this.state })
+      const user = res.data
+      this.props.setUser(user)
+      this.setState({...this.state, redirect: true})
+    } catch(e) {
+      //do some error handling
+      console.log(e.response.data.message)
+    }
   }
 
   handleChange(ev) {
@@ -24,6 +36,9 @@ class LoginScreen extends Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to='/'/>;
+    }
     return (
       <div className="container login">
         <form id="login-form" onSubmit={this.handleLogin}>
@@ -41,4 +56,10 @@ class LoginScreen extends Component {
   }
 }
 
-export default LoginScreen
+const mapDispatchToProps = dispatch => {
+  return {
+    setUser: (user) => dispatch(setUser(user)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(LoginScreen);
