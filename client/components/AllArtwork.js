@@ -100,6 +100,10 @@ export class AllArtwork extends Component {
       genre: '',
       medium: ''
     });
+    // reset "select" selected option
+    document.getElementById("artist").value = "DEFAULT";
+    document.getElementById("genre").value = "DEFAULT";
+    document.getElementById("medium").value = "DEFAULT";
   }
 
   render() {
