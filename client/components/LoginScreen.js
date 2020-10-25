@@ -3,6 +3,7 @@ import axios from 'axios'
 import {Link, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUser }from '../redux/user'
+import { setCart } from '../redux/cart'
 
 
 class LoginScreen extends Component {
@@ -23,7 +24,9 @@ class LoginScreen extends Component {
     try {
       const res = await axios.post('/api/users/login', { ...this.state })
       const user = res.data
+      const cart = user.cart
       this.props.setUser(user)
+      this.props.setCart(cart.cartItems)
       this.setState({...this.state, redirect: true})
     } catch(e) {
       //do some error handling
@@ -59,6 +62,7 @@ class LoginScreen extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     setUser: (user) => dispatch(setUser(user)),
+    setCart: (cart) => dispatch(setCart(cart))
   }
 }
 

@@ -8,9 +8,9 @@ router.post('/item/', async (req, res, next) => {
     if(!req.user) res.sendStatus(200)
     //but if they are,
     else {
-      const cart = await Cart.findOrCreate({
+      const cart = (await Cart.findOrCreate({
         where: { userId: req.user.id }
-      })
+      }))[0]
       const { artworkId, quantity } = req.body
       await CartItem.create({
         artworkId,

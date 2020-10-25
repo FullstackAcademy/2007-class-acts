@@ -21,6 +21,7 @@ render() {
       }
     }
     //get cart from redux store
+
     const cart = this.props.cart
     //if it ain't in redux but it is in localStorage, update the store with that cart
     if(cart.length === 0 && localStorage.graceCart) {

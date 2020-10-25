@@ -17,6 +17,7 @@ export class SingleArtwork extends React.Component {
         const cartItem = { artworkId, quantity }
         await this.props.addToCart(cartItem)
         localStorage.setItem('graceCart', JSON.stringify(this.props.cart))
+        //should also decrement the quantity of this item in the store. later.
     }
 
     async componentDidMount(){
