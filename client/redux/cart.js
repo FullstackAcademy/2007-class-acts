@@ -1,43 +1,41 @@
-import axios from 'axios'
-import { ADD_TO_CART, SET_CART } from './actionConstants';
+import axios from 'axios';
+import { ADD_CART_ITEM, SET_CART_ITEMS } from './actionConstants';
 
 // ACTION CREATORS
-export const _addToCart = (cartItem) => {
+export const _addCartItem = cartItem => {
   return {
-    type: ADD_TO_CART,
+    type: ADD_CART_ITEM,
     cartItem
   }
 };
 
-export const _setCart = cart => {
+export const _setCartItems = cartItems => {
   return {
-    type: SET_CART,
-    cart
+    type: SET_CART_ITEMS,
+    cartItems
   }
 }
 
 // THUNK CREATORS
-export const addToCart = (cartItem) => {
+export const addCartItem = (cartItem) => {
   return async (dispatch) => {
-    //send the cartItem to database
-    await axios.post(`/api/cart/item`, cartItem)
-    dispatch(_addToCart(cartItem));
+    const newCartItem = await axios.post('/api/cart/item', cartItem);
+    dispatch(_addCartItem(newCartItem.data));
   }
 };
 
-export const setCart = cart => {
+export const setCartItems = (cartItems) => {
   return (dispatch) => {
-    //send the whole cart to DB
-    dispatch(_setCart(cart))
+    dispatch(_setCartItems(cartItems));
   }
-}
+};
 
 export default function cartReducer(state = [], action) {
   switch (action.type) {
-    case ADD_TO_CART:
-      return [...state, action.cartItem]
-    case SET_CART:
-      return action.cart
+    case ADD_CART_ITEM:
+      return [...state.filter(item => item.artworkId !== action.cartItem.artworkId), action.cartItem];
+    case SET_CART_ITEMS:
+      return [...action.cartItems]
     default:
       return state;
   }

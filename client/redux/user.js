@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { SET_USER } from './actionConstants'
+import { setCartItems } from './cart'
 
 
 //ACTION CREATOR
@@ -13,6 +14,7 @@ export const getUser = (sessionId) => {
   return async (dispatch) => {
     const user = await axios.get(`/api/users/${sessionId}`)
     dispatch(setUser(user.data))
+    if(user.data.cart) dispatch(setCartItems(user.data.cart.cartItems))
   }
 }
 

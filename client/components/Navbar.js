@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUser } from '../redux/user'
-import { setCart } from '../redux/cart'
 
 export class Navbar extends Component {
 render() {
@@ -17,20 +16,18 @@ render() {
       if(sessionId) {
         //redux stuff
         this.props.getUser(sessionId)
-        //get the cart here, too; if there's no saved cart, use the existing cart and update the DB with it
       }
     }
-    //get cart from redux store
 
-    const cart = this.props.cart
-    //if it ain't in redux but it is in localStorage, update the store with that cart
-    if(cart.length === 0 && localStorage.graceCart) {
-      this.props.setCart(JSON.parse(localStorage.graceCart))
-    }
+    const cartQty = this.props.cart.reduce((total,cartItem) => {
+      total += +cartItem.quantity
+      return total
+    }, 0)
+
     return (
       <nav>
         <Link to="/" style={{ color: "white" }}>COLLECTION</Link>
-        <Link to="/cart" style={{ color: "white" }}>CART ({cart.length})</Link>
+        <Link to="/cart" style={{ color: "white" }}>CART ({cartQty})</Link>
         { isLoggedIn ?
             isAdmin ?
               <Link to="/account" style={{ color: "white" }}>ADMIN</Link> :
@@ -51,8 +48,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUser: (sessionId) => dispatch(getUser(sessionId)),
-    setCart: (cart) => dispatch(setCart(cart)),
+    getUser: (sessionId) => dispatch(getUser(sessionId))
   }
 }
 

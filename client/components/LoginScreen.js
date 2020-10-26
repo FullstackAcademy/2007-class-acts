@@ -3,8 +3,7 @@ import axios from 'axios'
 import {Link, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUser }from '../redux/user'
-import { setCart } from '../redux/cart'
-
+import { setCartItems } from '../redux/cart'
 
 class LoginScreen extends Component {
   constructor() {
@@ -24,13 +23,13 @@ class LoginScreen extends Component {
     try {
       const res = await axios.post('/api/users/login', { ...this.state })
       const user = res.data
-      const cart = user.cart
       this.props.setUser(user)
-      this.props.setCart(cart.cartItems)
+      //combine carts here
+      if(user.cart) this.props.setCartItems(user.cart.cartItems)
       this.setState({...this.state, redirect: true})
     } catch(e) {
       //do some error handling
-      console.log(e.response.data.message)
+      console.log(e)
     }
   }
 
@@ -62,7 +61,7 @@ class LoginScreen extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     setUser: (user) => dispatch(setUser(user)),
-    setCart: (cart) => dispatch(setCart(cart))
+    setCartItems: (cartItems) => dispatch(setCartItems(cartItems))
   }
 }
 

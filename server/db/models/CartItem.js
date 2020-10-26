@@ -7,7 +7,10 @@ const CartItem = db.define('cartItem', {
     defaultValue: UUIDV4,
     primaryKey: true
   },
-  quantity: INTEGER
+  quantity: {
+    type: INTEGER,
+    defaultValue: 0
+  }
 })
 
 module.exports = CartItem

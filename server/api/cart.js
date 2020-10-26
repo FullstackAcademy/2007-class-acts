@@ -2,27 +2,24 @@ const express = require('express')
 const router = express.Router()
 const { Cart, CartItem } = require('../db')
 
-router.post('/item/', async (req, res, next) => {
-  try {
-    //if they're not logged in, don't do anything to the db, just say OK
-    if(!req.user) res.sendStatus(200)
-    //but if they are,
-    else {
-      const cart = (await Cart.findOrCreate({
-        where: { userId: req.user.id }
-      }))[0]
-      const { artworkId, quantity } = req.body
-      await CartItem.create({
-        artworkId,
-        quantity,
+router.post('/item', async (req, res) => {
+  if (req.user) {
+    const { artworkId, quantity } = req.body
+    const [cart, _] = await Cart.findOrCreate( {
+      where: {
+        userId: req.user.id
+      }
+    })
+    const [cartItem, created] = await CartItem.findOrCreate({
+      where: {
+        artworkId: artworkId,
         cartId: cart.id
-      })
-      res.sendStatus(201)
-    }
-  }
-  catch(err) {
-    console.log(err)
-    next(err);
+      }
+    })
+    await cartItem.update({ quantity: cartItem.quantity + quantity})
+    res.status(201).send(cartItem)
+  } else {
+    res.sendStatus(401);
   }
 })
 

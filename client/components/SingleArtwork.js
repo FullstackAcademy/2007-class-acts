@@ -1,9 +1,8 @@
 import React from  'react';
 import { connect } from 'react-redux';
 import { getArtwork } from '../redux/artwork';
-import {Link} from 'react-router-dom'
-import { addToCart } from '../redux/cart'
-
+import { Link } from 'react-router-dom'
+import { addCartItem } from '../redux/cart'
 
 export class SingleArtwork extends React.Component {
     constructor() {
@@ -12,12 +11,13 @@ export class SingleArtwork extends React.Component {
     }
 
     async addQty(){
-        const quantity = document.getElementById('qty').value
+        const quantity = +document.getElementById('qty').value
         const artworkId = this.props.artwork.id
         const cartItem = { artworkId, quantity }
-        await this.props.addToCart(cartItem)
-        localStorage.setItem('graceCart', JSON.stringify(this.props.cart))
-        //should also decrement the quantity of this item in the store. later.
+        //add qty to DB if logged in
+        if(this.props.user.id) this.props.addCartItem(cartItem)
+        //otherwise local storage
+        //else null
     }
 
     async componentDidMount(){
@@ -72,14 +72,14 @@ export class SingleArtwork extends React.Component {
 const mapStateToProps = (state) => {
     return {
         artwork: state.artwork,
-        cart: state.cart
+        user: state.user
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getArtwork: (id) => dispatch(getArtwork(id)),
-        addToCart: (cartItem) => dispatch(addToCart(cartItem))
+        addCartItem: (cartItem) => dispatch(addCartItem(cartItem))
     }
 }
 
