@@ -15,9 +15,9 @@ export class SingleArtwork extends React.Component {
         const artworkId = this.props.artwork.id
         const cartItem = { artworkId, quantity }
         //add qty to DB if logged in
-        if(this.props.user.id) this.props.addCartItem(cartItem)
-        //otherwise local storage
-        //else null
+        let isLoggedIn = false
+        if(this.props.user.id) isLoggedIn = true
+        this.props.addCartItem(cartItem, isLoggedIn)
     }
 
     async componentDidMount(){
@@ -79,7 +79,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getArtwork: (id) => dispatch(getArtwork(id)),
-        addCartItem: (cartItem) => dispatch(addCartItem(cartItem))
+        addCartItem: (cartItem, isLoggedIn) => dispatch(addCartItem(cartItem, isLoggedIn))
     }
 }
 

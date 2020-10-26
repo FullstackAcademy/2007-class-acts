@@ -4,6 +4,7 @@ import {Link, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUser }from '../redux/user'
 import { setCartItems } from '../redux/cart'
+import { clearLocalCart } from '../localCart/'
 
 class LoginScreen extends Component {
   constructor() {
@@ -24,8 +25,11 @@ class LoginScreen extends Component {
       const res = await axios.post('/api/users/login', { ...this.state })
       const user = res.data
       this.props.setUser(user)
-      //combine carts here
+      //combine localStorage cart with DB cart and empty out localStorage
       if(user.cart) this.props.setCartItems(user.cart.cartItems)
+      clear
+
+      //redirect on login
       this.setState({...this.state, redirect: true})
     } catch(e) {
       //do some error handling

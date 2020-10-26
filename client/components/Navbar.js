@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUser } from '../redux/user'
+import { setCartItems } from '../redux/cart'
+import { localCart } from '../localCart/'
 
 export class Navbar extends Component {
 render() {
@@ -14,8 +16,11 @@ render() {
       //if there's a session cookie, get user info, update store, etc.
       const sessionId = document.cookie.split('=')[1]
       if(sessionId) {
-        //redux stuff
+        //set the user if there's a session ID
         this.props.getUser(sessionId)
+      } else {
+        //otherwise set the cart from local Storage if redux cart is empty
+        if(this.props.cart.length === 0 && localCart().length > 0) this.props.setCartItems(localCart())
       }
     }
 
@@ -48,7 +53,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUser: (sessionId) => dispatch(getUser(sessionId))
+    getUser: (sessionId) => dispatch(getUser(sessionId)),
+    setCartItems: (cartItems) => dispatch(setCartItems(cartItems))
   }
 }
 
