@@ -3,8 +3,8 @@ import axios from 'axios'
 import {Link, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUser }from '../redux/user'
-import { setCartItems } from '../redux/cart'
-import { clearLocalCart } from '../localCart/'
+import { setCartItems, addCartItem } from '../redux/cart'
+import { localCart, clearLocalCart } from '../localCart/'
 
 class LoginScreen extends Component {
   constructor() {
@@ -27,8 +27,8 @@ class LoginScreen extends Component {
       this.props.setUser(user)
       //combine localStorage cart with DB cart and empty out localStorage
       if(user.cart) this.props.setCartItems(user.cart.cartItems)
-      clear
-
+      if(localCart().length > 0) localCart().forEach(item => this.props.addCartItem(item, true))
+      clearLocalCart();
       //redirect on login
       this.setState({...this.state, redirect: true})
     } catch(e) {
@@ -65,7 +65,8 @@ class LoginScreen extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     setUser: (user) => dispatch(setUser(user)),
-    setCartItems: (cartItems) => dispatch(setCartItems(cartItems))
+    setCartItems: (cartItems) => dispatch(setCartItems(cartItems)),
+    addCartItem: (cartItem, isLoggedIn) => dispatch(addCartItem(cartItem, isLoggedIn))
   }
 }
 
