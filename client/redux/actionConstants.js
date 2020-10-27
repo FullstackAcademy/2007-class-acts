@@ -8,3 +8,4 @@ export const GET_ARTWORK = 'GET_ARTWORK';
 
 export const ADD_CART_ITEM = 'ADD_CART_ITEM';
 export const SET_CART_ITEMS = 'SET_CART_ITEMS'
+export const ADD_MULTIPLE_CART_ITEMS = 'ADD_MULTIPLE_CART_ITEMS'

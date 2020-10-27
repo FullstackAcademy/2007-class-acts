@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_CART_ITEM, SET_CART_ITEMS } from './actionConstants';
+import { ADD_CART_ITEM, SET_CART_ITEMS, ADD_MULTIPLE_CART_ITEMS } from './actionConstants';
 import { addLocalCartItem } from '../localCart/'
 
 // ACTION CREATORS
@@ -13,6 +13,13 @@ export const _addCartItem = cartItem => {
 export const _setCartItems = cartItems => {
   return {
     type: SET_CART_ITEMS,
+    cartItems
+  }
+}
+
+export const _addMultipleCartItems = cartItems => {
+  return {
+    type: ADD_MULTIPLE_CART_ITEMS,
     cartItems
   }
 }
@@ -32,6 +39,14 @@ export const addCartItem = (cartItem, isLoggedIn = false) => {
   }
 };
 
+export const addMultipleCartItems = (cartItems) => {
+  return async (dispatch) => {
+    //if you log in and have multiple cart items, this sends all at once so that only one cartID is associated with each cartItem
+    const newCartItems = (await axios.post('/api/cart/items', cartItems)).data;
+    dispatch(_addMultipleCartItems(newCartItems));
+  }
+}
+
 export const setCartItems = (cartItems) => {
   return (dispatch) => {
     dispatch(_setCartItems(cartItems));
@@ -42,6 +57,10 @@ export default function cartReducer(state = [], action) {
   switch (action.type) {
     case ADD_CART_ITEM:
       return [...state.filter(item => item.artworkId !== action.cartItem.artworkId), action.cartItem];
+    case ADD_MULTIPLE_CART_ITEMS:
+      return [...state.filter(item => !action.cartItems
+        .map(item => item.artworkId)
+        .includes(item.artworkId)), ...action.cartItems]
     case SET_CART_ITEMS:
       return [...action.cartItems]
     default:

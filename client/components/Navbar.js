@@ -20,7 +20,7 @@ render() {
         this.props.getUser(sessionId)
       } else {
         //otherwise set the cart from local Storage if redux cart is empty
-        if(this.props.cart.length === 0 && localCart().length > 0) this.props.setCartItems(localCart())
+        if(this.props.cart.length === 0 && localCart.length > 0) this.props.setCartItems(localCart)
       }
     }
 
