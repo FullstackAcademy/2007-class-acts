@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { Artwork, Artist, ShopImage, Genre } = require('../db')
 
+// GET /api/artworks
 router.get('/', async (req, res, next) => {
   try {
     const artworks = await Artwork.findAll({include: [Artist, ShopImage, Genre]})
@@ -12,6 +13,19 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// POST /api/artworks
+// check if user is admin user prior to using route
+router.post('/', async (req, res, next) => {
+  try {
+    const newArt = await Artwork.create(req.body);
+    res.status(201).send(newArt);
+  }
+  catch(err) {
+    next(err);
+  }
+})
+
+// GET /api/artworks/:artworkId
 router.get('/:artworkId', async (req, res, next) => {
   try {
     const artwork = await Artwork.findByPk(req.params.artworkId, {include: [Artist, ShopImage]})
@@ -22,15 +36,29 @@ router.get('/:artworkId', async (req, res, next) => {
   }
 })
 
+// PUT /api/artworks/:artworkId
+// check if user is admin before using this route to change price, etc.
 router.put('/:artworkId', async (req, res, next) => {
   try {
-    const artwork = await Artwork.findByPk(req.params.artworkId)
-    await artwork.update(req.body)
-    res.send(artwork)
+    const artwork = await Artwork.findByPk(req.params.artworkId);
+    await artwork.update(req.body);
+    res.send(artwork);
   }
   catch(err) {
     next(err);
   }
 })
 
-module.exports = router
+// DELETE /api/artworks/:artworkId
+// check if user is admin before using this route
+router.delete(':/artworkId', async (req, res, next) => {
+  try {
+    const artToDelete = await Artwork.findByPk(req.params.artworkId);
+    await artToDelete.destroy();
+    res.sendStatus(204);
+  }
+  catch(err) {
+    next(err);
+  }
+})
+module.exports = router;
