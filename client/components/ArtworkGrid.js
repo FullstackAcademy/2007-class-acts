@@ -9,14 +9,16 @@ const ArtworkGrid = ({ artworks }) => {
           artworks.map(artwork => {
             return (
               <div className="tile" id={ artwork.id } key= { artwork.id }>
-                {/* TBU: Will add rotating images */}
+                {/* TBU: Will add rotating images
+                  Added some hacky ways of displaying unknown artist and default image until
+                  those are updated in add/edit form -ZR
+                */}
                 <Link to={`/artworks/${artwork.id}`} >
-                  <img src={artwork.shopImages[0].imageURL } />  
+                  <img src={artwork.shopImages.length ? artwork.shopImages[0].imageURL : '/img/default.jpg'} />
                 </Link>
-                
                 <div className="art-description">
                   <p className="artwork-title">{ artwork.title }</p>
-                  <p>{ artwork.artist.name }</p>
+                  <p>{ artwork.artist ? artwork.artist.name : 'Unknown'}</p>
                   <p>${ artwork.price }</p>
                 </div>
               </div>

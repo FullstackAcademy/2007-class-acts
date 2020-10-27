@@ -29,7 +29,7 @@ export const getArtwork = (id) => {
 export const addArtwork = (artwork) => {
   return async (dispatch) => {
     try {
-      const newArtwork = await axios.post('api/artworks', artwork) //double check api routes
+      const newArtwork = await axios.post('/api/artworks', artwork)
       dispatch(_addArtwork(newArtwork.data))
     } catch (err) {
       console.log(err)

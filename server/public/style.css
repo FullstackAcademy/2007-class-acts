@@ -114,3 +114,55 @@ nav {
 #login-form h2 {
   margin: 0;
 }
+
+/*--- ADMIN NAV BAR --- */
+.admin-nav {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-nav a{
+  width: 33%;
+  padding: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.admin-nav a, .admin-nav a:visited  {
+  text-decoration: none;
+  background: #EEF0F2;
+  color: #5E5E5E;
+}
+
+.admin-nav a:hover, .admin-nav a:active, .selected-admin-link {
+  color: #EEF0F2;
+  background: #66717E;
+}
+
+/*--- ADMIN SECTION --- */
+
+#artwork-form {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 60%;
+  margin: 0 1em;
+}
+
+
+#artwork-form input, #artwork-form button, #artwork-form textarea {
+  font-size: 1em;
+  padding: 2px;
+  margin: .5em 0;
+  border-radius: 7px;
+  border: solid 1px;
+}
+
+#artwork-form button {
+  width: 30%;
+  align-self: center;
+  box-shadow: none;
+  padding: 3px;
+}
