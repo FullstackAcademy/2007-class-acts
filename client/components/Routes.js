@@ -9,6 +9,7 @@ import LoginScreen from './LoginScreen'
 import NewUser from './NewUser'
 import Navbar from './Navbar'
 import Account from './Account'
+import AdminRoutes from './AdminRoutes'
 
 const Routes = () => {
   return (
@@ -21,6 +22,7 @@ const Routes = () => {
           <Route exact path="/login" component={LoginScreen} />
           <Route exact path="/newuser" component={NewUser} />
           <Route exact path="/account" component={Account} />
+          <Route path="/admin" component={AdminRoutes} />
         </Switch>
       </div>
     </Router>
