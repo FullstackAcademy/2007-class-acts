@@ -118,7 +118,7 @@ export class AllArtwork extends Component {
           <ArtFilters artworks={ artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
           <div className="side-bar">
             <input type="text" placeholder="SEARCH COLLECTION" onKeyDown={ search } />
-            <button type="text" onClick={ reset }>CLEAR FILTERS</button>
+            <button type="button" onClick={ reset }>CLEAR FILTERS</button>
           </div>
         </div>
         <ArtworkGrid artworks={ this.state.artworks } />

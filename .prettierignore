@@ -1,0 +1,8 @@
+node_modules
+server/public/bundle.js
+server/public/bundle.js.map
+server/public/bundle.js.LICENSE.txt
+.idea
+.DS_Store
+package.json
+package-lock.json
