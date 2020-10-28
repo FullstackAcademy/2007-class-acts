@@ -12,6 +12,11 @@ nav {
   font-family: 'Barlow', sans-serif;
 }
 
+table {
+  border-spacing: 10%;
+  border-collapse: separate;
+}
+
 /* --- ALL ARTWORK  --- */
 .top-section {
   display: flex;
@@ -113,4 +118,47 @@ nav {
 
 #login-form h2 {
   margin: 0;
+}
+
+
+/* --- TABLE USER MANAGEMENT --- */
+.adminNav { 
+  background-color: #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 3.5rem;
+  font-family: 'Barlow', sans-serif;
+}
+
+.adminNav div {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+
+#table {
+  text-align: center;
+  border-collapse: collapse;  
+  width: 100%;
+}
+
+#table td, #table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+
+#table tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+#table tr:hover {background-color: #ddd;}
+
+#table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: black;
+  color: white;
 }
