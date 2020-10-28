@@ -1,7 +1,7 @@
 import React from 'react';
 import { mediums } from '../../server/constants';
 
-const ArtFilters = ({ artworks, artists, genres, changeFilter }) => {
+const ArtFilters = ({ artworks, artists, genres, changeFilter /*, getArtPerGenre */}) => {
   return (
     <div className="art-filters">
       <select name="artist" id="artist" defaultValue="DEFAULT" onChange={ changeFilter }>
@@ -19,7 +19,10 @@ const ArtFilters = ({ artworks, artists, genres, changeFilter }) => {
         <option value="DEFAULT">GENRE</option>
         { genres ?
           genres.map(genre => {
+            // const numArt = getArtPerGenre(genre.id);
+            // console.log(numArt);
             return (
+              // TODO: use an instance method here instead to find the number of artworks per genre
               <option value={ genre.id } key={ genre.id }>{ genre.name } ({ genre.artworks.length })</option>
             )
           }) :

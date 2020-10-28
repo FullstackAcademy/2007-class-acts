@@ -6,12 +6,11 @@ import {Link} from 'react-router-dom'
 
 export class SingleArtwork extends React.Component {
 
-    async componentDidMount(){
-        await this.props.getArtwork(this.props.match.params.id)
+    componentDidMount(){
+        this.props.getArtwork(this.props.match.params.id)
     }
 
     render(){
-        console.log("props in render", this.props.artwork)
         return (
         <div>
             <div>

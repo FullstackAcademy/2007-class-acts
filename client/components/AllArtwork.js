@@ -8,10 +8,11 @@ import { getArtists } from '../redux/artists';
 import { getGenres } from '../redux/genres';
 import ArtworkGrid from './ArtworkGrid';
 import ArtFilters from './ArtFilters';
+// import axios from 'axios';
 
 export class AllArtwork extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       artworks: [],
       artists: '',
@@ -23,6 +24,7 @@ export class AllArtwork extends Component {
     this.changeFilter = this.changeFilter.bind(this);
     this.search = this.search.bind(this);
     this.reset = this.reset.bind(this);
+    this.getArtPerGenre = this.getArtPerGenre
   }
   async componentDidMount() {
     //added this condition so the data doesn't reload
@@ -38,6 +40,7 @@ export class AllArtwork extends Component {
     });
   }
 
+  // Not sure how to remove the first await in this function. State needs to be reset before the rest of the filters can be assessed.
   async changeFilter(ev) {
     const value = ev.target.value === 'DEFAULT' ? '' : ev.target.value;
     await this.setState({
@@ -45,12 +48,12 @@ export class AllArtwork extends Component {
       artworks: this.props.artworks
     });
     if (this.state.artist !== '') {
-      await this.setState({
+      this.setState({
         artworks: this.state.artworks.filter(art => art.artist.id === this.state.artist),
       });
     }
     if (this.state.genre !== '') {
-      await this.setState({
+      this.setState({
         artworks: this.state.artworks.filter(art => {
           return art.genres
             .map(genre => genre.id)
@@ -59,7 +62,7 @@ export class AllArtwork extends Component {
       });
     }
     if (this.state.medium !== '') {
-      await this.setState({
+      this.setState({
         artworks: this.state.artworks.filter(art => art.medium === this.state.medium)
       });
     }
@@ -109,13 +112,18 @@ export class AllArtwork extends Component {
     document.getElementById("medium").value = "DEFAULT";
   }
 
+  // async getArtPerGenre(genreId) {
+  //   const currGenre = await axios.get(`/api/genres/${genreId}`);
+  //   return currGenre.data.artworks.length;
+  // }
+
   render() {
-    const { changeFilter, search, reset } = this;
+    const { changeFilter, search, reset, getArtPerGenre } = this;
     const { artworks, artists, genres } = this.state;
     return(
       <div>
         <div className="top-section">
-          <ArtFilters artworks={ artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
+          <ArtFilters artworks={ artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } /*getArtPerGenre={ getArtPerGenre } */ />
           <div className="side-bar">
             <input type="text" placeholder="SEARCH COLLECTION" onKeyDown={ search } />
             <button type="text" onClick={ reset }>CLEAR FILTERS</button>
