@@ -6,10 +6,19 @@ import { getArtworks } from '../redux/artworks';
 export class Cart extends Component {
   render() {
     const {artworks, cart} = this.props
-    //if you go directly to the cart page, you don't have the artwork, so this is a workaround but we probably need to figure out the right way to do this later
+    //if you go directly to the cart page, you don't have the artwork, so this is a workaround but we probably need to figure out the right way to do this later.
     if(artworks.length === 0) {
       this.props.getArtworks();
       return (<div>Loading</div>)
+    }
+
+    //if nothing in cart, say something nice:
+    if(cart.length === 0) {
+      return (
+        <div>
+          <h2>Your cart is empty!</h2>
+        </div>
+      )
     }
 
     //this is crummy looking but works for viewing the cart for now

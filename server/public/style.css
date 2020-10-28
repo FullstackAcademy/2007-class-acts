@@ -147,3 +147,7 @@ nav {
 .noQty {
   color: red;
 }
+
+.singleArtInfo {
+  padding: 1rem;
+}

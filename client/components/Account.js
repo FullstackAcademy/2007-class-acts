@@ -18,7 +18,9 @@ const Account = ({ user, _destroySession, setCartItems }) => {
           document.cookie = 'sessionId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
           //get rid of the session so you're not automatically logged back in
           _destroySession(sessionId);
-          //empty your cart if you log out
+          //empty your redux cart if you log out. this is so you don't have
+          //stuff sitting in your cart after logging out that would then be
+          //combined into your cart AGAIN when you log back in.
           setCartItems([])
         }}>Log Out</Link>
     </div>

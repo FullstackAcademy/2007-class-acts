@@ -22,8 +22,7 @@ class LoginScreen extends Component {
     ev.preventDefault()
     //do some logging in stuff
     try {
-      const res = await axios.post('/api/users/login', { ...this.state })
-      const user = res.data
+      const user = (await axios.post('/api/users/login', { ...this.state })).data
       this.props.setUser(user)
       //combine localStorage cart with DB cart and empty out localStorage
       if(user.cart) this.props.setCartItems(user.cart.cartItems)

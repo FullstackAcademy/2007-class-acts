@@ -50,7 +50,7 @@ export class SingleArtwork extends React.Component {
                         }
                     </div>
                 </div>
-                <div style={{padding: "1rem"}}>
+                <div className="singleArtInfo">
                     <h2>{this.props.artwork.title}</h2>
                     <p>{`By ${this.props.artwork.artist.name}`}</p>
                     <p>{`$${this.props.artwork.price.toFixed(2)}`}</p>
