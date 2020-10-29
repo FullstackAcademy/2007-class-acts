@@ -21,7 +21,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:genreId', async (req, res, next) => {
   try {
     const genre = await Genre.findByPk(req.params.genreId, {
-      include: [Artwork]
+      // include: [Artwork]
     })
     res.send(genre)
   }
