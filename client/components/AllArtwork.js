@@ -23,7 +23,6 @@ export class AllArtwork extends Component {
     this.changeFilter = this.changeFilter.bind(this);
     this.search = this.search.bind(this);
     this.reset = this.reset.bind(this);
-    this.getArtPerGenre = this.getArtPerGenre
   }
   async componentDidMount() {
     //added this condition so the data doesn't reload
@@ -111,7 +110,7 @@ export class AllArtwork extends Component {
   }
 
   render() {
-    const { changeFilter, search, reset, getArtPerGenre } = this;
+    const { changeFilter, search, reset } = this;
     const { artworks, artists, genres } = this.state;
     return(
       <div>
