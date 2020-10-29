@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { Artwork, Artist, ShopImage, Genre } = require('../db')
-const { artistProperties } = require('../constants')
+const { validateArt } = require('../utils')
 
 // GET /api/artworks
 router.get('/', async (req, res, next) => {
@@ -18,12 +18,7 @@ router.get('/', async (req, res, next) => {
 // check if user is admin user prior to using route
 router.post('/', async (req, res, next) => {
   try {
-    const art = {}
-    Object.entries(req.body).forEach(([key, value]) => {
-      if (artistProperties.includes(key)) {
-        art[key] = value;
-      }
-    })
+    const art = validateArt(req.body)
     const newArt = await Artwork.create(art, {include: [Artist]});
     if (req.body.artistId) {
       const artist = await Artist.findByPk(req.body.artistId)
@@ -32,7 +27,6 @@ router.post('/', async (req, res, next) => {
     res.status(201).send(newArt);
   }
   catch (err) {
-    console.log(err)
     next(err);
   }
 })
@@ -52,11 +46,13 @@ router.get('/:artworkId', async (req, res, next) => {
 // check if user is admin before using this route to change price, etc.
 router.put('/:artworkId', async (req, res, next) => {
   try {
-    const artwork = await Artwork.findByPk(req.params.artworkId);
-    await artwork.update(req.body);
+    const art = validateArt(req.body)
+    const artwork = await Artwork.findByPk(req.params.artworkId, {include: [ShopImage]});
+    await artwork.update(art);
     res.send(artwork);
   }
-  catch(err) {
+  catch (err) {
+    console.log(err)
     next(err);
   }
 })

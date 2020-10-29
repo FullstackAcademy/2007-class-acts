@@ -4,8 +4,9 @@ import { getArtwork } from '../redux/artwork'
 import { Link } from 'react-router-dom'
 
 export class SingleArtwork extends React.Component {
-  async componentDidMount() {
-    await this.props.getArtwork(this.props.match.params.id)
+  componentDidMount() {
+    console.log(this.props)
+    this.props.getArtwork(this.props.match.params.id)
   }
 
   render() {

@@ -44,10 +44,10 @@ export const addArtwork = (artwork) => {
   }
 }
 
-export const editArtwork = (artwork) => {
+export const editArtwork = (id, artwork) => {
   return async (dispatch) => {
     try {
-      const editedArtwork = await axios.put(`/api/artworks/${artwork.id}`, artwork)
+      const editedArtwork = await axios.put(`/api/artworks/${id}`, artwork)
       dispatch(_editArtwork(editedArtwork.data))
     } catch (err) {
       console.log(err)
@@ -62,7 +62,7 @@ export default function artworkReducer(state = {}, action) {
     case ADD_ARTWORK:
       return action.artwork
     case EDIT_ARTWORK:
-      return action.artwork
+      return {...state, ...action.artwork }
     default:
       return state
   }

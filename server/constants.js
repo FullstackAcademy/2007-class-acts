@@ -1,6 +1,6 @@
 const mediums = ['Graphic Art','Sculpture', 'Installation', 'Performance Art']
 const orderStatuses = ['Created', 'Processing', 'Cancelled', 'Completed']
-const artistProperties = ['title', 'id', 'description', 'year', 'medium', 'price', 'quantity']
+const artProperties = ['title', 'id', 'description', 'year', 'medium', 'price', 'quantity', 'artistId']
 
 const minRating = 0
 
@@ -15,7 +15,7 @@ const defaultImagePath = '/public/img/default.jpg'
 module.exports = {
   mediums,
   orderStatuses,
-  artistProperties,
+  artProperties,
   minRating,
   maxRating,
   minReviewLength,

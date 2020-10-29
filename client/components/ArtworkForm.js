@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { addArtwork } from '../redux/artwork'
+import { addArtwork, editArtwork, getArtwork } from '../redux/artwork'
 import { mediums } from '../../server/constants'
 
 class ArtworkForm extends Component {
@@ -19,11 +19,14 @@ class ArtworkForm extends Component {
       artistId: ''
     }
     this.handleChange = this.handleChange.bind(this)
-    this.handleGenreChange = this.handleGenreChange.bind(this)
+    //this.handleGenreChange = this.handleGenreChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
+    if (!this.props.artwork && this.props.match.params.id) {
+      this.props.getArtwork(this.props.match.params.id)
+    }
     if (this.props.isEditing) {
       const { title, description, year, price, quantity, medium, artistId } = this.props.artwork
       this.setState({title, description, year, price, quantity, medium, artistId})
@@ -35,38 +38,37 @@ class ArtworkForm extends Component {
     this.setState({ [name]: value })
   }
 
-  handleGenreChange(ev) {
+  /*handleGenreChange(ev) {
     const { genres } = this.state
     console.log(genres, ev.target)
-  }
+  }*/
 
   handleSubmit(ev) {
     ev.preventDefault()
-    if (this.props.isEditing) {
-      //do stuff
-    } else {
-      try {
+    try {
+      if (this.props.isEditing) {
+        this.props.editArtwork(this.props.artwork.id, this.state)
+      } else {
         const form = {}
         Object.entries(this.state).forEach(([key, value]) => {
-          if (value) {
-            form[key] = value
-          }
+          if (value) form[key] = value
         })
         this.props.addArtwork(form)
-        this.setState({redirect: true})
-      } catch (err) {
-        console.log(err)
       }
+      this.setState({redirect: true})
+    } catch (err) {
+      console.log(err)
     }
   }
+
   /*
-    To-do: handle adding artist and genres thru associations. create a form for adding an artist as well?
+    To-do: handle adding genres thru associations.
   */
   render() {
     const { title, description, year, price, quantity, redirect, medium, artistId  } = this.state
     const { isEditing, artwork, artists, genres } = this.props
     return redirect ?
-      <Redirect to='/' />
+      <Redirect to={isEditing ? `/artworks/${artwork.id}` : '/'} />
       : (
       <div className="form-container">
         <h2>{isEditing ? `Edit ${artwork.title}` : 'Add New Art to Collection'}</h2>
@@ -138,7 +140,9 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    addArtwork: (artwork) => dispatch(addArtwork(artwork))
+    addArtwork: (artwork) => dispatch(addArtwork(artwork)),
+    editArtwork: (id, artwork) => dispatch(editArtwork(id, artwork)),
+    getArtwork: (id) => dispatch(getArtwork(id))
   }
 }
 
