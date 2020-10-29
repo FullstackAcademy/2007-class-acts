@@ -23,7 +23,7 @@ export class SingleArtwork extends React.Component {
                 }} /* Added inline temporary styling, to see how it looks*/
               >
                 <img
-                  src={this.props.artwork.shopImages[0].imageURL}
+                  src={this.props.artwork.shopImages.length ? this.props.artwork.shopImages[0].imageURL : '/img/default.jpg'}
                   style={{ maxWidth: '100%' }}
                 />
                 <p>
@@ -32,7 +32,7 @@ export class SingleArtwork extends React.Component {
               </div>
               <div style={{ padding: '1rem' }}>
                 <h2>{this.props.artwork.title}</h2>
-                <p>{`By ${this.props.artwork.artist.name}`}</p>
+                <p>{`By ${this.props.artwork.artist ? this.props.artwork.artist.name : 'Unknown'}`}</p>
                 <p>{`$${this.props.artwork.price}`}</p>
 
                 <hr />
@@ -41,7 +41,7 @@ export class SingleArtwork extends React.Component {
                 <hr />
 
                 <h2>Artist Bio</h2>
-                <p>{this.props.artwork.artist.bio}</p>
+                <p>{this.props.artwork.artist ? this.props.artwork.artist.bio : 'Nothing is known about this artist'}</p>
               </div>
             </div>
           ) : (

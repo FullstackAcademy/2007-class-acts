@@ -151,9 +151,11 @@ nav {
   margin: 0 1em;
 }
 
+#artwork-form * {
+    font-size: 1em;
+}
 
 #artwork-form input, #artwork-form button, #artwork-form textarea {
-  font-size: 1em;
   padding: 2px;
   margin: .5em 0;
   border-radius: 7px;
@@ -164,5 +166,16 @@ nav {
   width: 30%;
   align-self: center;
   box-shadow: none;
+  padding: 3px;
+}
+
+.genre-list {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: space-between;
+}
+
+.genre-item {
+  flex: 0 0 33%;
   padding: 3px;
 }

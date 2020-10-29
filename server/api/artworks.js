@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { Artwork, Artist, ShopImage, Genre } = require('../db')
+const { artistProperties } = require('../constants')
 
 // GET /api/artworks
 router.get('/', async (req, res, next) => {
@@ -17,10 +18,21 @@ router.get('/', async (req, res, next) => {
 // check if user is admin user prior to using route
 router.post('/', async (req, res, next) => {
   try {
-    const newArt = await Artwork.create(req.body);
+    const art = {}
+    Object.entries(req.body).forEach(([key, value]) => {
+      if (artistProperties.includes(key)) {
+        art[key] = value;
+      }
+    })
+    const newArt = await Artwork.create(art, {include: [Artist]});
+    if (req.body.artistId) {
+      const artist = await Artist.findByPk(req.body.artistId)
+      await newArt.setArtist(artist)
+    }
     res.status(201).send(newArt);
   }
-  catch(err) {
+  catch (err) {
+    console.log(err)
     next(err);
   }
 })
