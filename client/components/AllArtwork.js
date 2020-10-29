@@ -8,7 +8,6 @@ import { getArtists } from '../redux/artists';
 import { getGenres } from '../redux/genres';
 import ArtworkGrid from './ArtworkGrid';
 import ArtFilters from './ArtFilters';
-// import axios from 'axios';
 
 export class AllArtwork extends Component {
   constructor(props) {
@@ -41,44 +40,43 @@ export class AllArtwork extends Component {
   }
 
   // Not sure how to remove the first await in this function. State needs to be reset before the rest of the filters can be assessed.
-  async changeFilter(ev) {
+  changeFilter(ev) {
+    const name = ev.target.name;
     const value = ev.target.value === 'DEFAULT' ? '' : ev.target.value;
-    await this.setState({
-      [ev.target.name]: value,
-      artworks: this.props.artworks
+
+    let filteredArt = this.props.artworks;
+    const artist = name === 'artist' ? value : this.state.artist;
+    const genre = name === 'genre' ? value : this.state.genre;
+    const medium = name === 'medium' ? value : this.state.medium;
+
+    if (artist !== '') {
+      filteredArt = filteredArt.filter(art => art.artist.id === artist);
+    }
+    if (genre !== '') {
+      filteredArt = filteredArt.filter(art => {
+        return art.genres
+          .map(genre => genre.id)
+          .includes(genre)
+      });
+    }
+    if (medium !== '') {
+      filteredArt = filteredArt.filter(art => art.medium === medium);
+    }
+
+    this.setState({
+      name: value,
+      artworks: filteredArt
     });
-    if (this.state.artist !== '') {
-      this.setState({
-        artworks: this.state.artworks.filter(art => art.artist.id === this.state.artist),
-      });
-    }
-    if (this.state.genre !== '') {
-      this.setState({
-        artworks: this.state.artworks.filter(art => {
-          return art.genres
-            .map(genre => genre.id)
-            .includes(this.state.genre)
-        })
-      });
-    }
-    if (this.state.medium !== '') {
-      this.setState({
-        artworks: this.state.artworks.filter(art => art.medium === this.state.medium)
-      });
-    }
   }
 
-  async search(ev) {
+  search(ev) {
     if (ev.key === 'Enter') {
       const searchTerm = ev.target.value;
-      const results = [];
       ev.target.value = '';
-      // restore state to original
-      await this.setState({
-        artworks: this.props.artworks
-      });
+      const results = [];
+
       // loop through all artwork titles, artist names
-      this.state.artworks.forEach(art => {
+      this.props.artworks.forEach(art => {
         if (art.title.toLowerCase().includes(searchTerm)) {
           results.push(art.id);
         }
@@ -86,15 +84,16 @@ export class AllArtwork extends Component {
       this.state.artists.forEach(artist => {
         const name = artist.name.toLowerCase();
         if (name.includes(searchTerm)) {
-          this.state.artworks
+          this.props.artworks
             .filter(art => art.artist.name.toLowerCase() === name)
             .map(art => art.id)
             .forEach(art => results.push(art))
         }
       });
+
       // set state to show matching results only
       this.setState({
-        artworks: this.state.artworks.filter(art => results.includes(art.id))
+        artworks: this.props.artworks.filter(art => results.includes(art.id))
       });
     }
   }
@@ -111,11 +110,6 @@ export class AllArtwork extends Component {
     document.getElementById("genre").value = "DEFAULT";
     document.getElementById("medium").value = "DEFAULT";
   }
-
-  // async getArtPerGenre(genreId) {
-  //   const currGenre = await axios.get(`/api/genres/${genreId}`);
-  //   return currGenre.data.artworks.length;
-  // }
 
   render() {
     const { changeFilter, search, reset, getArtPerGenre } = this;
