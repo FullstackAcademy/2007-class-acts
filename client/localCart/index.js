@@ -34,8 +34,8 @@ export const removeLocalCartItem = (cartItem) => {
   }
   //don't put nuthin in
   localStorage.setItem('graceShopper', JSON.stringify(localCart))
-  //return 1 to match the DB output
-  return(1)
+  //return 204 to match the DB output
+  return(204)
 }
 
 export const clearLocalCart = () => {

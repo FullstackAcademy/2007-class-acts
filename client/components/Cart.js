@@ -43,6 +43,7 @@ export class Cart extends Component {
       this.props.removeCartItem(cartItem, isLoggedIn)
     }
 
+
     //this is crummy looking but works for viewing the cart for now
     return (
       <div>
@@ -51,10 +52,15 @@ export class Cart extends Component {
           .sort((a,b) => b.artworkId > a.artworkId ? -1 : 1)
           .map(cartItem => {
           const cartItemArtwork = artworks.find(art => art.id === cartItem.artworkId)
+          const exceedsArtworkQuantity = cartItem.quantity > cartItemArtwork.quantity
           return (
             <div key={cartItem.artworkId}>
               <h4>{ cartItemArtwork.title }</h4>
               <h5><i>{ cartItemArtwork.artist.name }</i></h5>
+              { exceedsArtworkQuantity ?
+                <h5 className="noQty">You've added more to your cart ({cartItem.quantity}) than is currently in stock! Please choose a revised quantity.</h5>
+               : null
+              }
               <h5>
                 Quantity:
               <select id="qty"
@@ -86,7 +92,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getArtworks: () => dispatch(getArtworks()),
     changeCartItem: (cartItem, isLoggedIn) => dispatch(changeCartItem(cartItem, isLoggedIn)),
-    removeCartItem: (cartItem) => dispatch(removeCartItem(cartItem))
+    removeCartItem: (cartItem, isLoggedIn) => dispatch(removeCartItem(cartItem, isLoggedIn))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

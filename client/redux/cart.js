@@ -68,18 +68,19 @@ export const changeCartItem = (cartItem, isLoggedIn = false) => {
 
 export const removeCartItem = (cartItem, isLoggedIn = false) => {
   return async (dispatch) => {
-    let numDeleted
+    let deleteSuccessful
     //do two different things depending on whether user is loggedIn
     //if logged in, send to the DB,
     //which will **NOT** return the deleted cartItem, so we
     //have to dispatch the original cart item if we succeed in deleting
-    if(isLoggedIn) numDeleted = (await axios.delete('/api/cart/item', cartItem)).data;
+    if(isLoggedIn) deleteSuccessful = (await axios.delete(`/api/cart/item/${cartItem.id}`)).status;
     //if not logged in, write to localStorage
-    else numDeleted = removeLocalCartItem(cartItem)
-    //if the cart item was deleted, you should get back the number of rows
-    //deleted from the table from sequelize (or localstorage), which should be 1
+    else deleteSuccessful = removeLocalCartItem(cartItem)
+    //if the cart item was deleted, you should get back status 204
     //then dispatch the original cart item for the reducer
-    if(numDeleted === 1) dispatch(_removeCartItem(cartItem));
+    if(deleteSuccessful === 204) {
+      dispatch(_removeCartItem(cartItem));
+    }
   }
 };
 
