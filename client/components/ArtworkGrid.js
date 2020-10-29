@@ -14,7 +14,7 @@ const ArtworkGrid = ({ artworks }) => {
                   those are updated in add/edit form -ZR
                 */}
                 <Link to={`/artworks/${artwork.id}`} >
-                  <img src={artwork.shopImages.length ? artwork.shopImages[0].imageURL : '/img/default.jpg'} />
+                  <img src={(artwork.shopImages && artwork.shopImages.length) ? artwork.shopImages[0].imageURL : '/img/default.jpg'} />
                 </Link>
                 <div className="art-description">
                   <p className="artwork-title">{ artwork.title }</p>
