@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_CART_ITEM, SET_CART_ITEMS, ADD_MULTIPLE_CART_ITEMS, CHANGE_CART_ITEM, REMOVE_CART_ITEM } from './actionConstants';
+import { ADD_CART_ITEM, SET_CART_ITEMS, ADD_MULTIPLE_CART_ITEMS, CHANGE_CART_ITEM, REMOVE_CART_ITEM, SET_USER } from './actionConstants';
 import { addLocalCartItem, changeLocalCartItem, removeLocalCartItem } from '../localCart/'
 
 // ACTION CREATORS
@@ -113,6 +113,9 @@ export default function cartReducer(state = [], action) {
         .includes(item.artworkId)), ...action.cartItems]
     case SET_CART_ITEMS:
       return [...action.cartItems]
+    case SET_USER:
+      if (action.user.cart && action.user.cart.cartItems) return [...action.user.cart.cartItems]
+      return state
     default:
       return state;
   }

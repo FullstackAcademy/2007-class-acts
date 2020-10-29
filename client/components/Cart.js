@@ -5,11 +5,48 @@ import { getArtworks } from '../redux/artworks';
 import { changeCartItem, removeCartItem } from '../redux/cart'
 
 export class Cart extends Component {
+  constructor() {
+    super()
+    this.state = {
+      loading: true
+    }
+    this.quantitySelect = this.quantitySelect.bind(this)
+    this.changeQuantity = this.changeQuantity.bind(this)
+    this.removeItem = this.removeItem.bind(this)
+  }
+
+  //this has to be async/await so that the artworks are loaded
+  async componentDidMount(){
+    if(this.props.artworks.length === 0) await this.props.getArtworks();
+    this.setState({...this.state, loading: false})
+  }
+
+  //build quantity select options based on max quantity of each artwork in the cart
+  quantitySelect(art){
+    const quantitySelection = []
+    for (let i = 1; i <= art.quantity; i++) {
+      quantitySelection.push(<option key={i} value={i}>{i}</option>)
+    }
+    return quantitySelection
+  }
+
+  changeQuantity(qty, cartItem){
+    let isLoggedIn = false
+    if(this.props.user.id) isLoggedIn = true
+    this.props.changeCartItem({...cartItem, quantity: +qty}, isLoggedIn)
+  }
+
+  removeItem(cartItem){
+    let isLoggedIn = false
+    if(this.props.user.id) isLoggedIn = true
+    this.props.removeCartItem(cartItem, isLoggedIn)
+  }
+
   render() {
     const {artworks, cart} = this.props
-    //if you go directly to the cart page, you don't have the artwork, so this is a workaround but we probably need to figure out the right way to do this later.
-    if(artworks.length === 0) {
-      this.props.getArtworks();
+
+    //a beautiful loading message
+    if(this.state.loading) {
       return (<div>Loading</div>)
     }
 
@@ -22,29 +59,7 @@ export class Cart extends Component {
       )
     }
 
-    //build quantity select options based on max quantity of each artwork in the cart
-    const quantitySelect = (art) => {
-      const quantitySelection = []
-      for (let i = 1; i <= art.quantity; i++) {
-        quantitySelection.push(<option key={i} value={i}>{i}</option>)
-      }
-      return quantitySelection
-    }
-
-    const changeQuantity = (qty, cartItem) => {
-      let isLoggedIn = false
-      if(this.props.user.id) isLoggedIn = true
-      this.props.changeCartItem({...cartItem, quantity: +qty}, isLoggedIn)
-    }
-
-    const removeItem = (cartItem) => {
-      let isLoggedIn = false
-      if(this.props.user.id) isLoggedIn = true
-      this.props.removeCartItem(cartItem, isLoggedIn)
-    }
-
-
-    //this is crummy looking but works for viewing the cart for now
+    //this is -moderately- crummy looking but works for viewing the cart for now
     return (
       <div>
         { cart
@@ -65,13 +80,12 @@ export class Cart extends Component {
                 Quantity:
               <select id="qty"
                 defaultValue={cartItem.quantity}
-                onChange={(ev)=>changeQuantity(ev.target.value, cartItem)}
+                onChange={(ev)=>this.changeQuantity(ev.target.value, cartItem)}
               >
-                {quantitySelect(cartItemArtwork)}
+                {this.quantitySelect(cartItemArtwork)}
               </select>
-                {/* { cartItem.quantity } */}
               </h5>
-              <button onClick={()=>removeItem(cartItem)}>Remove from cart</button>
+              <button onClick={()=>this.removeItem(cartItem)}>Remove from cart</button>
               <hr />
             </div>
           )
@@ -88,6 +102,7 @@ const mapStateToProps = state => {
     user: state.user
   }
 }
+
 const mapDispatchToProps = dispatch => {
   return {
     getArtworks: () => dispatch(getArtworks()),
@@ -95,4 +110,5 @@ const mapDispatchToProps = dispatch => {
     removeCartItem: (cartItem, isLoggedIn) => dispatch(removeCartItem(cartItem, isLoggedIn))
   }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

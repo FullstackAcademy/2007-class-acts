@@ -10,7 +10,7 @@ export class SingleArtwork extends React.Component {
         this.addQty = this.addQty.bind(this)
     }
 
-    async addQty(){
+    addQty(){
         const quantity = +document.getElementById('qty').value
         const artworkId = this.props.artwork.id
         const cartItem = { artworkId, quantity }
