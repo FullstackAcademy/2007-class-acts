@@ -39,7 +39,6 @@ export class AllArtwork extends Component {
     });
   }
 
-  // Not sure how to remove the first await in this function. State needs to be reset before the rest of the filters can be assessed.
   changeFilter(ev) {
     const name = ev.target.name;
     const value = ev.target.value === 'DEFAULT' ? '' : ev.target.value;
@@ -117,7 +116,7 @@ export class AllArtwork extends Component {
     return(
       <div>
         <div className="top-section">
-          <ArtFilters artworks={ artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } /*getArtPerGenre={ getArtPerGenre } */ />
+          <ArtFilters artworks={ artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
           <div className="side-bar">
             <input type="text" placeholder="SEARCH COLLECTION" onKeyDown={ search } />
             <button type="text" onClick={ reset }>CLEAR FILTERS</button>
