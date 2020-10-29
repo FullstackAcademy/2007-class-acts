@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ARTWORKS, ADD_ARTWORK } from './actionConstants';
+import { GET_ARTWORKS, ADD_ARTWORK, EDIT_ARTWORK } from './actionConstants';
 
 // ACTION CREATORS
 export const _getArtworks = artworks => {
@@ -22,7 +22,9 @@ export default function artworksReducer(state = [], action) {
     case GET_ARTWORKS:
       return action.artworks;
     case ADD_ARTWORK:
-      return [action.artwork, ...state]
+      return [action.artwork, ...state];
+    case EDIT_ARTWORK:
+      return state.map(art => art.id === action.artwork.id ? action.artwork : art)
     default:
       return state;
   }

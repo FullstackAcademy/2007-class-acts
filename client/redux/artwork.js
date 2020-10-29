@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_ARTWORK, ADD_ARTWORK } from './actionConstants';
+import { GET_ARTWORK, ADD_ARTWORK, EDIT_ARTWORK } from './actionConstants';
 
 export const _getArtwork = artwork => {
   return {
@@ -11,6 +11,13 @@ export const _getArtwork = artwork => {
 const _addArtwork = (artwork) => {
   return {
     type: ADD_ARTWORK,
+    artwork
+  }
+}
+
+const _editArtwork = (artwork) => {
+  return {
+    type: EDIT_ARTWORK,
     artwork
   }
 }
@@ -37,11 +44,24 @@ export const addArtwork = (artwork) => {
   }
 }
 
+export const editArtwork = (artwork) => {
+  return async (dispatch) => {
+    try {
+      const editedArtwork = await axios.put(`/api/artworks/${artwork.id}`, artwork)
+      dispatch(_editArtwork(editedArtwork.data))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
 export default function artworkReducer(state = {}, action) {
   switch (action.type) {
     case GET_ARTWORK:
       return action.artwork
     case ADD_ARTWORK:
+      return action.artwork
+    case EDIT_ARTWORK:
       return action.artwork
     default:
       return state

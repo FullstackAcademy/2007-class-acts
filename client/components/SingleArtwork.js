@@ -10,6 +10,7 @@ export class SingleArtwork extends React.Component {
 
   render() {
     console.log('props in render', this.props.artwork)
+    const { isAdmin, artwork } = this.props
     return (
       <div>
         <div>
@@ -31,6 +32,7 @@ export class SingleArtwork extends React.Component {
                 </p>
               </div>
               <div style={{ padding: '1rem' }}>
+                {!!isAdmin && <Link to={`/admin/artworks/edit/${artwork.id}`}>Edit</Link>}
                 <h2>{this.props.artwork.title}</h2>
                 <p>{`By ${this.props.artwork.artist ? this.props.artwork.artist.name : 'Unknown'}`}</p>
                 <p>{`$${this.props.artwork.price}`}</p>
@@ -54,8 +56,10 @@ export class SingleArtwork extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const { isAdmin } = state.user
   return {
     artwork: state.artwork,
+    isAdmin
   }
 }
 

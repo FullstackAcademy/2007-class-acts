@@ -8,7 +8,6 @@ class ArtworkForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isEditing: false,
       redirect: false,
       title: '',
       description: '',
@@ -24,6 +23,13 @@ class ArtworkForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  componentDidMount() {
+    if (this.props.isEditing) {
+      const { title, description, year, price, quantity, medium, artistId } = this.props.artwork
+      this.setState({title, description, year, price, quantity, medium, artistId})
+    }
+  }
+
   handleChange(ev) {
     const { target: { name, value } } = ev
     this.setState({ [name]: value })
@@ -36,7 +42,7 @@ class ArtworkForm extends Component {
 
   handleSubmit(ev) {
     ev.preventDefault()
-    if (this.state.isEditing) {
+    if (this.props.isEditing) {
       //do stuff
     } else {
       try {
@@ -58,12 +64,17 @@ class ArtworkForm extends Component {
   */
   render() {
     const { title, description, year, price, quantity, redirect, medium, artistId  } = this.state
-    const { artwork, artists, genres } = this.props
+    const { isEditing, artwork, artists, genres } = this.props
     return redirect ?
       <Redirect to='/' />
       : (
       <div className="form-container">
-        <h2>Add New Art to Collection</h2>
+        <h2>{isEditing ? `Edit ${artwork.title}` : 'Add New Art to Collection'}</h2>
+          {!!isEditing && <img src={this.props.artwork.shopImages.length
+            ? this.props.artwork.shopImages[0].imageURL
+            : '/img/default.jpg'} />
+          }
+
         <form id="artwork-form" onSubmit={this.handleSubmit}>
           <label htmlFor="title">Title</label>
           <input name="title" type="text" value={title} required onChange={this.handleChange} />
