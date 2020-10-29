@@ -1,11 +1,25 @@
 import axios from 'axios';
-import { ADD_CART_ITEM, SET_CART_ITEMS, ADD_MULTIPLE_CART_ITEMS } from './actionConstants';
-import { addLocalCartItem } from '../localCart/'
+import { ADD_CART_ITEM, SET_CART_ITEMS, ADD_MULTIPLE_CART_ITEMS, CHANGE_CART_ITEM, REMOVE_CART_ITEM } from './actionConstants';
+import { addLocalCartItem, changeLocalCartItem, removeLocalCartItem } from '../localCart/'
 
 // ACTION CREATORS
 export const _addCartItem = cartItem => {
   return {
     type: ADD_CART_ITEM,
+    cartItem
+  }
+};
+
+export const _changeCartItem = cartItem => {
+  return {
+    type: CHANGE_CART_ITEM,
+    cartItem
+  }
+};
+
+export const _removeCartItem = cartItem => {
+  return {
+    type: REMOVE_CART_ITEM,
     cartItem
   }
 };
@@ -39,6 +53,36 @@ export const addCartItem = (cartItem, isLoggedIn = false) => {
   }
 };
 
+export const changeCartItem = (cartItem, isLoggedIn = false) => {
+  return async (dispatch) => {
+    let updatedCartItem
+    //do two different things depending on whether user is loggedIn
+    //if logged in, send to the DB, which will return the updated cartItem
+    if(isLoggedIn) updatedCartItem = (await axios.put('/api/cart/item', cartItem)).data;
+    //if not logged in, write to localStorage
+    else updatedCartItem = changeLocalCartItem(cartItem)
+    //note that the returned cart item will have the correct new qty
+    dispatch(_changeCartItem(updatedCartItem));
+  }
+};
+
+export const removeCartItem = (cartItem, isLoggedIn = false) => {
+  return async (dispatch) => {
+    let numDeleted
+    //do two different things depending on whether user is loggedIn
+    //if logged in, send to the DB,
+    //which will **NOT** return the deleted cartItem, so we
+    //have to dispatch the original cart item if we succeed in deleting
+    if(isLoggedIn) numDeleted = (await axios.delete('/api/cart/item', cartItem)).data;
+    //if not logged in, write to localStorage
+    else numDeleted = removeLocalCartItem(cartItem)
+    //if the cart item was deleted, you should get back the number of rows
+    //deleted from the table from sequelize (or localstorage), which should be 1
+    //then dispatch the original cart item for the reducer
+    if(numDeleted === 1) dispatch(_removeCartItem(cartItem));
+  }
+};
+
 export const addMultipleCartItems = (cartItems) => {
   return async (dispatch) => {
     //if you log in and have multiple cart items, this sends all at once so that only one cartID is associated with each cartItem
@@ -57,6 +101,11 @@ export default function cartReducer(state = [], action) {
   switch (action.type) {
     case ADD_CART_ITEM:
       return [...state.filter(item => item.artworkId !== action.cartItem.artworkId), action.cartItem];
+    //this duplicates the ADD_CART_ITEM action, but I think that's ok bc it's clearer
+    case CHANGE_CART_ITEM:
+      return [...state.filter(item => item.artworkId !== action.cartItem.artworkId), action.cartItem];
+    case REMOVE_CART_ITEM:
+      return [...state.filter(item => item.artworkId !== action.cartItem.artworkId)];
     case ADD_MULTIPLE_CART_ITEMS:
       return [...state.filter(item => !action.cartItems
         .map(item => item.artworkId)

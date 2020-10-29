@@ -14,6 +14,30 @@ export const addLocalCartItem = (cartItem) => {
   return(cartItem)
 }
 
+export const changeLocalCartItem = (cartItem) => {
+  const existingArtwork = localCart.find(item => item.artworkId === cartItem.artworkId)
+  if(existingArtwork) {
+    //remove the old item from the localCart
+    localCart = localCart.filter(item => item.artworkId !== cartItem.artworkId)
+  }
+  //put the new one in
+  localCart.push(cartItem)
+  localStorage.setItem('graceShopper', JSON.stringify(localCart))
+  return(cartItem)
+}
+
+export const removeLocalCartItem = (cartItem) => {
+  const existingArtwork = localCart.find(item => item.artworkId === cartItem.artworkId)
+  if(existingArtwork) {
+    //remove the old item from the localCart
+    localCart = localCart.filter(item => item.artworkId !== cartItem.artworkId)
+  }
+  //don't put nuthin in
+  localStorage.setItem('graceShopper', JSON.stringify(localCart))
+  //return 1 to match the DB output
+  return(1)
+}
+
 export const clearLocalCart = () => {
   localCart = []
   localStorage.setItem('graceShopper', JSON.stringify(localCart))
