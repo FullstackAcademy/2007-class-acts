@@ -1,4 +1,4 @@
-const { Artwork, Artist, ShopImage, Genre, syncDB } = require('./server/db')
+const { Artwork, Artist, ShopImage, Genre, User, syncDB } = require('./server/db')
 
 const artworkData = [[`A Bigger Splash`,`Painted in California between April and June 1967, and measuring 242.5 centimetres (95.5 in) by 243.9 centimetres (96.0 in), this painting depicts a swimming pool beside a modern house, disturbed by a large splash of water created by an unseen figure who has apparently just jumped in from a diving board.`,1967,`Graphic Art`,29.99,7],
 [`Unique Forms of Continuity in Space`,`Unique Forms of Continuity in Space (Italian: Forme uniche della continuità nello spazio) is a 1913 bronze Futurist sculpture by Umberto Boccioni. It is seen as an expression of movement and fluidity. The sculpture is depicted on the obverse of the Italian-issue 20 cent euro coin.`,1913,`Sculpture`,74.99,3],
@@ -183,6 +183,27 @@ const artistAssociations = [
   [30,[15]]
 ]
 
+const users = [{"id":"23dfd934-edbb-4406-8f20-23039f32317f","name":"Manon Downton","email":"mdownton0@yale.edu","password":"ltZOqR3","isAdmin":true},
+{"id":"87a735a4-78dd-40e6-aaad-d69f75cb8460","name":"Tadeo Drezzer","email":"tdrezzer1@dyndns.org","password":"aBkre1","isAdmin":true},
+{"id":"44445c7d-2131-4d66-b89b-cac2192bb922","name":"Nikos Knowling","email":"nknowling2@nationalgeographic.com","password":"t394qP6EhR7","isAdmin":false},
+{"id":"a4b145ba-a84d-44bb-8caf-81355a1e0402","name":"Gigi Yielding","email":"gyielding3@oakley.com","password":"5yhtE6","isAdmin":true},
+{"id":"40c2d892-be64-4da7-91bb-fd4ee8dc3344","name":"Kirk Leall","email":"kleall4@berkeley.edu","password":"I1NWwgXSlQzC","isAdmin":false},
+{"id":"b78c911a-5bff-4a78-8df0-3cd52449a63e","name":"Eddie Roberts","email":"eroberts5@webmd.com","password":"pQVwsyRQJ","isAdmin":true},
+{"id":"75c5c3e2-3cf4-4a82-b861-239a16492f69","name":"Larry Dailly","email":"ldailly6@sakura.ne.jp","password":"cQ55vQgoiRR","isAdmin":false},
+{"id":"37fb3b0c-137b-4000-b5a6-9bc625999a20","name":"Nickolas Roffe","email":"nroffe7@csmonitor.com","password":"CvLIGuHvhPhB","isAdmin":true},
+{"id":"c48e642f-cfd4-40ce-bb21-b3cdfd346490","name":"Hamel Ghiraldi","email":"hghiraldi8@jigsy.com","password":"YPAnRdO2","isAdmin":false},
+{"id":"d6d78331-d7a8-4442-8e26-d620ec08b08a","name":"Dagny Pitney","email":"dpitney9@patch.com","password":"lM1AYmf","isAdmin":true},
+{"id":"0ab8ff5c-3d53-45d6-866f-6b3d33dec260","name":"Dale Marusic","email":"dmarusica@amazon.co.jp","password":"RWGZzfly","isAdmin":false},
+{"id":"fa255a4e-2117-4476-a7c4-4cb7c0692ddc","name":"Shelli Cordet","email":"scordetb@com.com","password":"iOFEdtk","isAdmin":false},
+{"id":"610b2859-06c2-40c5-ba49-9c40a93ff2a9","name":"Raquel Rainford","email":"rrainfordc@nps.gov","password":"FA9zpD4NUVL","isAdmin":true},
+{"id":"a889eda3-e2cd-4138-85d4-fb6e662dee1e","name":"Luella Gabbott","email":"lgabbottd@ovh.net","password":"1ph0zQV","isAdmin":false},
+{"id":"819899ff-d0c3-4ddf-bed8-1540daeb0180","name":"Ole Chavey","email":"ochaveye@sfgate.com","password":"AkcapXJOsR","isAdmin":false},
+{"id":"f9fbad89-d819-437b-8508-a467b6725f61","name":"Aline Quantick","email":"aquantickf@imageshack.us","password":"wFSUlV7x","isAdmin":true},
+{"id":"06578443-b0b2-4831-938a-49cf1c42f96a","name":"Ardelia Andrews","email":"aandrewsg@usgs.gov","password":"wmOofbGBUSHY","isAdmin":true},
+{"id":"a11b980b-9708-4238-b649-c3561d3fcdd5","name":"Jase Chippindale","email":"jchippindaleh@macromedia.com","password":"VoaGQT","isAdmin":false},
+{"id":"0a63010f-1746-4314-b04c-a0cb20413b4e","name":"Carmelita Yeoman","email":"cyeomani@biblegateway.com","password":"iQPUAdBIJcD","isAdmin":false},
+{"id":"8b51fb44-9d39-478c-8982-83434e4f9cea","name":"Ferguson Dentith","email":"fdentithj@webeden.co.uk","password":"7waTpgPv","isAdmin":false}]
+
 const seed = async () => {
 
   //first sync the DB
@@ -242,7 +263,7 @@ const seed = async () => {
 
   //this sets the artist for each artwork according to the association array above
 
-  await Promise.all(artworks.map((artwork, ix) => {
+  await (artworks.map((artwork, ix) => {
     const artistIndex = artworkAssociations[ix][1] - 1
     const artist = artists[artistIndex]
     artwork.setArtist(artist)
@@ -268,6 +289,15 @@ const seed = async () => {
     })
   }).flat())
 
+   await Promise.all(users.map(u => {
+      const user =  {
+      name: u.name,
+      email: u.email,
+      password: u.password,
+      isAdmin: u.isAdmin
+    }
+    return User.create(user);
+  }))
 }
 
 seed()
