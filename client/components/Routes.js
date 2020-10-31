@@ -9,12 +9,9 @@ import LoginScreen from './LoginScreen'
 import NewUser from './NewUser'
 import Navbar from './Navbar'
 import Account from './Account'
-<<<<<<< HEAD
 import AdminRoutes from './AdminRoutes'
-=======
 import Users from './Users'
 import Cart from './Cart'
->>>>>>> dev
 
 const Routes = () => {
   return (

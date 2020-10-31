@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 const { Artwork, Artist, ShopImage, Genre, User, Order, OrderItem, syncDB } = require('./server/db')
-=======
-const { Artwork, Artist, ShopImage, Genre, User, syncDB } = require('./server/db')
->>>>>>> dev
 
 const artworkData = [[`A Bigger Splash`,`Painted in California between April and June 1967, and measuring 242.5 centimetres (95.5 in) by 243.9 centimetres (96.0 in), this painting depicts a swimming pool beside a modern house, disturbed by a large splash of water created by an unseen figure who has apparently just jumped in from a diving board.`,1967,`Graphic Art`,29.99,7],
 [`Unique Forms of Continuity in Space`,`Unique Forms of Continuity in Space (Italian: Forme uniche della continuità nello spazio) is a 1913 bronze Futurist sculpture by Umberto Boccioni. It is seen as an expression of movement and fluidity. The sculpture is depicted on the obverse of the Italian-issue 20 cent euro coin.`,1913,`Sculpture`,74.99,3],
