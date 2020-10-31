@@ -3,7 +3,8 @@ import axios from 'axios'
 import {Link, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUser }from '../redux/user'
-
+import { addMultipleCartItems } from '../redux/cart'
+import { localCart, clearLocalCart } from '../localCart/'
 
 class NewUser extends Component {
   constructor() {
@@ -23,10 +24,13 @@ class NewUser extends Component {
       const res = await axios.post('/api/users', { ...this.state })
       const user = res.data
       this.props.setUser(user)
+      //if there are items in the localCart, put in DB
+      if(localCart.length > 0) this.props.addMultipleCartItems(localCart)
+      clearLocalCart();
       this.setState({...this.state, redirect: true})
     } catch(e) {
       //do some error handling
-      console.log(e.response.data.message)
+      console.log(e)
     }
   }
 
@@ -59,6 +63,7 @@ class NewUser extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     setUser: (user) => dispatch(setUser(user)),
+    addMultipleCartItems: (cartItems) => dispatch(addMultipleCartItems(cartItems))
   }
 }
 
