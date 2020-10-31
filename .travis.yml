@@ -2,6 +2,8 @@ dist: trusty
 language: node_js
 node_js:
   - '14'
+before_script:
+  - psql -c 'create database graceshopper;' -U postgres
 script:
   - npm run build
   - npm run test
