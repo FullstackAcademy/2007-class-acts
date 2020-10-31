@@ -1,24 +1,24 @@
 import axios from 'axios'
-import { GET_ARTWORK, ADD_ARTWORK, EDIT_ARTWORK } from './actionConstants';
+import { GET_ARTWORK, ADD_ARTWORK, EDIT_ARTWORK } from './actionConstants'
 
-export const _getArtwork = artwork => {
+export const _getArtwork = (artwork) => {
   return {
     type: GET_ARTWORK,
-    artwork
+    artwork,
   }
 }
 
 const _addArtwork = (artwork) => {
   return {
     type: ADD_ARTWORK,
-    artwork
+    artwork,
   }
 }
 
 const _editArtwork = (artwork) => {
   return {
     type: EDIT_ARTWORK,
-    artwork
+    artwork,
   }
 }
 
@@ -31,7 +31,7 @@ export const getArtwork = (id) => {
       console.log(error)
     }
   }
-};
+}
 
 export const addArtwork = (artwork) => {
   return async (dispatch) => {
@@ -62,7 +62,7 @@ export default function artworkReducer(state = {}, action) {
     case ADD_ARTWORK:
       return action.artwork
     case EDIT_ARTWORK:
-      return {...state, ...action.artwork }
+      return { ...state, ...action.artwork }
     default:
       return state
   }

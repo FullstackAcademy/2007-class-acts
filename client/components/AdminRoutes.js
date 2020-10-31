@@ -8,17 +8,25 @@ const AdminRoutes = () => {
   return (
     <div>
       <div className="admin-nav">
-          <NavLink to={`${url}/artworks`} activeClassName="selected-admin-link" >Artwork</NavLink>
-          <NavLink to={`${url}/users`} activeClassName="selected-admin-link" >Users</NavLink>
-          <NavLink to={`${url}/orders`} activeClassName="selected-admin-link" >Orders</NavLink>
+        <NavLink to={`${url}/artworks`} activeClassName="selected-admin-link">
+          Artwork
+        </NavLink>
+        <NavLink to={`${url}/users`} activeClassName="selected-admin-link">
+          Users
+        </NavLink>
+        <NavLink to={`${url}/orders`} activeClassName="selected-admin-link">
+          Orders
+        </NavLink>
       </div>
-        <Switch>
-          <Route path={`${path}/artworks`} exact component={AdminArtList} />
-          <Route path={`${path}/artworks/edit/:id`} exact
-            render={(props) => <ArtworkForm {...props} isEditing={true} />}
-          />
-          <Route path={`${path}/addnew`} exact component={ArtworkForm} />
-        </Switch>
+      <Switch>
+        <Route path={`${path}/artworks`} exact component={AdminArtList} />
+        <Route
+          path={`${path}/artworks/edit/:id`}
+          exact
+          render={(props) => <ArtworkForm {...props} isEditing={true} />}
+        />
+        <Route path={`${path}/addnew`} exact component={ArtworkForm} />
+      </Switch>
     </div>
   )
 }

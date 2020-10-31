@@ -28,7 +28,7 @@ table {
   font-family: 'Barlow', sans-serif;
   max-height: 1rem;
   width: 10rem;
-  margin: 1rem
+  margin: 1rem;
 }
 
 .top-section button {
@@ -93,11 +93,12 @@ table {
   background: #eef0f2;
 }
 
-#login-form input, #login-button {
-  margin: 1em .5em;
-  font-size: .9em;
+#login-form input,
+#login-button {
+  margin: 1em 0.5em;
+  font-size: 0.9em;
   border-radius: 10px;
-  padding: .2em;
+  padding: 0.2em;
 }
 
 #login-form input {
@@ -127,7 +128,7 @@ table {
   justify-content: center;
 }
 
-.admin-nav a{
+.admin-nav a {
   width: 33%;
   padding: 1rem;
   text-align: center;
@@ -135,15 +136,18 @@ table {
   vertical-align: middle;
 }
 
-.admin-nav a, .admin-nav a:visited  {
+.admin-nav a,
+.admin-nav a:visited {
   text-decoration: none;
-  background: #EEF0F2;
-  color: #5E5E5E;
+  background: #eef0f2;
+  color: #5e5e5e;
 }
 
-.admin-nav a:hover, .admin-nav a:active, .selected-admin-link {
-  color: #EEF0F2;
-  background: #66717E;
+.admin-nav a:hover,
+.admin-nav a:active,
+.selected-admin-link {
+  color: #eef0f2;
+  background: #66717e;
 }
 
 /*--- ADMIN SECTION --- */
@@ -156,12 +160,14 @@ table {
 }
 
 #artwork-form * {
-    font-size: 1em;
+  font-size: 1em;
 }
 
-#artwork-form input, #artwork-form button, #artwork-form textarea {
+#artwork-form input,
+#artwork-form button,
+#artwork-form textarea {
   padding: 2px;
-  margin: .5em 0;
+  margin: 0.5em 0;
   border-radius: 7px;
   border: solid 1px;
 }
@@ -199,20 +205,19 @@ table {
   padding-right: 10%;
 }
 
-
 #table {
   text-align: center;
   border-collapse: collapse;
   width: 100%;
 }
 
-#table td, #table th {
+#table td,
+#table th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-
-#table tr:nth-child(even){
+#table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
@@ -241,7 +246,7 @@ table {
   padding: 1rem;
   max-width: 40%;
   min-width: 40%;
-  background-color: rgb(240, 240, 240)
+  background-color: rgb(240, 240, 240);
 }
 
 .singleArtImage {
@@ -256,7 +261,7 @@ table {
 }
 
 .underArt > span > * {
-  margin: .25rem;
+  margin: 0.25rem;
 }
 
 .noQty {

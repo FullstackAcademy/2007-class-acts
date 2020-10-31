@@ -6,11 +6,12 @@ const { validateArt } = require('../utils')
 // GET /api/artworks
 router.get('/', async (req, res, next) => {
   try {
-    const artworks = await Artwork.findAll({include: [Artist, ShopImage, Genre]})
+    const artworks = await Artwork.findAll({
+      include: [Artist, ShopImage, Genre],
+    })
     res.send(artworks)
-  }
-  catch(err) {
-    next(err);
+  } catch (err) {
+    next(err)
   }
 })
 
@@ -19,26 +20,26 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const art = validateArt(req.body)
-    const newArt = await Artwork.create(art, {include: [Artist]});
+    const newArt = await Artwork.create(art, { include: [Artist] })
     if (req.body.artistId) {
       const artist = await Artist.findByPk(req.body.artistId)
       await newArt.setArtist(artist)
     }
-    res.status(201).send(newArt);
-  }
-  catch (err) {
-    next(err);
+    res.status(201).send(newArt)
+  } catch (err) {
+    next(err)
   }
 })
 
 // GET /api/artworks/:artworkId
 router.get('/:artworkId', async (req, res, next) => {
   try {
-    const artwork = await Artwork.findByPk(req.params.artworkId, {include: [Artist, ShopImage]})
+    const artwork = await Artwork.findByPk(req.params.artworkId, {
+      include: [Artist, ShopImage],
+    })
     res.send(artwork)
-  }
-  catch(err) {
-    next(err);
+  } catch (err) {
+    next(err)
   }
 })
 
@@ -47,13 +48,14 @@ router.get('/:artworkId', async (req, res, next) => {
 router.put('/:artworkId', async (req, res, next) => {
   try {
     const art = validateArt(req.body)
-    const artwork = await Artwork.findByPk(req.params.artworkId, {include: [ShopImage]});
-    await artwork.update(art);
-    res.send(artwork);
-  }
-  catch (err) {
+    const artwork = await Artwork.findByPk(req.params.artworkId, {
+      include: [ShopImage],
+    })
+    await artwork.update(art)
+    res.send(artwork)
+  } catch (err) {
     console.log(err)
-    next(err);
+    next(err)
   }
 })
 
@@ -61,12 +63,11 @@ router.put('/:artworkId', async (req, res, next) => {
 // check if user is admin before using this route
 router.delete(':/artworkId', async (req, res, next) => {
   try {
-    const artToDelete = await Artwork.findByPk(req.params.artworkId);
-    await artToDelete.destroy();
-    res.sendStatus(204);
-  }
-  catch(err) {
-    next(err);
+    const artToDelete = await Artwork.findByPk(req.params.artworkId)
+    await artToDelete.destroy()
+    res.sendStatus(204)
+  } catch (err) {
+    next(err)
   }
 })
-module.exports = router;
+module.exports = router

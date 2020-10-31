@@ -16,7 +16,7 @@ class ArtworkForm extends Component {
       quantity: '',
       //genres: [],
       medium: '',
-      artistId: ''
+      artistId: '',
     }
     this.handleChange = this.handleChange.bind(this)
     //this.handleGenreChange = this.handleGenreChange.bind(this)
@@ -28,13 +28,31 @@ class ArtworkForm extends Component {
       this.props.getArtwork(this.props.match.params.id)
     }
     if (this.props.isEditing) {
-      const { title, description, year, price, quantity, medium, artistId } = this.props.artwork
-      this.setState({title, description, year, price, quantity, medium, artistId})
+      const {
+        title,
+        description,
+        year,
+        price,
+        quantity,
+        medium,
+        artistId,
+      } = this.props.artwork
+      this.setState({
+        title,
+        description,
+        year,
+        price,
+        quantity,
+        medium,
+        artistId,
+      })
     }
   }
 
   handleChange(ev) {
-    const { target: { name, value } } = ev
+    const {
+      target: { name, value },
+    } = ev
     this.setState({ [name]: value })
   }
 
@@ -55,7 +73,7 @@ class ArtworkForm extends Component {
         })
         this.props.addArtwork(form)
       }
-      this.setState({redirect: true})
+      this.setState({ redirect: true })
     } catch (err) {
       console.log(err)
     }
@@ -65,43 +83,87 @@ class ArtworkForm extends Component {
     To-do: handle adding genres thru associations.
   */
   render() {
-    const { title, description, year, price, quantity, redirect, medium, artistId  } = this.state
+    const {
+      title,
+      description,
+      year,
+      price,
+      quantity,
+      redirect,
+      medium,
+      artistId,
+    } = this.state
     const { isEditing, artwork, artists, genres } = this.props
-    return redirect ?
+    return redirect ? (
       <Redirect to={isEditing ? `/artworks/${artwork.id}` : '/'} />
-      : (
+    ) : (
       <div className="form-container">
-        <h2>{isEditing ? `Edit ${artwork.title}` : 'Add New Art to Collection'}</h2>
-          {!!isEditing && <img src={this.props.artwork.shopImages.length
-            ? this.props.artwork.shopImages[0].imageURL
-            : '/img/default.jpg'} />
-          }
+        <h2>
+          {' '}
+          {isEditing
+            ? `Edit ${artwork.title}`
+            : 'Add New Art to Collection'}{' '}
+        </h2>
+        {!!isEditing && (
+          <img
+            src={
+              this.props.artwork.shopImages.length
+                ? this.props.artwork.shopImages[0].imageURL
+                : '/img/default.jpg'
+            }
+          />
+        )}
 
         <form id="artwork-form" onSubmit={this.handleSubmit}>
           <label htmlFor="title">Title</label>
-          <input name="title" type="text" value={title} required onChange={this.handleChange} />
+          <input
+            name="title"
+            type="text"
+            value={title}
+            required
+            onChange={this.handleChange}
+          />
 
           <label htmlFor="artistId">Artist</label>
-            <select name="artistId" value={artistId} onChange={this.handleChange}>
+          <select name="artistId" value={artistId} onChange={this.handleChange}>
             <option value="">Other</option>
-            {artists.map(artistOption => {
-              return (<option value={artistOption.id} key={artistOption.id}>{artistOption.name}</option>)
+            {artists.map((artistOption) => {
+              return (
+                <option value={artistOption.id} key={artistOption.id}>
+                  {artistOption.name}
+                </option>
+              )
             })}
           </select>
           {
             //<button type="button">+ New Artist</button>
           }
           <label htmlFor="description"> Description</label>
-          <textarea name="description" value={description} required onChange={this.handleChange} />
+          <textarea
+            name="description"
+            value={description}
+            required
+            onChange={this.handleChange}
+          />
 
           <label htmlFor="year">Year</label>
           <input name="year" value={year} onChange={this.handleChange} />
 
           <label htmlFor="price">Price</label>
-          <input name="price" value={price} required onChange={this.handleChange} />
+          <input
+            name="price"
+            value={price}
+            required
+            onChange={this.handleChange}
+          />
 
           <label htmlFor="quantity">Quantity</label>
-          <input name="quantity" value={quantity} required onChange={this.handleChange} />
+          <input
+            name="quantity"
+            value={quantity}
+            required
+            onChange={this.handleChange}
+          />
 
           {/*<p>Genres</p>
           <div className="genre-list">
@@ -117,11 +179,14 @@ class ArtworkForm extends Component {
 
           <label htmlFor="medium">Medium</label>
           <select name="medium" value={medium} onChange={this.handleChange}>
-            {mediums.map(mediumItem => {
-              return (<option value={mediumItem} key={mediumItem}>{mediumItem}</option>)
+            {mediums.map((mediumItem) => {
+              return (
+                <option value={mediumItem} key={mediumItem}>
+                  {mediumItem}
+                </option>
+              )
             })}
           </select>
-
 
           <button type="submit">Save</button>
         </form>
@@ -134,7 +199,7 @@ const mapState = (state) => {
   return {
     artwork: state.artwork,
     artists: state.artists,
-    genres: state.genres
+    genres: state.genres,
   }
 }
 
@@ -142,7 +207,7 @@ const mapDispatch = (dispatch) => {
   return {
     addArtwork: (artwork) => dispatch(addArtwork(artwork)),
     editArtwork: (id, artwork) => dispatch(editArtwork(id, artwork)),
-    getArtwork: (id) => dispatch(getArtwork(id))
+    getArtwork: (id) => dispatch(getArtwork(id)),
   }
 }
 

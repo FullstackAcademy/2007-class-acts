@@ -7,23 +7,23 @@ router.get('/', async (req, res, next) => {
   try {
     const artists = await Artist.findAll({
       include: [Artwork],
-      order: ['name']
-    });
-    res.send(artists);
-  }
-  catch(err) {
-    next(err);
+      order: ['name'],
+    })
+    res.send(artists)
+  } catch (err) {
+    next(err)
   }
 })
 
 // GET /api/artists/:artistId
 router.get('/:artistId', async (req, res, next) => {
   try {
-    const artist = await Artist.findByPk(req.params.artistId, {include: [Artwork]})
+    const artist = await Artist.findByPk(req.params.artistId, {
+      include: [Artwork],
+    })
     res.send(artist)
-  }
-  catch(err) {
-    next(err);
+  } catch (err) {
+    next(err)
   }
 })
 
@@ -33,9 +33,8 @@ router.put('/:artistId', async (req, res, next) => {
     const artist = await Artist.findByPk(req.params.artistId)
     await artist.update(req.body)
     res.send(artist)
-  }
-  catch(err) {
-    next(err);
+  } catch (err) {
+    next(err)
   }
 })
 

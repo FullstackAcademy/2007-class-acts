@@ -1,6 +1,15 @@
-const mediums = ['Graphic Art','Sculpture', 'Installation', 'Performance Art']
+const mediums = ['Graphic Art', 'Sculpture', 'Installation', 'Performance Art']
 const orderStatuses = ['Created', 'Processing', 'Cancelled', 'Completed']
-const artProperties = ['title', 'id', 'description', 'year', 'medium', 'price', 'quantity', 'artistId']
+const artProperties = [
+  'title',
+  'id',
+  'description',
+  'year',
+  'medium',
+  'price',
+  'quantity',
+  'artistId',
+]
 
 const minRating = 0
 
@@ -20,5 +29,5 @@ module.exports = {
   maxRating,
   minReviewLength,
   maxReviewLength,
-  defaultImagePath
+  defaultImagePath,
 }

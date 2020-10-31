@@ -8,12 +8,11 @@ router.get('/', async (req, res, next) => {
     // TODO: shouldn't have to include Artwork
     const genres = await Genre.findAll({
       include: [Artwork],
-      order: ['name']
-    });
-    res.send(genres);
-  }
-  catch(err) {
-    next(err);
+      order: ['name'],
+    })
+    res.send(genres)
+  } catch (err) {
+    next(err)
   }
 })
 
@@ -24,9 +23,8 @@ router.get('/:genreId', async (req, res, next) => {
       // include: [Artwork]
     })
     res.send(genre)
-  }
-  catch(err) {
-    next(err);
+  } catch (err) {
+    next(err)
   }
 })
 
