@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 
 const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
 
+// GET /api/users/:sessionId
 router.get('/:sessionId', async (req, res, next) => {
   try {
     const session = await Session.findByPk(req.params.sessionId, {
@@ -29,6 +30,7 @@ router.get('/:sessionId', async (req, res, next) => {
   }
 })
 
+// DELETE /api/users/:sessionId
 router.delete('/:sessionId', async (req, res, next) => {
   try {
     await Session.destroy({
@@ -42,6 +44,7 @@ router.delete('/:sessionId', async (req, res, next) => {
   }
 })
 
+// POST /api/users/
 router.post('/', async (req, res) => {
   const { email, password } = req.body;
   const hashedPW = await bcrypt.hash(password, 10)
@@ -69,6 +72,7 @@ router.post('/', async (req, res) => {
   }
 })
 
+// POST /api/users/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 

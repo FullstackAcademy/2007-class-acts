@@ -5,12 +5,13 @@ const auth = require('./middleware/auth');
 
 const app = express();
 
-// INSERT APP.USE STUFF HERE
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname, './public')))
+
 app.use(cookieParser())
 app.use(auth);
+
 
 app.use('/api', require('./api'))
 
