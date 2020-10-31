@@ -19,7 +19,7 @@ const ArtworkGrid = ({ artworks }) => {
                 <div className="art-description">
                   <p className="artwork-title">{ artwork.title }</p>
                   <p>{ artwork.artist ? artwork.artist.name : 'Unknown'}</p>
-                  <p>${ artwork.price }</p>
+                  <p>${ artwork.price.toFixed(2) }</p>
                 </div>
               </div>
             )
