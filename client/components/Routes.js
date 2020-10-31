@@ -9,9 +9,12 @@ import LoginScreen from './LoginScreen'
 import NewUser from './NewUser'
 import Navbar from './Navbar'
 import Account from './Account'
-import AdminRoutes from './AdminRoutes'
 import Users from './Users'
 import Cart from './Cart'
+import ArtistForm from './ArtistForm'
+import ArtworkForm from './ArtworkForm'
+import ArtistList from './ArtistList'
+
 
 const Routes = () => {
   return (
@@ -24,8 +27,15 @@ const Routes = () => {
           <Route exact path="/login" component={LoginScreen} />
           <Route exact path="/newuser" component={NewUser} />
           <Route exact path="/account" component={Account} />
-          <Route path="/admin" component={AdminRoutes} />
-          <Route exact path="/users" component={Users} />
+          <Route exact path="/admin/users" component={Users} />
+          <Route exact path='/admin/newartist' component={ArtistForm} />
+          <Route exact path='/admin/artists' component={ArtistList} />
+          <Route
+            exact path='/admin/artworks/edit/:id'
+            render={(props) => <ArtworkForm {...props} isEditing={true} />}
+          />
+          <Route exact path='/admin/addnew' component={ArtworkForm} />
+          <Route exact path='/admin/users' component={Users} />
           <Route exact path="/cart" component={Cart} />
         </Switch>
       </div>

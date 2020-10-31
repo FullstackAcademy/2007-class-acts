@@ -97,99 +97,99 @@ class ArtworkForm extends Component {
     return redirect ? (
       <Redirect to={isEditing ? `/artworks/${artwork.id}` : '/'} />
     ) : (
-      <div className="form-container">
+      <div>
         <h2>
-          {' '}
           {isEditing
             ? `Edit ${artwork.title}`
-            : 'Add New Art to Collection'}{' '}
-        </h2>
-        {!!isEditing && (
-          <img
-            src={
-              this.props.artwork.shopImages.length
-                ? this.props.artwork.shopImages[0].imageURL
-                : '/img/default.jpg'
-            }
-          />
-        )}
+            : 'Add New Art to Collection'}
+          </h2>
+          <div className="edit-container">
+            {!!isEditing && (
+              <div className="form-img-container">
+                <img className="singleArtImage" src={
+                  this.props.artwork.shopImages.length
+                    ? this.props.artwork.shopImages[0].imageURL
+                    : '/img/default.jpg'
+                } />
+              </div>
+            )}
+          <div className={isEditing ? "form-container" : "full-form"}>
+            <form id="artwork-form" onSubmit={this.handleSubmit}>
+              <label htmlFor="title">Title</label>
+              <input
+                name="title"
+                type="text"
+                value={title}
+                required
+                onChange={this.handleChange}/>
 
-        <form id="artwork-form" onSubmit={this.handleSubmit}>
-          <label htmlFor="title">Title</label>
-          <input
-            name="title"
-            type="text"
-            value={title}
-            required
-            onChange={this.handleChange}
-          />
+              <label htmlFor="artistId">Artist</label>
+              <select name="artistId" value={artistId} onChange={this.handleChange}>
+                <option value="">Other</option>
+                {artists.map((artistOption) => {
+                  return (
+                    <option value={artistOption.id} key={artistOption.id}>
+                      {artistOption.name}
+                    </option>
+                  )
+                })}
+              </select>
+                {//<button type="button">+ New Artist</button>
+                }
+              <label htmlFor="description"> Description</label>
+              <textarea
+                name="description"
+                value={description}
+                required
+                onChange={this.handleChange}
+              />
 
-          <label htmlFor="artistId">Artist</label>
-          <select name="artistId" value={artistId} onChange={this.handleChange}>
-            <option value="">Other</option>
-            {artists.map((artistOption) => {
-              return (
-                <option value={artistOption.id} key={artistOption.id}>
-                  {artistOption.name}
-                </option>
-              )
-            })}
-          </select>
-          {
-            //<button type="button">+ New Artist</button>
-          }
-          <label htmlFor="description"> Description</label>
-          <textarea
-            name="description"
-            value={description}
-            required
-            onChange={this.handleChange}
-          />
+              <label htmlFor="year">Year</label>
+              <input name="year" value={year} onChange={this.handleChange} />
 
-          <label htmlFor="year">Year</label>
-          <input name="year" value={year} onChange={this.handleChange} />
+              <label htmlFor="price">Price</label>
+              <input
+                name="price"
+                value={price}
+                required
+                onChange={this.handleChange}
+              />
 
-          <label htmlFor="price">Price</label>
-          <input
-            name="price"
-            value={price}
-            required
-            onChange={this.handleChange}
-          />
+              <label htmlFor="quantity">Quantity</label>
+              <input
+                name="quantity"
+                value={quantity}
+                required
+                onChange={this.handleChange}
+              />
 
-          <label htmlFor="quantity">Quantity</label>
-          <input
-            name="quantity"
-            value={quantity}
-            required
-            onChange={this.handleChange}
-          />
+              {/*<p>Genres</p>
+              <div className="genre-list">
+                {genres.map(genre => {
+                  return (
+                    <div className="genre-item" key={genre.id}>
+                      <input type="checkbox" name="genres" value={genre.id} onChange={this.handleGenreChange}/>
+                      <label htmlFor="genres">{genre.name}</label>
+                    </div>
+                  )
+                })}
+              </div>*/}
 
-          {/*<p>Genres</p>
-          <div className="genre-list">
-            {genres.map(genre => {
-              return (
-                <div className="genre-item" key={genre.id}>
-                  <input type="checkbox" name="genres" value={genre.id} onChange={this.handleGenreChange}/>
-                  <label htmlFor="genres">{genre.name}</label>
-                </div>
-              )
-            })}
-          </div>*/}
+              <label htmlFor="medium">Medium</label>
+              <select name="medium" value={medium} onChange={this.handleChange}>
+                {mediums.map((mediumItem) => {
+                  return (
+                    <option value={mediumItem} key={mediumItem}>
+                      {mediumItem}
+                    </option>
+                  )
+                })}
+              </select>
 
-          <label htmlFor="medium">Medium</label>
-          <select name="medium" value={medium} onChange={this.handleChange}>
-            {mediums.map((mediumItem) => {
-              return (
-                <option value={mediumItem} key={mediumItem}>
-                  {mediumItem}
-                </option>
-              )
-            })}
-          </select>
-
-          <button type="submit">Save</button>
-        </form>
+              <button type="submit">Save</button>
+            </form>
+          </div>
+        </div>
       </div>
     )
   }

@@ -123,6 +123,7 @@ table {
 /*--- ADMIN NAV BAR --- */
 .admin-nav {
   margin: 0;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,7 +151,7 @@ table {
   background: #66717e;
 }
 
-/*--- ADMIN SECTION --- */
+/*--- ADMIN: EDIT/ADD ART SECTION --- */
 
 #artwork-form {
   display: flex;
@@ -173,10 +174,25 @@ table {
 }
 
 #artwork-form button {
-  width: 30%;
+  width: 100%;
   align-self: center;
   box-shadow: none;
   padding: 3px;
+}
+
+.edit-container {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.form-container, .form-img-container {
+  flex: 1 0;
+}
+
+.full-form {
+  flex: 1 0 70%;
+  display: flex;
+  justify-content: center;
 }
 
 .genre-list {

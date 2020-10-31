@@ -65,11 +65,6 @@ export class Users extends React.Component {
     return (
       <div>
         <h1>Users</h1>
-        <div className="adminNav">
-          <div>Products</div>
-          <div>Users</div>
-          <div>Orders</div>
-        </div>
         <table id="table">
           <thead>
             <tr>

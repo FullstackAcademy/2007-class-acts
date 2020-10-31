@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { getUser } from '../redux/user'
 import { setCartItems } from '../redux/cart'
 import { localCart } from '../localCart/'
+import AdminNavBar from './AdminNavBar'
 
 export class Navbar extends Component {
   render() {
@@ -31,29 +32,26 @@ export class Navbar extends Component {
     }, 0)
 
     return (
-      <nav>
-        <Link to="/" style={{ color: 'white' }}>
-          COLLECTION
-        </Link>
-        <Link to="/cart" style={{ color: 'white' }}>
-          CART ({cartQty})
-        </Link>
-        {isLoggedIn ? (
-          isAdmin ? (
-            <Link to="/admin" style={{ color: 'white' }}>
-              ADMIN
-            </Link>
-          ) : (
-            <Link to="/account" style={{ color: 'white' }}>
-              ACCOUNT
-            </Link>
-          )
-        ) : (
-          <Link to="/login" style={{ color: 'white' }}>
-            LOGIN
+      <div>
+        <nav>
+          <Link to="/" style={{ color: 'white' }}>
+            COLLECTION
           </Link>
-        )}
-      </nav>
+          <Link to="/cart" style={{ color: 'white' }}>
+            CART ({cartQty})
+          </Link>
+          {isLoggedIn ?
+            (<Link to="/account" style={{ color: 'white' }}>
+                ACCOUNT
+              </Link>)
+          :
+            (<Link to="/login" style={{ color: 'white' }}>
+              LOGIN
+            </Link>
+            )}
+        </nav>
+        {isAdmin && <AdminNavBar/>}
+      </div>
     )
   }
 }
