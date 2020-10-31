@@ -11,13 +11,13 @@ const ArtworkGrid = ({ artworks }) => {
               <div className="tile" id={ artwork.id } key= { artwork.id }>
                 {/* TBU: Will add rotating images */}
                 <Link to={`/artworks/${artwork.id}`} >
-                  <img src={artwork.shopImages[0].imageURL } />  
+                  <img src={artwork.shopImages[0].imageURL } />
                 </Link>
-                
+
                 <div className="art-description">
                   <p className="artwork-title">{ artwork.title }</p>
                   <p>{ artwork.artist.name }</p>
-                  <p>${ artwork.price }</p>
+                  <p>${ artwork.price.toFixed(2) }</p>
                 </div>
               </div>
             )

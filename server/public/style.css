@@ -1,7 +1,6 @@
 * {
   font-family: 'Roboto', sans-serif;
 }
-
 /* --- NAV BAR  --- */
 nav {
   background-color: black;
@@ -113,4 +112,42 @@ nav {
 
 #login-form h2 {
   margin: 0;
+}
+
+.singleArtwork {
+  display: flex;
+}
+
+.singleArtImageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 1rem;
+  max-width: 40%;
+  min-width: 40%;
+  background-color: rgb(240, 240, 240)
+}
+
+.singleArtImage {
+  max-width: 100%;
+}
+
+.underArt {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.underArt > span > * {
+  margin: .25rem;
+}
+
+.noQty {
+  color: red;
+}
+
+.singleArtInfo {
+  padding: 1rem;
 }
