@@ -18,12 +18,16 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  try {
-    const data = validateData(req.body, artistProperties)
-    const artist = await Artist.create(data)
-    res.status(201).send(artist)
-  } catch (err) {
-    next(err)
+  if (req.user && req.user.isAdmin) {
+    try {
+      const data = validateData(req.body, artistProperties)
+      const artist = await Artist.create(data)
+      res.status(201).send(artist)
+    } catch (err) {
+      next(err)
+    }
+  } else {
+    res.sendStatus(401)
   }
 })
 
@@ -41,13 +45,17 @@ router.get('/:artistId', async (req, res, next) => {
 
 // PUT /api/artists/:artistsId
 router.put('/:artistId', async (req, res, next) => {
-  try {
-    const data = validateData(req.body, artistProperties)
-    const artist = await Artist.findByPk(req.params.artistId, {include: [Artwork]})
-    await artist.update(data)
-    res.send(artist)
-  } catch (err) {
-    next(err)
+  if (req.user && req.user.isAdmin) {
+    try {
+      const data = validateData(req.body, artistProperties)
+      const artist = await Artist.findByPk(req.params.artistId, {include: [Artwork]})
+      await artist.update(data)
+      res.send(artist)
+    } catch (err) {
+      next(err)
+    }
+  } else {
+    res.sendStatus(401)
   }
 })
 
