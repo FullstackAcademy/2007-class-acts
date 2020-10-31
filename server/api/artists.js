@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { Artist, Artwork } = require('../db')
 
+// GET /api/artists/
 router.get('/', async (req, res, next) => {
   try {
     const artists = await Artist.findAll({
@@ -15,6 +16,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// GET /api/artists/:artistId
 router.get('/:artistId', async (req, res, next) => {
   try {
     const artist = await Artist.findByPk(req.params.artistId, {include: [Artwork]})
@@ -25,6 +27,7 @@ router.get('/:artistId', async (req, res, next) => {
   }
 })
 
+// PUT /api/artists/:artistsId
 router.put('/:artistId', async (req, res, next) => {
   try {
     const artist = await Artist.findByPk(req.params.artistId)

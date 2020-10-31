@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { Genre, Artwork } = require('../db')
 
+// GET /api/genres/
 router.get('/', async (req, res, next) => {
   try {
     const genres = await Genre.findAll({
@@ -15,6 +16,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// GET /api/genres/:genreId
 router.get('/:genreId', async (req, res, next) => {
   try {
     const genre = await Genre.findByPk(req.params.genreId)

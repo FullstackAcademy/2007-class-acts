@@ -1,13 +1,25 @@
 const express = require('express')
 const router = express.Router()
-const { User, Session } = require('../db')
+const { User, Session, Cart, CartItem } = require('../db')
 const bcrypt = require('bcrypt')
 
 const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
 
+// GET /api/users/:sessionId
 router.get('/:sessionId', async (req, res, next) => {
   try {
-    const session = await Session.findByPk(req.params.sessionId, { include: [User] })
+    const session = await Session.findByPk(req.params.sessionId, {
+      //we need to include the cart info w the user on login and on session recognition
+      include: [
+        {
+          model: User,
+          include: [ {
+            model: Cart,
+            include: [CartItem]
+          }]
+        }
+      ]
+    })
     //here and a few other places, it sends back the hashed password with the user object
     //although the hash comparison is done only on the server and it's not like you could unhash what we send, it is probably not best practice
     //maybe easiest solution is to empty out the password before sending? Like this:
@@ -18,6 +30,7 @@ router.get('/:sessionId', async (req, res, next) => {
   }
 })
 
+// DELETE /api/users/:sessionId
 router.delete('/:sessionId', async (req, res, next) => {
   try {
     await Session.destroy({
@@ -31,6 +44,7 @@ router.delete('/:sessionId', async (req, res, next) => {
   }
 })
 
+// POST /api/users/
 router.post('/', async (req, res) => {
   const { email, password } = req.body;
   const hashedPW = await bcrypt.hash(password, 10)
@@ -58,6 +72,7 @@ router.post('/', async (req, res) => {
   }
 })
 
+// POST /api/users/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -71,7 +86,11 @@ router.post('/login', async (req, res) => {
         where: {
           email,
         },
-        include: [Session],
+        //we need to include the cart info w the user on login and on session recognition
+        include: [Session, {
+          model: Cart,
+          include: [CartItem]
+        }],
       });
 
       const comparisonResult = await bcrypt.compare(password, foundUser.password);
