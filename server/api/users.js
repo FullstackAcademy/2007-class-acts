@@ -3,6 +3,7 @@ const router = express.Router()
 const { User, Session } = require('../db')
 const bcrypt = require('bcrypt')
 
+
 const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
 
 // GET /api/users/:sessionId
@@ -32,6 +33,29 @@ router.delete('/:sessionId', async (req, res, next) => {
     next(err)
   }
 })
+
+// Add all users /api/users
+router.get('/', async(req, res, next) => {
+    try {
+        const users = await User.findAll()
+        res.send(users)
+    } catch (err) {
+        next(err)
+    }
+})
+
+// Delte user /api/users/:userID
+router.put('/:id', async(req, res, next) => {
+  try {
+      const user = await User.findByPk(req.params.id)
+      await user.destroy()
+      res.status(204)
+      res.json(user)
+  }
+  catch (error){
+    next(error);
+  }
+});
 
 // POST /api/users/
 router.post('/', async (req, res) => {

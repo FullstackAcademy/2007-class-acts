@@ -290,6 +290,7 @@ const seed = async () => {
   }).flat())
 
    await Promise.all(users.map(u => {
+     console.log(u)
       const user =  {
       name: u.name,
       email: u.email,

@@ -1,7 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux';
-// import { getUsers } from '../redux/';
-import faker from 'faker';
+import { connect } from 'react-redux';
+import  { getUsers }  from '../redux/users';
+import  { destroyUser }  from '../redux/users';
 
 export class Users extends React.Component {
     constructor(props){
@@ -16,28 +16,20 @@ export class Users extends React.Component {
 
     }
 
-    componentDidMount(){
-        // I'll change the code below once we confirm the users data
-        let tempArrOfUsers = []; // Added 10 users from faker as dummy data
-        while(tempArrOfUsers.length < 11){
-            tempArrOfUsers.push(faker.name.firstName())
-        }
-        this.setState({users: tempArrOfUsers})
+    async componentDidMount(){
+        await this.props.getUsers()
+        this.setState({users: this.props.users})
     }
 
-
     async handleDeleteUser(ev) {
-        // Changed the local state. I'll update the store once the users data is confirmed
+        console.log('111', ev.target.value.name)
         if(this.state.adminUsers.includes(ev.target.name)){
             alert('Change admin status before deleting')
         } else {
             console.log(`${ev.target.name} deleted`)
-            const updatedUsers = await this.state.users.filter( u => u !== ev.target.name)
-            this.setState({users: updatedUsers})     
+            const updatedUsers = this.state.users.filter( u => u.name !== ev.target.name)
+            this.setState({users: updatedUsers})
         }
-        //In case I need to use it later 
-            /* let rowNumber = ev.target.value;
-            document.getElementById("table").deleteRow(rowNumber + 1)*/
     }   
 
     handleChecked(ev){
@@ -48,7 +40,7 @@ export class Users extends React.Component {
             console.log(`${ev.target.name} is now admin`);
         }
         else {
-            const updatedAdminUsers = this.state.adminUsers.filter( u => u !== ev.target.name)
+            const updatedAdminUsers = this.state.adminUsers.filter( u => u !== ev.target.value)
             this.setState({adminUsers: updatedAdminUsers});
             console.log(`${ev.target.name} is no longer an admin`)
         }
@@ -60,7 +52,6 @@ export class Users extends React.Component {
     }
 
    render(){
-       let id = 0; // will change id to pk when users data is confirmed
        return (
            <div>
                <h1>Users</h1>
@@ -83,12 +74,20 @@ export class Users extends React.Component {
                     {
                     this.state.users.map(user => {
                         return (
-                            <tr key={++id}>
-                                <td>{user}</td>
-                                <td>{`${user}@email.com`}</td>
+                            <tr key={user.id}>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
                                 <td><button onClick={this.handleResetPassword}>Reset</button></td>
-                                <td><button name={user} value={id} onClick={this.handleDeleteUser}>X</button></td>
-                                <td><input name={user} type="checkbox" onChange={this.handleChecked} /></td>
+                                <td><button name={user.name} value={user.id} onClick={() => {
+                                     if(this.state.adminUsers.includes(user.name)){
+                                         alert('Change admin status before deleting')
+                                     } else {
+                                         console.log(`${user.name} deleted`)
+                                         const updatedUsers = this.state.users.filter( u => u.name !== user.name)
+                                         this.setState({users: updatedUsers})
+                                     }
+                                    this.props.deleteUser(user)}}>X</button></td>
+                                <td><input name={user.name} type="checkbox" onChange={this.handleChecked} /></td>
                             </tr>
                             )}
                         )
@@ -102,13 +101,14 @@ export class Users extends React.Component {
 
 const mapStateToProps  = (state) => {
     return {
-        // users: state.users
+        users: state.users
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // getUsers: () => dispatch(getUsers()), 
+        getUsers: () => dispatch(getUsers()),
+        deleteUser: (user) => dispatch(destroyUser(user))
     }
 }
 
