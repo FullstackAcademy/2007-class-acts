@@ -1,15 +1,13 @@
-const { artProperties } = require('./constants')
-
-const validateArt = (obj) => {
-  const art = {}
+const validateData = (obj, arr) => {
+  const data = {}
   Object.entries(obj).forEach(([key, value]) => {
-    if (artProperties.includes(key)) {
-      art[key] = value
+    if (arr.includes(key)) {
+      data[key] = value
     }
   })
-  return art
+  return data
 }
 
 module.exports = {
-  validateArt,
+  validateData,
 }

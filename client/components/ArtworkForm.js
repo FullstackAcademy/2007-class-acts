@@ -114,7 +114,7 @@ class ArtworkForm extends Component {
               </div>
             )}
           <div className={isEditing ? "form-container" : "full-form"}>
-            <form id="artwork-form" onSubmit={this.handleSubmit}>
+            <form className="artwork-form" onSubmit={this.handleSubmit}>
               <label htmlFor="title">Title</label>
               <input
                 name="title"

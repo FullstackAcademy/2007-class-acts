@@ -1,5 +1,6 @@
 const mediums = ['Graphic Art', 'Sculpture', 'Installation', 'Performance Art']
 const orderStatuses = ['Created', 'Processing', 'Cancelled', 'Completed']
+const artistProperties = ['id', 'name', 'bio', 'nationality']
 const artProperties = [
   'title',
   'id',
@@ -25,6 +26,7 @@ module.exports = {
   mediums,
   orderStatuses,
   artProperties,
+  artistProperties,
   minRating,
   maxRating,
   minReviewLength,

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_ARTISTS, EDIT_ARTIST } from './actionConstants'
+import { GET_ARTISTS, EDIT_ARTIST, CREATE_ARTIST } from './actionConstants'
 
 // ACTION CREATORS
 export const _getArtists = (artists) => {
@@ -23,6 +23,8 @@ export default function artistsReducer(state = [], action) {
       return action.artists
     case EDIT_ARTIST:
       return state.map(artist => artist.id === action.artist.id ? action.artist : artist)
+    case CREATE_ARTIST:
+      return [action.artist, ...state]
     default:
       return state
   }

@@ -31,6 +31,10 @@ const Routes = () => {
           <Route exact path='/admin/newartist' component={ArtistForm} />
           <Route exact path='/admin/artists' component={ArtistList} />
           <Route
+            exact path='/admin/artist/edit/:id'
+            render={(props) => <ArtistForm {...props} isEditing={true} />}
+          />
+          <Route
             exact path='/admin/artworks/edit/:id'
             render={(props) => <ArtworkForm {...props} isEditing={true} />}
           />

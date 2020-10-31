@@ -79,34 +79,42 @@ table {
 .login.container {
   display: flex;
   align-items: center;
-  align-content: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
 #login-form {
   padding: 2em;
   display: flex;
   flex-flow: column nowrap;
-  border-radius: 7%;
-  width: 35%;
+  width: 40%;
   text-align: center;
   align-items: center;
   background: #eef0f2;
+  border-top: solid 1px #e5e6e7;
+  border-left: solid 1px #e5e6e7;
+  border-radius: 11px;
+  box-shadow: 4px 4px 3px #F6F7F8;
 }
 
 #login-form input,
 #login-button {
   margin: 1em 0.5em;
-  font-size: 0.9em;
+  font-size: 1em;
   border-radius: 10px;
-  padding: 0.2em;
+  padding: 9px;
 }
 
 #login-form input {
-  border: 1px solid #93a0af;
+  border: 1px solid #DDDDDD;
 }
 
 #login-form hr {
   width: 75%;
+  border-top: 1px solid #adadad;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
 }
 
 #login-button {
@@ -153,27 +161,32 @@ table {
 
 /*--- ADMIN: EDIT/ADD ART SECTION --- */
 
-#artwork-form {
+.artwork-form {
   display: flex;
   flex-flow: column nowrap;
   width: 60%;
   margin: 0 1em;
+  border-top: solid 1px #eef0f2;
+  border-left: solid 1px #eef0f2;
+  border-radius: 11px;
+  box-shadow: 4px 4px 3px #F6F7F8;
+  padding: 1.3rem;
 }
 
-#artwork-form * {
+.artwork-form * {
   font-size: 1em;
 }
 
-#artwork-form input,
-#artwork-form button,
-#artwork-form textarea {
+.artwork-form input,
+.artwork-form button,
+.artwork-form textarea {
   padding: 2px;
   margin: 0.5em 0;
   border-radius: 7px;
-  border: solid 1px;
+  border: solid 1px #DDDDDD;
 }
 
-#artwork-form button {
+.artwork-form button {
   width: 100%;
   align-self: center;
   box-shadow: none;
@@ -286,4 +299,33 @@ table {
 
 .singleArtInfo {
   padding: 1rem;
+}
+
+/* --- ARTIST LIST --- */
+.artist-grid {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.artist-tile {
+  background: #eef0f2;
+  border-radius: 10px;
+  flex: 1 1 calc(25%);
+  margin: 1rem;
+  padding: .5rem;
+}
+
+.artist-tile a {
+  color: black;
+  text-decoration: none;
+  transition: all .5s;
+}
+
+.artist-tile a:hover {
+  color: #caa305;
+}
+
+.artist-tile h2 {
+  color: #4667b9;
 }

@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const { Artwork, Artist, ShopImage, Genre } = require('../db')
-const { validateArt } = require('../utils')
+const { validateData } = require('../utils')
+const { artProperties } = require('../constants')
 
 // GET /api/artworks
 router.get('/', async (req, res, next) => {
@@ -19,7 +20,7 @@ router.get('/', async (req, res, next) => {
 // check if user is admin user prior to using route
 router.post('/', async (req, res, next) => {
   try {
-    const art = validateArt(req.body)
+    const art = validateData(req.body, artProperties)
     const newArt = await Artwork.create(art, { include: [Artist] })
     if (req.body.artistId) {
       const artist = await Artist.findByPk(req.body.artistId)
@@ -47,7 +48,7 @@ router.get('/:artworkId', async (req, res, next) => {
 // check if user is admin before using this route to change price, etc.
 router.put('/:artworkId', async (req, res, next) => {
   try {
-    const art = validateArt(req.body)
+    const art = validateData(req.body, artProperties)
     const artwork = await Artwork.findByPk(req.params.artworkId, {
       include: [ShopImage],
     })

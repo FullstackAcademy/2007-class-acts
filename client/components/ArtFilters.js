@@ -12,11 +12,13 @@ const ArtFilters = ({ artworks, artists, genres, changeFilter }) => {
         <option value="DEFAULT">ARTIST</option>
         {artists ? (
           artists.map((artist) => {
-            return (
-              <option value={artist.id} key={artist.id}>
-                {artist.name} ({artist.artworks.length})
-              </option>
-            )
+            if (artist.artworks) {
+              return (
+                <option value={artist.id} key={artist.id}>
+                  {artist.name} ({artist.artworks.length})
+                </option>
+              )
+            }
           })
         ) : (
           <option value="N/A">---</option>
