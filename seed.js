@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+const { Artwork, Artist, ShopImage, Genre, User, Order, OrderItem, syncDB } = require('./server/db')
+=======
 const { Artwork, Artist, ShopImage, Genre, User, syncDB } = require('./server/db')
+>>>>>>> dev
 
 const artworkData = [[`A Bigger Splash`,`Painted in California between April and June 1967, and measuring 242.5 centimetres (95.5 in) by 243.9 centimetres (96.0 in), this painting depicts a swimming pool beside a modern house, disturbed by a large splash of water created by an unseen figure who has apparently just jumped in from a diving board.`,1967,`Graphic Art`,29.99,7],
 [`Unique Forms of Continuity in Space`,`Unique Forms of Continuity in Space (Italian: Forme uniche della continuità nello spazio) is a 1913 bronze Futurist sculpture by Umberto Boccioni. It is seen as an expression of movement and fluidity. The sculpture is depicted on the obverse of the Italian-issue 20 cent euro coin.`,1913,`Sculpture`,74.99,3],
@@ -289,6 +293,62 @@ const seed = async () => {
     })
   }).flat())
 
+  const [ zoe, zaina, adam, jamil ] = await Promise.all([
+    User.create({ email: 'zoe@zoe.com'}),
+    User.create({ email: 'zaina@zaina.com'}),
+    User.create({ email: 'adam@adam.com'}),
+    User.create({ email: 'jamil@jamil.com'})
+  ]);
+
+  const today = new Date();
+  const [ order1, order2, order3 ] = await Promise.all([
+    Order.create({
+      date: today,
+      status: 'Created',
+      address: '1234 First St'
+    }),
+    Order.create({
+      date: today,
+      status: 'Processing',
+      address: '567 Second St'
+    }),
+    Order.create({
+      date: today,
+      status: 'Completed',
+      address: '89 Third St'
+    })
+  ]);
+
+  const [ orderItem1, orderItem2, orderItem3, orderItem4 ] = await Promise.all([
+    OrderItem.create({
+      orderedPrice: 100.00,
+      orderedQuantity: 2
+    }),
+    OrderItem.create({
+      orderedPrice: 90.00,
+      orderedQuantity: 1
+    }),
+    OrderItem.create({
+      orderedPrice: 40.00,
+      orderedQuantity: 1
+    }),
+    OrderItem.create({
+      orderedPrice: 1.00,
+      orderedQuantity: 2
+    })
+  ])
+
+  zoe.addOrder(order1);
+  zoe.addOrder(order2);
+  zaina.addOrder(order3);
+  order1.addOrderItem(orderItem1);
+  order1.addOrderItem(orderItem2);
+  order2.addOrderItem(orderItem3);
+  order3.addOrderItem(orderItem4);
+  artworks[0].addOrderItem(orderItem1);
+  artworks[1].addOrderItem(orderItem2);
+  artworks[2].addOrderItem(orderItem3);
+  artworks[3].addOrderItem(orderItem4);
    await Promise.all(users.map(u => {
       const user =  {
       name: u.name,

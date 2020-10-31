@@ -7,8 +7,8 @@ import { addMultipleCartItems } from '../redux/cart'
 import { localCart, clearLocalCart } from '../localCart/'
 
 class NewUser extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       email: '',
       password: '',
