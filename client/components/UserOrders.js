@@ -54,14 +54,18 @@ class UserOrders extends React.Component {
                     </div>
                     <h4>ORDER ITEMS</h4>
                     <div className="order-art">
-                      { artworks.filter(art => orderItemArt.includes(art.id)).map(oi => {
-                        const artLink = `/artworks/${oi.id}`;
-                        return (
-                          <div key={ oi.id }>
-                            <Link to={ artLink }><img className="order-item-img" src={oi.shopImages[0].imageURL} /></Link>
-                          </div>
-                        )
-                      })}
+                      { artworks
+                        .filter(art => orderItemArt.includes(art.id))
+                        .sort((a, b) => a.date - b.date)
+                        .map(oi => {
+                          const artLink = `/artworks/${oi.id}`;
+                          return (
+                            <div key={ oi.id }>
+                              <Link to={ artLink }><img className="order-item-img" src={oi.shopImages[0].imageURL} /></Link>
+                            </div>
+                          )
+                        })
+                      }
                     </div>
                   </div>
                 )
