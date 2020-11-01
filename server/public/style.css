@@ -202,3 +202,25 @@ table {
 .singleArtInfo {
   padding: 1rem;
 }
+
+/* --- ACCOUNT PAGE --- */
+.account {
+  margin: 1rem;
+}
+
+/* --- USER ORDERS --- */
+.order-info {
+  background-color: lightgray;
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-subinfo {
+  align-items: left;
+}
+
+.order-subinfo h4 {
+  font-weight: bolder;
+}
