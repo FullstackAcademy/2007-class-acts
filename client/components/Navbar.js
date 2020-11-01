@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUser } from '../redux/user'
+import { setCartItems } from '../redux/cart'
+import { localCart } from '../localCart/'
 
 export class Navbar extends Component {
 render() {
@@ -14,14 +16,23 @@ render() {
       //if there's a session cookie, get user info, update store, etc.
       const sessionId = document.cookie.split('=')[1]
       if(sessionId) {
-        //redux stuff
+        //set the user if there's a session ID
         this.props.getUser(sessionId)
+      } else {
+        //otherwise set the cart from local Storage if redux cart is empty
+        if(this.props.cart.length === 0 && localCart.length > 0) this.props.setCartItems(localCart)
       }
     }
+
+    const cartQty = this.props.cart.reduce((total,cartItem) => {
+      total += +cartItem.quantity
+      return total
+    }, 0)
+
     return (
       <nav>
         <Link to="/" style={{ color: "white" }}>COLLECTION</Link>
-        <Link to="/cart" style={{ color: "white" }}>CART</Link>
+        <Link to="/cart" style={{ color: "white" }}>CART ({cartQty})</Link>
         { isLoggedIn ?
             isAdmin ?
               <Link to="/account" style={{ color: "white" }}>ADMIN</Link> :
@@ -35,13 +46,15 @@ render() {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    cart: state.cart
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUser: (sessionId) => dispatch(getUser(sessionId))
+    getUser: (sessionId) => dispatch(getUser(sessionId)),
+    setCartItems: (cartItems) => dispatch(setCartItems(cartItems))
   }
 }
 

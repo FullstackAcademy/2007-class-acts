@@ -10,8 +10,8 @@ import ArtworkGrid from './ArtworkGrid';
 import ArtFilters from './ArtFilters';
 
 export class AllArtwork extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       artworks: [],
       artists: '',
@@ -38,44 +38,43 @@ export class AllArtwork extends Component {
     });
   }
 
-  async changeFilter(ev) {
+  changeFilter(ev) {
+    const name = ev.target.name;
     const value = ev.target.value === 'DEFAULT' ? '' : ev.target.value;
-    await this.setState({
-      [ev.target.name]: value,
-      artworks: this.props.artworks
+
+    let filteredArt = this.props.artworks;
+    const artist = name === 'artist' ? value : this.state.artist;
+    const genre = name === 'genre' ? value : this.state.genre;
+    const medium = name === 'medium' ? value : this.state.medium;
+
+    if (artist !== '') {
+      filteredArt = filteredArt.filter(art => art.artist.id === artist);
+    }
+    if (genre !== '') {
+      filteredArt = filteredArt.filter(art => {
+        return art.genres
+          .map(genre => genre.id)
+          .includes(genre)
+      });
+    }
+    if (medium !== '') {
+      filteredArt = filteredArt.filter(art => art.medium === medium);
+    }
+
+    this.setState({
+      name: value,
+      artworks: filteredArt
     });
-    if (this.state.artist !== '') {
-      await this.setState({
-        artworks: this.state.artworks.filter(art => art.artist.id === this.state.artist),
-      });
-    }
-    if (this.state.genre !== '') {
-      await this.setState({
-        artworks: this.state.artworks.filter(art => {
-          return art.genres
-            .map(genre => genre.id)
-            .includes(this.state.genre)
-        })
-      });
-    }
-    if (this.state.medium !== '') {
-      await this.setState({
-        artworks: this.state.artworks.filter(art => art.medium === this.state.medium)
-      });
-    }
   }
 
-  async search(ev) {
+  search(ev) {
     if (ev.key === 'Enter') {
       const searchTerm = ev.target.value;
-      const results = [];
       ev.target.value = '';
-      // restore state to original
-      await this.setState({
-        artworks: this.props.artworks
-      });
+      const results = [];
+
       // loop through all artwork titles, artist names
-      this.state.artworks.forEach(art => {
+      this.props.artworks.forEach(art => {
         if (art.title.toLowerCase().includes(searchTerm)) {
           results.push(art.id);
         }
@@ -83,15 +82,16 @@ export class AllArtwork extends Component {
       this.state.artists.forEach(artist => {
         const name = artist.name.toLowerCase();
         if (name.includes(searchTerm)) {
-          this.state.artworks
+          this.props.artworks
             .filter(art => art.artist.name.toLowerCase() === name)
             .map(art => art.id)
             .forEach(art => results.push(art))
         }
       });
+
       // set state to show matching results only
       this.setState({
-        artworks: this.state.artworks.filter(art => results.includes(art.id))
+        artworks: this.props.artworks.filter(art => results.includes(art.id))
       });
     }
   }
@@ -118,7 +118,7 @@ export class AllArtwork extends Component {
           <ArtFilters artworks={ artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
           <div className="side-bar">
             <input type="text" placeholder="SEARCH COLLECTION" onKeyDown={ search } />
-            <button type="text" onClick={ reset }>CLEAR FILTERS</button>
+            <button type="reset" onClick={ reset }>CLEAR FILTERS</button>
           </div>
         </div>
         <ArtworkGrid artworks={ this.state.artworks } />
