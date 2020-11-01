@@ -1,12 +1,15 @@
 // LIBRARIES
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+// FILES
 import { getArtworks } from '../redux/artworks';
 import { changeCartItem, removeCartItem } from '../redux/cart'
+import Checkout from './Checkout';
 
 export class Cart extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       loading: true
     }
@@ -43,7 +46,7 @@ export class Cart extends Component {
   }
 
   render() {
-    const {artworks, cart} = this.props
+    const { artworks, cart } = this.props;
 
     //a beautiful loading message
     if(this.state.loading) {
@@ -59,37 +62,39 @@ export class Cart extends Component {
       )
     }
 
-    //this is -moderately- crummy looking but works for viewing the cart for now
     return (
-      <div>
-        { cart
-          //added a cart sort so that items would be redrawn in same order when changing quantity
-          .sort((a,b) => b.artworkId > a.artworkId ? -1 : 1)
-          .map(cartItem => {
-          const cartItemArtwork = artworks.find(art => art.id === cartItem.artworkId)
-          const exceedsArtworkQuantity = cartItem.quantity > cartItemArtwork.quantity
-          return (
-            <div key={cartItem.artworkId}>
-              <h4>{ cartItemArtwork.title }</h4>
-              <h5><i>{ cartItemArtwork.artist.name }</i></h5>
-              { exceedsArtworkQuantity ?
-                <h5 className="noQty">You've added more to your cart ({cartItem.quantity}) than is currently in stock! Please choose a revised quantity.</h5>
-               : null
-              }
-              <h5>
-                Quantity:
-              <select id="qty"
-                defaultValue={cartItem.quantity}
-                onChange={(ev)=>this.changeQuantity(ev.target.value, cartItem)}
-              >
-                {this.quantitySelect(cartItemArtwork)}
-              </select>
-              </h5>
-              <button onClick={()=>this.removeItem(cartItem)}>Remove from cart</button>
-              <hr />
-            </div>
-          )
-        })}
+      <div className="all-cart">
+        <div className="cart-items">
+          { cart
+            //added a cart sort so that items would be redrawn in same order when changing quantity
+            .sort((a,b) => b.artworkId > a.artworkId ? -1 : 1)
+            .map(cartItem => {
+              const cartItemArtwork = artworks.find(art => art.id === cartItem.artworkId)
+              const exceedsArtworkQuantity = cartItem.quantity > cartItemArtwork.quantity
+              return (
+                <div key={cartItem.artworkId} className="cart-item">
+                  <h4>{ cartItemArtwork.title }</h4>
+                  <h5><i>{ cartItemArtwork.artist.name }</i></h5>
+                  { exceedsArtworkQuantity ?
+                    <h5 className="noQty">You've added more to your cart ({cartItem.quantity}) than is currently in stock! Please choose a revised quantity.</h5>
+                  : null
+                  }
+                  <h5>
+                    Quantity:
+                  <select id="qty"
+                    defaultValue={cartItem.quantity}
+                    onChange={(ev)=>this.changeQuantity(ev.target.value, cartItem)}
+                  >
+                    {this.quantitySelect(cartItemArtwork)}
+                  </select>
+                  </h5>
+                  <button onClick={()=>this.removeItem(cartItem)}>Remove from cart</button>
+                  <hr />
+                </div>
+              )
+            })}
+        </div>
+        <Checkout cart={ cart } artworks={ artworks } />
       </div>
     )
   }
