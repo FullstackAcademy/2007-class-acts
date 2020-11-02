@@ -79,7 +79,7 @@ router.post('/', async (req, res) => {
       })
     } else {
       res.status(500).send({
-        emErro: null,
+        emError: null,
         pwError: 'Something went horribly wrong.'
       })
     }
