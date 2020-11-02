@@ -1,18 +1,22 @@
+// LIBRARIES
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
+
+// FILES
 import { destroySession } from '../redux/user';
-import { setCartItems } from '../redux/cart'
+import { setCartItems } from '../redux/cart';
+import UserOrders from './UserOrders';
 
 const Account = ({ user, _destroySession, setCartItems }) => {
   const { email, isAdmin } = user
   const sessionId = document.cookie.split('=')[1]
   if(!sessionId) return (<Redirect to="/" />)
   return (
-    <div>
-      <p>User Details</p>
+    <div className="account">
+      <h3>Account Details</h3>
       <p>Email: {email} </p>
-      <p>Admin: {isAdmin ? 'Yep' : 'Nope'} </p>
+      { isAdmin ? <p>Site Admin</p> : <div />}
       <Link to="/" onClick={()=>{
           //give a cookie an expiration date in the past in order to delete it
           document.cookie = 'sessionId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -23,6 +27,9 @@ const Account = ({ user, _destroySession, setCartItems }) => {
           //combined into your cart AGAIN when you log back in.
           setCartItems([])
         }}>Log Out</Link>
+      <p />
+      <hr />
+      <UserOrders user={ user }/>
     </div>
   )
 }
