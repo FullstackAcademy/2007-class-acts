@@ -20,7 +20,7 @@ export const getArtwork = (id) => {
   };
 
 
-export default function artworkReducer( state = [], action) {
+export default function artworkReducer( state = {} , action) {
     if (action.type === GET_ARTWORK){
         state = action.artwork
         return state

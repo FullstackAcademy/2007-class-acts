@@ -68,13 +68,21 @@ router.post('/', async (req, res) => {
       newUser.password = ''
 
       res.status(201).send(newUser)
+    } else {
+      res.sendStatus(400)
     }
   } catch (e) {
-    console.log(e)
-    //do something later to distinguish between existing user and other failure
-    res.status(400).send({
-      message: 'New user creation failed.'
-    })
+    //this checks the type of error coming from sequelize
+    if(e.errors[0].type === 'unique violation') {
+      res.status(400).send({
+        emError: 'This email is already taken.'
+      })
+    } else {
+      res.status(500).send({
+        emErro: null,
+        pwError: 'Something went horribly wrong.'
+      })
+    }
   }
 })
 

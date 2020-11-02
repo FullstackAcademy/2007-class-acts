@@ -18,7 +18,8 @@ export class AllArtwork extends Component {
       genres: '',
       artist: '',
       genre: '',
-      medium: ''
+      medium: '',
+      loading: true
     }
     this.changeFilter = this.changeFilter.bind(this);
     this.search = this.search.bind(this);
@@ -34,7 +35,8 @@ export class AllArtwork extends Component {
     this.setState({
       artworks: this.props.artworks,
       artists: this.props.artists,
-      genres: this.props.genres
+      genres: this.props.genres,
+      loading: false
     });
   }
 
@@ -111,7 +113,8 @@ export class AllArtwork extends Component {
 
   render() {
     const { changeFilter, search, reset } = this;
-    const { artworks, artists, genres } = this.state;
+    const { artworks, artists, genres, loading } = this.state;
+    if(loading) return(<h4>Loading...</h4>)
     return(
       <div>
         <div className="top-section">

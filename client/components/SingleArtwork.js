@@ -7,6 +7,9 @@ import { addCartItem } from '../redux/cart'
 export class SingleArtwork extends React.Component {
     constructor() {
         super()
+        this.state = {
+            loading: true
+        }
         this.addQty = this.addQty.bind(this)
     }
 
@@ -20,11 +23,14 @@ export class SingleArtwork extends React.Component {
         this.props.addCartItem(cartItem, isLoggedIn)
     }
 
-    componentDidMount(){
-        this.props.getArtwork(this.props.match.params.id)
+    async componentDidMount(){
+        await this.props.getArtwork(this.props.match.params.id)
+        this.setState({...this.state, loading: false})
     }
 
     render(){
+        if(!this.state.loading && !this.props.artwork.id) return (<h4 className="noQty">This ain't no artwork. This ain't no disco.</h4>)
+        if(this.state.loading) return (<h5>Loading</h5>)
         const quantitySelection = []
         for (let i = 1; i <= this.props.artwork.quantity; i++) {
             quantitySelection.push(<option key={i} value={i}>{i}</option>)

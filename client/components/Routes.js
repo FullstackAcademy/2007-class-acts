@@ -11,6 +11,7 @@ import Navbar from './Navbar'
 import Account from './Account'
 import Users from './Users'
 import Cart from './Cart'
+import NotFound from './NotFound'
 
 const Routes = () => {
   return (
@@ -25,7 +26,7 @@ const Routes = () => {
           <Route exact path="/account" component={Account} />
           <Route exact path="/users" component={Users} />
           <Route exact path="/cart" component={Cart} />
-
+          <Route component={NotFound} />
         </Switch>
       </div>
     </Router>
