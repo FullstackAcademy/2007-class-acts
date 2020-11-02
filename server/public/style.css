@@ -1,7 +1,6 @@
 * {
   font-family: 'Roboto', sans-serif;
 }
-
 /* --- NAV BAR  --- */
 nav {
   background-color: black;
@@ -10,6 +9,11 @@ nav {
   align-items: center;
   height: 3.5rem;
   font-family: 'Barlow', sans-serif;
+}
+
+table {
+  border-spacing: 10%;
+  border-collapse: separate;
 }
 
 /* --- ALL ARTWORK  --- */
@@ -113,4 +117,123 @@ nav {
 
 #login-form h2 {
   margin: 0;
+}
+
+
+/* --- TABLE USER MANAGEMENT --- */
+.adminNav {
+  background-color: #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 3.5rem;
+  font-family: 'Barlow', sans-serif;
+}
+
+.adminNav div {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+
+#table {
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#table td, #table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+
+#table tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+#table tr:hover {
+  background-color: #ddd;
+}
+
+#table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: black;
+  color: white;
+}
+
+/* --- SINGLE ARTWORK VIEW --- */
+.singleArtwork {
+  display: flex;
+}
+
+.singleArtImageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 1rem;
+  max-width: 40%;
+  min-width: 40%;
+  background-color: rgb(240, 240, 240)
+}
+
+.singleArtImage {
+  max-width: 100%;
+}
+
+.underArt {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.underArt > span > * {
+  margin: .25rem;
+}
+
+.noQty {
+  color: red;
+}
+
+.singleArtInfo {
+  padding: 1rem;
+}
+
+/* --- ACCOUNT PAGE --- */
+.account {
+  margin: 1rem;
+}
+
+/* --- USER ORDERS --- */
+.order-info {
+  background-color: lightgray;
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.order-details {
+  display: flex;
+  justify-content: space-between;
+
+}
+.order-subinfo {
+  align-items: left;
+}
+
+.order-subinfo h4 {
+  font-weight: bolder;
+}
+.order-art {
+  display: flex;
+}
+.order-item-img {
+  max-width: 8rem;
+  padding: 1rem;
+  margin: 0, 1rem, 1rem, 0
 }

@@ -9,6 +9,8 @@ import LoginScreen from './LoginScreen'
 import NewUser from './NewUser'
 import Navbar from './Navbar'
 import Account from './Account'
+import Users from './Users'
+import Cart from './Cart'
 
 const Routes = () => {
   return (
@@ -21,6 +23,9 @@ const Routes = () => {
           <Route exact path="/login" component={LoginScreen} />
           <Route exact path="/newuser" component={NewUser} />
           <Route exact path="/account" component={Account} />
+          <Route exact path="/users" component={Users} />
+          <Route exact path="/cart" component={Cart} />
+
         </Switch>
       </div>
     </Router>
