@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import  { getUsers }  from '../redux/users';
-import  { destroyUser }  from '../redux/users';
+import  { getUsers, destroyUser, updateUsers }  from '../redux/users';
+
 
 export class Users extends React.Component {
     constructor(props){
@@ -11,7 +11,6 @@ export class Users extends React.Component {
             adminUsers: []
         }
         this.handleChecked = this.handleChecked.bind(this)
-        this.handleDeleteUser = this.handleDeleteUser.bind(this)
         this.handleResetPassword = this.handleResetPassword.bind(this)
 
     }
@@ -21,22 +20,15 @@ export class Users extends React.Component {
         this.setState({users: this.props.users})
     }
 
-    async handleDeleteUser(ev) {
-        console.log('111', ev.target.value.name)
-        if(this.state.adminUsers.includes(ev.target.name)){
-            alert('Change admin status before deleting')
-        } else {
-            console.log(`${ev.target.name} deleted`)
-            const updatedUsers = this.state.users.filter( u => u.name !== ev.target.name)
-            this.setState({users: updatedUsers})
-        }
-    }   
-
     handleChecked(ev){
         //Needs to be integrated with backend
+        console.log('122', user)
         if(ev.target.checked) {
+            console.log(ev.target.value)
+            console.log("321321213")
             const updatedAdminUsers = [...this.state.adminUsers, ev.target.name]
             this.setState({adminUsers: updatedAdminUsers})
+            // this.props.updateAdminStatus(adminUsers)
             console.log(`${ev.target.name} is now admin`);
         }
         else {
@@ -87,7 +79,11 @@ export class Users extends React.Component {
                                          this.setState({users: updatedUsers})
                                      }
                                     this.props.deleteUser(user)}}>X</button></td>
-                                <td><input name={user.name} type="checkbox" onChange={this.handleChecked} /></td>
+                                <td><input name={user.name} type="checkbox" onChange={() => {
+                                    user.isAdmin = !user.isAdmin;
+                                    this.props.updateAdminStatus(user)
+                                    console.log(user)
+                                }} /></td>
                             </tr>
                             )}
                         )
@@ -108,7 +104,8 @@ const mapStateToProps  = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getUsers: () => dispatch(getUsers()),
-        deleteUser: (user) => dispatch(destroyUser(user))
+        deleteUser: (user) => dispatch(destroyUser(user)),
+        updateAdminStatus: (user) => dispatch(updateUsers(user))
     }
 }
 

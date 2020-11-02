@@ -293,7 +293,7 @@ const seed = async () => {
       const user =  {
       name: u.name,
       email: u.email,
-      password: u.password,
+      password: '',
       isAdmin: u.isAdmin
     }
     return User.create(user);
