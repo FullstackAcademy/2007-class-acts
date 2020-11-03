@@ -1,8 +1,12 @@
-const { Artwork, Artist, Genre, syncDB } = require('../server/db');
+const { Artwork, Artist, Genre, syncDB, db } = require('../server/db');
 
 beforeAll(() => {
   return syncDB(false);
 });
+
+afterAll(function () {
+  db.close();
+ });
 
 describe('Artwork model', () => {
   describe('Validations', () => {
