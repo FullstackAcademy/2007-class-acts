@@ -30,15 +30,18 @@ const ArtFilters = ({ artworks, artists, genres, changeFilter }) => {
         defaultValue="DEFAULT"
         onChange={changeFilter}>
         <option value="DEFAULT">GENRE</option>
-        {genres ? (
-          genres.map((genre) => {
+        { genres ?
+          genres.map(genre => {
+            const numArts = artworks
+              .map(a => a.genres)
+              .map(a => a.map(g => g.id))
+              .filter(a => a.includes(genre.id))
+              .length;
             return (
-              <option value={genre.id} key={genre.id}>
-                {genre.name} ({genre.artworks.length})
-              </option>
+              <option value={ genre.id } key={ genre.id }>{ genre.name } ({ numArts })</option>
             )
           })
-        ) : (
+         : (
           <option value="N/A">---</option>
         )}
       </select>

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { User, Session, Cart, CartItem } = require('../db')
-const bcrypt = require('bcrypt')
+const { User, Session, Cart, CartItem, Order, OrderItem } = require('../db')
+const bcrypt = require('bcrypt');
 
 const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7
 
@@ -18,9 +18,13 @@ router.get('/:sessionId', async (req, res, next) => {
               model: Cart,
               include: [CartItem],
             },
-          ],
-        },
-      ],
+            {
+              model: Order,
+              include: OrderItem
+            }
+          ]
+        }
+      ]
     })
     //here and a few other places, it sends back the hashed password with the user object
     //although the hash comparison is done only on the server and it's not like you could unhash what we send, it is probably not best practice
@@ -92,11 +96,15 @@ router.post('/login', async (req, res) => {
         include: [
           Session,
           {
-            model: Cart,
-            include: [CartItem],
+            model: Order,
+            include: [OrderItem]
           },
+          {
+            model: Cart,
+            include: [CartItem]
+          }
         ],
-      })
+      });
 
       const comparisonResult = await bcrypt.compare(
         password,
