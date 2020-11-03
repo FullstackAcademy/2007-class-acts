@@ -68,13 +68,21 @@ router.post('/', async (req, res) => {
       newUser.password = ''
 
       res.status(201).send(newUser)
+    } else {
+      res.sendStatus(400)
     }
   } catch (e) {
-    console.log(e)
-    //do something later to distinguish between existing user and other failure
-    res.status(400).send({
-      message: 'New user creation failed.',
-    })
+    //this checks the type of error coming from sequelize
+    if(e.errors[0].type === 'unique violation') {
+      res.status(400).send({
+        emError: 'This email is already taken.'
+      })
+    } else {
+      res.status(500).send({
+        emError: null,
+        pwError: 'Something went horribly wrong.'
+      })
+    }
   }
 })
 
@@ -106,41 +114,42 @@ router.post('/login', async (req, res) => {
         ],
       });
 
-      const comparisonResult = await bcrypt.compare(
-        password,
-        foundUser.password
-      )
-
-      if (!comparisonResult) {
-        throw new Error('Mismatched password!')
-      }
-
-      delete foundUser.password
       if (foundUser) {
-        //another password emptier:
-        foundUser.password = ''
-
-        //maybe we don't actually need multiple sessions per user?
-        //here, I've taken the first session and sent it back
-
-        if (foundUser.sessions[0]) {
-          res.cookie('sessionId', foundUser.sessions[0].id, {
-            maxAge: A_WEEK_IN_SECONDS,
-            path: '/',
-          })
-          res.status(200).send(foundUser)
+        //if a user is found, check PW
+        const comparisonResult = await bcrypt.compare(password, foundUser.password);
+        if (!comparisonResult) {
+          //if passwords don't match, send that error
+          res.status(401).send({pwError: 'Incorrect password.', emError: null})
         } else {
-          const createdSession = await Session.create({})
-          await createdSession.setUser(foundUser)
 
-          res.cookie('sessionId', createdSession.id, {
-            maxAge: A_WEEK_IN_SECONDS,
-            path: '/',
-          })
-          res.status(201).send(foundUser)
+          //otherwise send back the found user with session info
+
+          //another password emptier:
+          foundUser.password = ''
+
+          //maybe we don't actually need multiple sessions per user?
+          //here, I've taken the first session and sent it back
+
+          if (foundUser.sessions[0]) {
+            res.cookie('sessionId', foundUser.sessions[0].id, {
+              maxAge: A_WEEK_IN_SECONDS,
+              path: '/',
+            });
+            res.status(200).send(foundUser);
+          } else {
+            const createdSession = await Session.create({});
+            await createdSession.setUser(foundUser);
+
+            res.cookie('sessionId', createdSession.id, {
+              maxAge: A_WEEK_IN_SECONDS,
+              path: '/',
+            });
+            res.status(201).send(foundUser);
+          }
         }
       } else {
-        res.sendStatus(404)
+        //if a user isn't found, send such an error
+        res.status(404).send({emError: 'User not found.'})
       }
     } catch (e) {
       console.error(e.message)
