@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const { User, Session, Cart, CartItem } = require('../db')
 const bcrypt = require('bcrypt');
-const { response } = require('express');
 
 const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
 
@@ -37,9 +36,11 @@ router.delete('/:userID', async(req, res, next) => {
 
 router.put('/:userID', async(req, res, next) => {
   try {
+    if(req.user.isAdmin){
       const user = await User.findByPk(req.params.userID) 
       await user.update(req.body)
       res.json(user)
+    }   
   }
   catch (error){
     console.log('\nGo Away...\n')

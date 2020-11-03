@@ -45,15 +45,12 @@ export const updateUser = (user) => {
   return async (dispatch) => {
     try {
       const updatedUser = await axios.put(`/api/users/${user.id}`, user)
-      console.log("updated", updatedUser)
-      dispatch(_updateUser(user))
+      dispatch(_updateUser(updatedUser.data))
     } catch (err) {
       console.log(err)
     }
   }
 }
-
-
 
 export default function usersReducer(state = [], action) {
   switch (action.type) {
@@ -62,7 +59,7 @@ export default function usersReducer(state = [], action) {
     case DESTROY_USER:
       return state.filter(user => user.id !== action.user.id)
     case UPDATE_USER:
-      return action.user
+      return [...state.filter(user => user.id !== action.user.id), action.user]
     default:
       return state;
   }

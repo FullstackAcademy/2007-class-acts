@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import  { getUsers, destroyUser, updateUser }  from '../redux/users';
 import { Redirect } from 'react-router-dom'
+import store from '../store'
 
 
 export class Users extends React.Component {
@@ -24,7 +25,6 @@ export class Users extends React.Component {
     }
 
    render(){
-       if (this.props.user.isAdmin === undefined) return (<h1 style={{textAlign: "center"}}>Not Authorized</h1>)
        return (
            <div>
                <h1>Users</h1>
@@ -73,6 +73,7 @@ export class Users extends React.Component {
                                 <td><input name={user} value={user.isAdmin} type="checkbox" onChange={(ev) => {
                                     user.isAdmin = !user.isAdmin;
                                     this.props.updateAdminStatus(user)
+                                    console.log('store', store.getState())
                                 }} /></td>
                             </tr>
                             )}
