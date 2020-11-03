@@ -298,7 +298,7 @@ const seed = async () => {
     User.create({ email: 'zoe@zoe.com', password: hashedPW }),
     User.create({ email: 'zaina@zaina.com', password: hashedPW }),
     User.create({ email: 'adam@adam.com', password: hashedPW }),
-    User.create({ email: 'jamil@jamil.com', password: "aaaa" })
+    User.create({ email: 'jamil@jamil.com', password: hashedPW })
   ]);
 
   const today = new Date();
