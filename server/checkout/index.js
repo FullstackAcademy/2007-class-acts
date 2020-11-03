@@ -1,6 +1,8 @@
 // LIBRARIES
 const express = require('express');
 const router = express.Router();
+
+// might want to hide this key in .env file
 const stripe = require('stripe')('sk_test_51HjGjMLMMiRvpdjjl2kT4rA4xOQbDmjGNyRtTFpqSpFNwEf2u417KKyjgC0vVhvmS8JP6uYmJFtR0mSlumgBpKUZ00tarU8ly2');
 
 // FILES
@@ -9,7 +11,6 @@ const { DOMAIN } = require('../constants');
 
 // POST /api/checkout/session
 router.post('/session', async (req, res, next) => {
-  console.log('request object',req.body);
   let client_ref_id = null;
   let client_email = null;
   let cart = [];
@@ -101,7 +102,7 @@ function handleOrder() {
   // for each artwork in order, adjust quantity of artwork in db
   // add Order, OrderItem to db
   // If auth user, associate Order and User in db
-  // Clear cart - how to do this from the backend??
+  // Clear cart - how to do this from the backend?? Do in front end after this route?
 }
 
 // TODO
