@@ -1,13 +1,13 @@
-const { STRING, UUID, UUIDV4 } = require("sequelize")
+const { STRING, UUID, UUIDV4 } = require('sequelize')
 const db = require('../db')
 
 const Genre = db.define('genre', {
   id: {
     type: UUID,
     defaultValue: UUIDV4,
-    primaryKey: true
+    primaryKey: true,
   },
-  name: STRING
+  name: STRING,
 })
 
 module.exports = Genre

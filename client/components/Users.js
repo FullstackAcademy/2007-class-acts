@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import  { getUsers, destroyUser, updateUser }  from '../redux/users';
+import { getUsers, destroyUser, updateUser }  from '../redux/users';
 import { Redirect } from 'react-router-dom'
 
 
