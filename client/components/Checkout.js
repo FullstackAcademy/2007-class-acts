@@ -1,4 +1,6 @@
 import React from 'react';
+import { loadStripe } from '@stripe/stripe-js'
+import { stripeAPIKey } from '../../server/constants'
 
 const Checkout = ({ cart, artworks }) => {
   // calculate subtotal of cart
@@ -7,6 +9,8 @@ const Checkout = ({ cart, artworks }) => {
     const cartItemArtwork = artworks.find(art => art.id === cartItem.artworkId);
     subtotal += (cartItemArtwork.price * cartItem.quantity);
   });
+
+  const stripe = loadStripe(stripeAPIKey)
 
   return (
     <div className="checkout">
@@ -24,6 +28,8 @@ const Checkout = ({ cart, artworks }) => {
           <p>${ (subtotal * 1.08).toFixed(2) }</p>
         </div>
       </div>
+      {//if the client isnt logged in, get the cart from localstorage and send to db
+      }
       <button id="checkout-btn" type="button">CHECKOUT</button>
     </div>
   )

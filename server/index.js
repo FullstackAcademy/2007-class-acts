@@ -14,6 +14,7 @@ app.use(auth);
 
 
 app.use('/api', require('./api'))
+app.use('/checkout', require('./checkout'))
 
 //This sends the HTML file for all default requests.
 //We'll have to set up some front-end error handling
