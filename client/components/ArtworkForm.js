@@ -40,10 +40,10 @@ class ArtworkForm extends Component {
       this.setState({
         title,
         description,
-        year,
+        year: year || '',
         price,
         quantity,
-        medium,
+        medium: medium || '',
         artistId,
       })
     }
@@ -125,7 +125,7 @@ class ArtworkForm extends Component {
 
               <label htmlFor="artistId">Artist</label>
               <select name="artistId" value={artistId} onChange={this.handleChange}>
-                <option value="">Other</option>
+                <option value="">SELECT ARTIST</option>
                 {artists.map((artistOption) => {
                   return (
                     <option value={artistOption.id} key={artistOption.id}>
@@ -177,6 +177,7 @@ class ArtworkForm extends Component {
 
               <label htmlFor="medium">Medium</label>
               <select name="medium" value={medium} onChange={this.handleChange}>
+                <option value="">SELECT MEDIUM</option>
                 {mediums.map((mediumItem) => {
                   return (
                     <option value={mediumItem} key={mediumItem}>

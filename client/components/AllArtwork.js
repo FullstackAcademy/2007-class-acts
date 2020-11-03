@@ -48,7 +48,7 @@ export class AllArtwork extends Component {
     const medium = name === 'medium' ? value : this.state.medium
 
     if (artist !== '') {
-      filteredArt = filteredArt.filter((art) => art.artist.id === artist)
+      filteredArt = filteredArt.filter((art) => art.artist && art.artist.id === artist)
     }
     if (genre !== '') {
       filteredArt = filteredArt.filter((art) => {
