@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { SET_USER } from './actionConstants'
+import { setCartItems } from './cart'
 
 
 //ACTION CREATOR

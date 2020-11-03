@@ -12,6 +12,7 @@ export const _getUsers = users => {
 export const _destroyUser = (user) => ({
   type: DESTROY_USER,
   user
+  
 })
 
 export const _updateUser = (user) => ({
@@ -31,7 +32,7 @@ export const getUsers = () => {
 export const destroyUser = (user) => {
   return async (dispatch) => {
     try {
-      await axios.delete(`/api/users/${user.id}`)
+      await axios.delete(`/api/users/${user.id}`, user)
       dispatch(_destroyUser(user))
     } catch (err) {
       console.log(err)
@@ -40,7 +41,20 @@ export const destroyUser = (user) => {
 }
 
 // Need to add the updateUser thunk
-/*-------code here -------------*/
+export const updateUser = (user) => {
+  console.log('23231',user.id)
+  return async (dispatch) => {
+    try {
+      const updatedUser = await axios.put(`/api/users/${user.id}`, user)
+      console.log("213131231", updatedUser)
+      dispatch(_updateUser(user))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+
 
 export default function usersReducer(state = [], action) {
   switch (action.type) {
@@ -49,7 +63,7 @@ export default function usersReducer(state = [], action) {
     case DESTROY_USER:
       return state.filter(user => user.id !== action.user.id)
     case UPDATE_USER:
-      return action.users;
+      return action.user
     default:
       return state;
   }
