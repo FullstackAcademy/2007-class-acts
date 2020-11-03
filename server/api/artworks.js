@@ -55,7 +55,7 @@ router.put('/:artworkId', async (req, res, next) => {
     try {
       const art = validateData(req.body, artProperties)
       const artwork = await Artwork.findByPk(req.params.artworkId, {
-        include: [ShopImage],
+        include: [ShopImage, Artist],
       })
       await artwork.update(art)
       res.send(artwork)

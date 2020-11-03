@@ -44,7 +44,7 @@ class ArtworkForm extends Component {
         price,
         quantity,
         medium: medium || '',
-        artistId,
+        artistId: artistId || ''
       })
     }
   }
