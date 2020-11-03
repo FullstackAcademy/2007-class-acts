@@ -1,17 +1,17 @@
 // LIBRARIES
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 // FILES
-import { getArtworks } from '../redux/artworks';
-import { getArtists } from '../redux/artists';
-import { getGenres } from '../redux/genres';
-import ArtworkGrid from './ArtworkGrid';
-import ArtFilters from './ArtFilters';
+import { getArtworks } from '../redux/artworks'
+import { getArtists } from '../redux/artists'
+import { getGenres } from '../redux/genres'
+import ArtworkGrid from './ArtworkGrid'
+import ArtFilters from './ArtFilters'
 
 export class AllArtwork extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       artworks: [],
       artists: '',
@@ -21,16 +21,16 @@ export class AllArtwork extends Component {
       medium: '',
       loading: true
     }
-    this.changeFilter = this.changeFilter.bind(this);
-    this.search = this.search.bind(this);
-    this.reset = this.reset.bind(this);
+    this.changeFilter = this.changeFilter.bind(this)
+    this.search = this.search.bind(this)
+    this.reset = this.reset.bind(this)
   }
   async componentDidMount() {
     //added this condition so the data doesn't reload
-    if(this.props.artworks.length === 0) {
-      await this.props.getArtworks();
-      await this.props.getArtists();
-      await this.props.getGenres();
+    if (this.props.artworks.length === 0) {
+      await this.props.getArtworks()
+      await this.props.getArtists()
+      await this.props.getGenres()
     }
     this.setState({
       artworks: this.props.artworks,
@@ -41,26 +41,24 @@ export class AllArtwork extends Component {
   }
 
   changeFilter(ev) {
-    const name = ev.target.name;
-    const value = ev.target.value === 'DEFAULT' ? '' : ev.target.value;
+    const name = ev.target.name
+    const value = ev.target.value === 'DEFAULT' ? '' : ev.target.value
 
-    let filteredArt = this.props.artworks;
-    const artist = name === 'artist' ? value : this.state.artist;
-    const genre = name === 'genre' ? value : this.state.genre;
-    const medium = name === 'medium' ? value : this.state.medium;
+    let filteredArt = this.props.artworks
+    const artist = name === 'artist' ? value : this.state.artist
+    const genre = name === 'genre' ? value : this.state.genre
+    const medium = name === 'medium' ? value : this.state.medium
 
     if (artist !== '') {
-      filteredArt = filteredArt.filter(art => art.artist.id === artist);
+      filteredArt = filteredArt.filter((art) => art.artist && art.artist.id === artist)
     }
     if (genre !== '') {
-      filteredArt = filteredArt.filter(art => {
-        return art.genres
-          .map(genre => genre.id)
-          .includes(genre)
-      });
+      filteredArt = filteredArt.filter((art) => {
+        return art.genres.map((_genre) => _genre.id).includes(genre)
+      })
     }
     if (medium !== '') {
-      filteredArt = filteredArt.filter(art => art.medium === medium);
+      filteredArt = filteredArt.filter((art) => art.medium === medium)
     }
 
     this.setState({
@@ -71,30 +69,30 @@ export class AllArtwork extends Component {
 
   search(ev) {
     if (ev.key === 'Enter') {
-      const searchTerm = ev.target.value;
-      ev.target.value = '';
-      const results = [];
+      const searchTerm = ev.target.value
+      ev.target.value = ''
+      const results = []
 
       // loop through all artwork titles, artist names
-      this.props.artworks.forEach(art => {
+      this.props.artworks.forEach((art) => {
         if (art.title.toLowerCase().includes(searchTerm)) {
-          results.push(art.id);
+          results.push(art.id)
         }
-      });
-      this.state.artists.forEach(artist => {
-        const name = artist.name.toLowerCase();
+      })
+      this.state.artists.forEach((artist) => {
+        const name = artist.name.toLowerCase()
         if (name.includes(searchTerm)) {
           this.props.artworks
-            .filter(art => art.artist.name.toLowerCase() === name)
-            .map(art => art.id)
-            .forEach(art => results.push(art))
+            .filter((art) => art.artist && art.artist.name.toLowerCase() === name)
+            .map((art) => art.id)
+            .forEach((art) => results.push(art))
         }
-      });
+      })
 
       // set state to show matching results only
       this.setState({
-        artworks: this.props.artworks.filter(art => results.includes(art.id))
-      });
+        artworks: this.props.artworks.filter((art) => results.includes(art.id)),
+      })
     }
   }
 
@@ -103,12 +101,12 @@ export class AllArtwork extends Component {
       artworks: this.props.artworks,
       artist: '',
       genre: '',
-      medium: ''
-    });
+      medium: '',
+    })
     // reset "select" selected option
-    document.getElementById("artist").value = "DEFAULT";
-    document.getElementById("genre").value = "DEFAULT";
-    document.getElementById("medium").value = "DEFAULT";
+    document.getElementById('artist').value = 'DEFAULT'
+    document.getElementById('genre').value = 'DEFAULT'
+    document.getElementById('medium').value = 'DEFAULT'
   }
 
   render() {
@@ -120,8 +118,14 @@ export class AllArtwork extends Component {
         <div className="top-section">
           <ArtFilters artworks={ this.props.artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
           <div className="side-bar">
-            <input type="text" placeholder="SEARCH COLLECTION" onKeyDown={ search } />
-            <button type="reset" onClick={ reset }>CLEAR FILTERS</button>
+            <input
+              type="text"
+              placeholder="SEARCH COLLECTION"
+              onKeyDown={search}
+            />
+            <button type="reset" onClick={reset}>
+              CLEAR FILTERS
+            </button>
           </div>
         </div>
         <ArtworkGrid artworks={ artworks } />
@@ -130,15 +134,15 @@ export class AllArtwork extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     artworks: state.artworks,
     artists: state.artists,
     genres: state.genres,
-    user: state.user
+    user: state.user,
   }
 }
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getArtworks: () => dispatch(getArtworks()),
     getArtists: () => dispatch(getArtists()),
@@ -146,4 +150,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllArtwork);
+export default connect(mapStateToProps, mapDispatchToProps)(AllArtwork)

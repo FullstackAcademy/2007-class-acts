@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import {Link, Redirect} from 'react-router-dom';
-import { connect } from 'react-redux';
-import { setUser }from '../redux/user'
+import { Link, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { setUser } from '../redux/user'
 import { addMultipleCartItems } from '../redux/cart'
 import { localCart, clearLocalCart } from '../localCart/'
 
@@ -55,7 +55,7 @@ class NewUser extends Component {
   }
 
   handleChange(ev) {
-    this.setState({...this.state, [ev.target.name]: ev.target.value})
+    this.setState({ ...this.state, [ev.target.name]: ev.target.value })
   }
 
   validateEmail(email) {
@@ -65,7 +65,7 @@ class NewUser extends Component {
   render() {
     const { emError, pwError } = this.state
     if (this.state.redirect) {
-      return <Redirect to='/'/>;
+      return <Redirect to="/" />
     }
     return (
       <div className="container login">
@@ -86,13 +86,12 @@ class NewUser extends Component {
   }
 }
 
-
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setUser: (user) => dispatch(setUser(user)),
-    addMultipleCartItems: (cartItems) => dispatch(addMultipleCartItems(cartItems))
+    addMultipleCartItems: (cartItems) =>
+      dispatch(addMultipleCartItems(cartItems)),
   }
 }
 
-export default connect(null, mapDispatchToProps)(NewUser);
-
+export default connect(null, mapDispatchToProps)(NewUser)

@@ -3,7 +3,7 @@ const router = express.Router()
 const { User, Session, Cart, CartItem, Order, OrderItem } = require('../db')
 const bcrypt = require('bcrypt');
 
-const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
+const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7
 
 // GET /api/users/:sessionId
 router.get('/:sessionId', async (req, res, next) => {
@@ -41,8 +41,8 @@ router.delete('/:sessionId', async (req, res, next) => {
   try {
     await Session.destroy({
       where: {
-        id: req.params.sessionId
-      }
+        id: req.params.sessionId,
+      },
     })
     res.status(205).send()
   } catch (err) {
@@ -52,17 +52,17 @@ router.delete('/:sessionId', async (req, res, next) => {
 
 // POST /api/users/
 router.post('/', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body
   const hashedPW = await bcrypt.hash(password, 10)
   try {
-    const newUser = await User.create({ email, password: hashedPW})
-    if(newUser) {
+    const newUser = await User.create({ email, password: hashedPW })
+    if (newUser) {
       const newSession = await Session.create()
       newSession.setUser(newUser)
       res.cookie('sessionId', newSession.id, {
         maxAge: A_WEEK_IN_SECONDS,
-        path: '/'
-      });
+        path: '/',
+      })
 
       //another password emptier:
       newUser.password = ''
@@ -88,12 +88,12 @@ router.post('/', async (req, res) => {
 
 // POST /api/users/login
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body
 
   if (typeof email !== 'string' || typeof password !== 'string') {
     res.status(400).send({
       message: 'Email and password must both be strings.',
-    });
+    })
   } else {
     try {
       const foundUser = await User.findOne({
@@ -152,12 +152,12 @@ router.post('/login', async (req, res) => {
         res.status(404).send({emError: 'User not found.'})
       }
     } catch (e) {
-      console.error(e.message);
+      console.error(e.message)
       res.status(500).send({
         message: e.message,
-      });
+      })
     }
   }
-});
+})
 
 module.exports = router
