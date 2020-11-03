@@ -81,7 +81,7 @@ export class AllArtwork extends Component {
         const name = artist.name.toLowerCase()
         if (name.includes(searchTerm)) {
           this.props.artworks
-            .filter((art) => art.artist.name.toLowerCase() === name)
+            .filter((art) => art.artist && art.artist.name.toLowerCase() === name)
             .map((art) => art.id)
             .forEach((art) => results.push(art))
         }
