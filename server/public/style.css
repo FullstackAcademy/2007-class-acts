@@ -237,3 +237,56 @@ table {
   padding: 1rem;
   margin: 0, 1rem, 1rem, 0
 }
+
+/* --- REVIEWS --- */
+.reviews > h2 {
+  margin: .5rem;
+}
+.reviewContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.review {
+  padding: 1rem;
+  margin: .5rem;
+  border-radius: .5rem;
+  /* height: 100px;
+  width: 200px; */
+  background-color: rgb(240, 240, 240);
+  overflow-y: hidden;
+}
+
+.review > p > img {
+  height: 20px;
+  width: 20px;
+}
+
+.rev {
+  display: block;
+  text-align: center;
+}
+
+.reviewText {
+  width: 250px;
+}
+
+.rating {
+  color: black;
+  direction: rtl;
+  font-size: 2rem;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before,
+.rating > span.rated:before,
+.rating > span.rated ~ span:before {
+  content: "\2605";
+  position: absolute;
+}
