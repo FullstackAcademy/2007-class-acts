@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom'
 import { getUsers, destroyUser, updateUser }  from '../redux/users';
-import store from '../store'
-
+import NotFound from './NotFound';
 
 export class Users extends React.Component {
     constructor(props){
@@ -24,6 +24,7 @@ export class Users extends React.Component {
     }
 
    render(){
+       if (this.props.users.length === 0) return <NotFound />
        return (
            <div>
                <h1>Users</h1>
@@ -59,7 +60,6 @@ export class Users extends React.Component {
                                 <td><input name={user} value={user.isAdmin} type="checkbox" onChange={(ev) => {
                                     user.isAdmin = !user.isAdmin;
                                     this.props.updateAdminStatus(user)
-                                    console.log('store', store.getState())
                                 }} /></td>
                             </tr>
                             )}

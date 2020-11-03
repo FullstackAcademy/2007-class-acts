@@ -14,7 +14,7 @@ router.get('/', async(req, res, next) => {
         res.send(users)
       } 
   } catch (error) {
-      console.log('\nGo Away...\n')
+      console.log('\nNot Authorized...\n')
       res.status(401)
   }
 })
@@ -28,7 +28,7 @@ router.delete('/:userID', async(req, res, next) => {
     } 
   }
   catch (error){
-    console.log('\nGo Away...\n')
+    console.log('\nNot Authorized...\n')
     res.status(401)
     next(error)
   }
@@ -43,7 +43,7 @@ router.put('/:userID', async(req, res, next) => {
     }   
   }
   catch (error){
-    console.log('\nGo Away...\n')
+    console.log('\nNot Authorized...\n')
     res.status(401)
     next(error)
   }
