@@ -62,7 +62,7 @@ export class AllArtwork extends Component {
     }
 
     this.setState({
-      name: value,
+      [name]: value,
       artworks: filteredArt
     });
   }
@@ -115,13 +115,13 @@ export class AllArtwork extends Component {
     return(
       <div>
         <div className="top-section">
-          <ArtFilters artworks={ artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
+          <ArtFilters artworks={ this.props.artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
           <div className="side-bar">
             <input type="text" placeholder="SEARCH COLLECTION" onKeyDown={ search } />
             <button type="reset" onClick={ reset }>CLEAR FILTERS</button>
           </div>
         </div>
-        <ArtworkGrid artworks={ this.state.artworks } />
+        <ArtworkGrid artworks={ artworks } />
       </div>
     )
   }
