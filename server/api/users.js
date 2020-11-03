@@ -1,29 +1,37 @@
 const express = require('express')
 const router = express.Router()
-const { User, Session, Cart, CartItem, Order, OrderItem } = require('../db')
+const { User, Session, Cart, CartItem } = require('../db')
 const bcrypt = require('bcrypt');
-
+const { response } = require('express');
 
 const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
 
 // GET /api/users
 router.get('/', async(req, res, next) => {
   try {
-      const users = await User.findAll()
-      res.send(users)
-  } catch (err) {
-      next(err)
+      if(req.user.isAdmin) {
+        console.log('\nAuthorized...\n')
+        const users = await User.findAll()
+        res.send(users)
+      } 
+  } catch (error) {
+      console.log('\nGo Away...\n')
+      res.status(401)
   }
 })
 
 // DELETE /api/users/:userID
 router.delete('/:userID', async(req, res, next) => {
   try {
-      await User.destroy({where: {id: req.params.userID}})
-      res.status(204)
+    if(req.user.isAdmin) {
+      await User.destroy({where: {id: req.params.userID, isAdmin: false}})
+      res.status(200)
+    } 
   }
   catch (error){
-    next(error);
+    console.log('\nGo Away...\n')
+    res.status(401)
+    next(error)
   }
 });
 
@@ -34,7 +42,9 @@ router.put('/:userID', async(req, res, next) => {
       res.json(user)
   }
   catch (error){
-    next(error);
+    console.log('\nGo Away...\n')
+    res.status(401)
+    next(error)
   }
 });
 
@@ -46,16 +56,10 @@ router.get('/:sessionId', async (req, res, next) => {
       include: [
         {
           model: User,
-          include: [
-            {
-              model: Cart,
-              include: [CartItem],
-            },
-            {
-              model: Order,
-              include: OrderItem
-            }
-          ]
+          include: [ {
+            model: Cart,
+            include: [CartItem]
+          }]
         }
       ]
     })
@@ -118,6 +122,7 @@ router.post('/', async (req, res) => {
 // POST /api/users/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+
   if (typeof email !== 'string' || typeof password !== 'string') {
     res.status(400).send({
       message: 'Email and password must both be strings.',
@@ -129,17 +134,10 @@ router.post('/login', async (req, res) => {
           email,
         },
         //we need to include the cart info w the user on login and on session recognition
-        include: [
-          Session,
-          {
-            model: Order,
-            include: [OrderItem]
-          },
-          {
-            model: Cart,
-            include: [CartItem]
-          }
-        ],
+        include: [Session, {
+          model: Cart,
+          include: [CartItem]
+        }],
       });
 
       const comparisonResult = await bcrypt.compare(password, foundUser.password);

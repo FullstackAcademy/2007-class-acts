@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import  { getUsers, destroyUser, updateUser }  from '../redux/users';
+import { Redirect } from 'react-router-dom'
 
 
 export class Users extends React.Component {
@@ -19,13 +20,16 @@ export class Users extends React.Component {
 
     handleResetPassword(ev){
         //Needs to be implemented
-        alert("Needs to be integrated with backend")
+        alert("Needs to be implemented")
     }
 
    render(){
+       if (this.props.user.isAdmin === undefined) return (<h1 style={{textAlign: "center"}}>Not Authorized</h1>)
        return (
            <div>
                <h1>Users</h1>
+                <h2>{`Admin: ${this.props.user.isAdmin}`}</h2>
+                
                <div className="adminNav">
                    <div>Products</div>
                    <div>Users</div>
@@ -54,8 +58,10 @@ export class Users extends React.Component {
 
                                 {/* Handels Deleting a User */}
                                 <td><button name={user.name} value={user.id} onClick={() => {
-                                     if(user.isAdmin === false){
+                                     if(this.props.user.isAdmin === false ||this.props.user.isAdmin === undefined ){
                                          alert('Not Authorized!')
+                                         setTimeout(<Redirect to = "/" />, 2000);
+
                                      } else {
                                          const updatedUsers = this.state.users.filter( u => u.id !== user.id)
                                          this.setState({users: updatedUsers})
@@ -64,7 +70,7 @@ export class Users extends React.Component {
                                     }>X</button></td>
 
                                 {/* Handels Updating a User to admin/!admin  */}
-                                <td><input name={user} type="checkbox" onChange={(ev) => {
+                                <td><input name={user} value={user.isAdmin} type="checkbox" onChange={(ev) => {
                                     user.isAdmin = !user.isAdmin;
                                     this.props.updateAdminStatus(user)
                                 }} /></td>
@@ -81,7 +87,8 @@ export class Users extends React.Component {
 
 const mapStateToProps  = (state) => {
     return {
-        users: state.users
+        users: state.users,
+        user: state.user
     }
 }
 
