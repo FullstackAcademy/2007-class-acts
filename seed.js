@@ -1,4 +1,5 @@
 const { Artwork, Artist, ShopImage, Genre, User, Order, OrderItem, syncDB } = require('./server/db')
+const bcrypt = require('bcrypt');
 
 const artworkData = [[`A Bigger Splash`,`Painted in California between April and June 1967, and measuring 242.5 centimetres (95.5 in) by 243.9 centimetres (96.0 in), this painting depicts a swimming pool beside a modern house, disturbed by a large splash of water created by an unseen figure who has apparently just jumped in from a diving board.`,1967,`Graphic Art`,29.99,7],
 [`Unique Forms of Continuity in Space`,`Unique Forms of Continuity in Space (Italian: Forme uniche della continuità nello spazio) is a 1913 bronze Futurist sculpture by Umberto Boccioni. It is seen as an expression of movement and fluidity. The sculpture is depicted on the obverse of the Italian-issue 20 cent euro coin.`,1913,`Sculpture`,74.99,3],
@@ -289,8 +290,9 @@ const seed = async () => {
     })
   }).flat())
 
+  const hashedPW = await bcrypt.hash('test', 10)
   const [ zoe, zaina, adam, jamil ] = await Promise.all([
-    User.create({ email: 'zoe@zoe.com'}),
+    User.create({ email: 'zoe@zoe.com', password: hashedPW, isAdmin: true }),
     User.create({ email: 'zaina@zaina.com'}),
     User.create({ email: 'adam@adam.com'}),
     User.create({ email: 'jamil@jamil.com'})
