@@ -364,3 +364,18 @@ table {
   padding: 1rem;
   margin: 0, 1rem, 1rem, 0
 }
+
+/* --- CART --- */
+
+.cart {
+  display: flex;
+}
+
+.cart-image {
+  max-width: 10rem;
+  margin: 2rem;
+}
+
+.cart-details {
+  margin: 2rem;
+}

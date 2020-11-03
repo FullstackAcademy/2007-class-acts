@@ -1,6 +1,9 @@
 // LIBRARIES
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom';
+
+// FILES
 import { getArtworks } from '../redux/artworks'
 import { changeCartItem, removeCartItem } from '../redux/cart'
 
@@ -75,32 +78,41 @@ export class Cart extends Component {
             )
             const exceedsArtworkQuantity =
               cartItem.quantity > cartItemArtwork.quantity
+
+            const artLink = `/artworks/${cartItem.artworkId}`;
             return (
               <div key={cartItem.artworkId}>
-                <h4>{cartItemArtwork.title}</h4>
-                <h5>
-                  <i>{cartItemArtwork.artist.name}</i>
-                </h5>
-                {exceedsArtworkQuantity ? (
-                  <h5 className="noQty">
-                    You've added more to your cart ({cartItem.quantity}) than is
-                    currently in stock! Please choose a revised quantity.
-                  </h5>
-                ) : null}
-                <h5>
-                  Quantity:
-                  <select
-                    id="qty"
-                    defaultValue={cartItem.quantity}
-                    onChange={(ev) =>
-                      this.changeQuantity(ev.target.value, cartItem)
-                    }>
-                    {this.quantitySelect(cartItemArtwork)}
-                  </select>
-                </h5>
-                <button type="button" onClick={() => this.removeItem(cartItem)}>
-                  Remove from cart
-                </button>
+                <div className="cart">
+                  <div>
+                    <Link to={ artLink }><img className="cart-image" src={cartItemArtwork.shopImages[0].imageURL} /></Link>
+                  </div>
+                  <div className="cart-details">
+                    <h4>{cartItemArtwork.title}</h4>
+                    <h5>
+                      <i>{cartItemArtwork.artist.name}</i>
+                    </h5>
+                    {exceedsArtworkQuantity ? (
+                      <h5 className="noQty">
+                        You've added more to your cart ({cartItem.quantity}) than is
+                        currently in stock! Please choose a revised quantity.
+                      </h5>
+                    ) : null}
+                    <h5>
+                      Quantity:
+                      <select
+                        id="qty"
+                        defaultValue={cartItem.quantity}
+                        onChange={(ev) =>
+                          this.changeQuantity(ev.target.value, cartItem)
+                        }>
+                        {this.quantitySelect(cartItemArtwork)}
+                      </select>
+                    </h5>
+                    <button type="button" onClick={() => this.removeItem(cartItem)}>
+                      Remove from cart
+                    </button>
+                  </div>
+                </div>
                 <hr />
               </div>
             )
