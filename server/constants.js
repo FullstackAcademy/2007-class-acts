@@ -24,6 +24,8 @@ const defaultImagePath = '/public/img/default.jpg'
 
 const stripeAPIKey = 'pk_test_51HjGjMLMMiRvpdjj8pIO1leyiuo0sHCfIcH4437cdtmWMq3aRiK3fROypgpjSsZQrzR6bUsODr2dpyYKyHZ1NF1800cVYF22cl'
 
+const DOMAIN = 'http://localhost:3000';
+
 module.exports = {
   mediums,
   orderStatuses,
@@ -34,5 +36,6 @@ module.exports = {
   minReviewLength,
   maxReviewLength,
   defaultImagePath,
-  stripeAPIKey
+  stripeAPIKey,
+  DOMAIN
 }

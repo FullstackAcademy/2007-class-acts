@@ -2,6 +2,8 @@ import axios from 'axios'
 import React, {Component} from 'react';
 import { loadStripe } from '@stripe/stripe-js'
 import { stripeAPIKey } from '../../server/constants'
+import { localCart } from '../localCart';
+
 const stripePromise = loadStripe(stripeAPIKey)
 
 class Checkout extends Component {
@@ -11,9 +13,11 @@ class Checkout extends Component {
   }
 
   async handleClick() {
-    const stripe = await stripePromise
-    const checkoutSession = await (await (axios.post('/checkout/session'))).data
-    stripe.redirectToCheckout({sessionId: checkoutSession.id})
+    const stripe = await stripePromise;
+    const checkoutSession = (await axios.post('/checkout/session', { localCart: localCart })).data;
+    console.log(checkoutSession);
+    // sessionId has data on what was sent to Stripe
+    stripe.redirectToCheckout({ sessionId: checkoutSession.id })
 
   }
 
@@ -29,20 +33,13 @@ class Checkout extends Component {
       <div className="checkout">
         <div className="receipt">
           <div className="line-item">
-            <p>Products total</p>
-            <p>${subtotal.toFixed(2)}</p>
-          </div>
-          <div className="line-item">
-            <p>Tax</p>
-            <p>${(subtotal * 0.08).toFixed(2)}</p>
-          </div>
-          <div className="line-item">
             <p>Checkout total</p>
-            <p>${(subtotal * 1.08).toFixed(2)}</p>
+            <p>${subtotal.toFixed(2)}</p>
           </div>
         </div>
         {//if the client isnt logged in, get the cart from localstorage and send to db
         }
+        {/* only enable this button if there are 1+ items in the cart */}
         <button id="checkout-btn" type="button" onClick={this.handleClick}>CHECKOUT</button>
       </div>
     )
