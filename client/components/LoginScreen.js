@@ -22,6 +22,8 @@ class LoginScreen extends Component {
 
   async handleLogin(ev) {
     ev.preventDefault()
+    //clear old errors first
+    await this.setState({...this.state, emError: null, pwError: null})
     const { email, password } = this.state
     //check if this is a valid email address
     if(this.validateEmail(email)) {
