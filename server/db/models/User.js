@@ -19,7 +19,7 @@ const User = db.define('user', {
   password: STRING,
   isAdmin: {
     type: BOOLEAN,
-    defaultValue: true,
+    defaultValue: false,
   },
 })
 
