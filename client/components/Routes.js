@@ -11,6 +11,7 @@ import Navbar from './Navbar'
 import Account from './Account'
 import Users from './Users'
 import Cart from './Cart'
+import NotFound from './NotFound'
 import ArtistForm from './ArtistForm'
 import ArtworkForm from './ArtworkForm'
 import ArtistList from './ArtistList'
@@ -41,6 +42,7 @@ const Routes = () => {
           <Route exact path='/admin/addnew' component={ArtworkForm} />
           <Route exact path='/admin/users' component={Users} />
           <Route exact path="/cart" component={Cart} />
+          <Route component={NotFound} />
         </Switch>
       </div>
     </Router>

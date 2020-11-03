@@ -19,6 +19,7 @@ export class AllArtwork extends Component {
       artist: '',
       genre: '',
       medium: '',
+      loading: true
     }
     this.changeFilter = this.changeFilter.bind(this)
     this.search = this.search.bind(this)
@@ -35,7 +36,8 @@ export class AllArtwork extends Component {
       artworks: this.props.artworks,
       artists: this.props.artists,
       genres: this.props.genres,
-    })
+      loading: false
+    });
   }
 
   changeFilter(ev) {
@@ -52,7 +54,7 @@ export class AllArtwork extends Component {
     }
     if (genre !== '') {
       filteredArt = filteredArt.filter((art) => {
-        return art.genres.map((genre) => genre.id).includes(genre)
+        return art.genres.map((_genre) => _genre.id).includes(genre)
       })
     }
     if (medium !== '') {
@@ -108,9 +110,10 @@ export class AllArtwork extends Component {
   }
 
   render() {
-    const { changeFilter, search, reset } = this
-    const { artworks, artists, genres } = this.state
-    return (
+    const { changeFilter, search, reset } = this;
+    const { artworks, artists, genres, loading } = this.state;
+    if(loading) return(<h4>Loading...</h4>)
+    return(
       <div>
         <div className="top-section">
           <ArtFilters artworks={ this.props.artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
