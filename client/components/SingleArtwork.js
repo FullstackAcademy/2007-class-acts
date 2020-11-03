@@ -20,8 +20,8 @@ export class SingleArtwork extends React.Component {
         this.props.addCartItem(cartItem, isLoggedIn)
     }
 
-    async componentDidMount(){
-        await this.props.getArtwork(this.props.match.params.id)
+    componentDidMount(){
+        this.props.getArtwork(this.props.match.params.id)
     }
 
     render(){
