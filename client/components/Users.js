@@ -1,19 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import  { getUsers }  from '../redux/users';
-import  { destroyUser }  from '../redux/users';
+import  { getUsers, destroyUser, updateUser }  from '../redux/users';
+
 
 export class Users extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             users: [],
-            adminUsers: []
         }
-        this.handleChecked = this.handleChecked.bind(this)
-        this.handleDeleteUser = this.handleDeleteUser.bind(this)
         this.handleResetPassword = this.handleResetPassword.bind(this)
-
     }
 
     async componentDidMount(){
@@ -21,33 +17,8 @@ export class Users extends React.Component {
         this.setState({users: this.props.users})
     }
 
-    async handleDeleteUser(ev) {
-        console.log('111', ev.target.value.name)
-        if(this.state.adminUsers.includes(ev.target.name)){
-            alert('Change admin status before deleting')
-        } else {
-            console.log(`${ev.target.name} deleted`)
-            const updatedUsers = this.state.users.filter( u => u.name !== ev.target.name)
-            this.setState({users: updatedUsers})
-        }
-    }   
-
-    handleChecked(ev){
-        //Needs to be integrated with backend
-        if(ev.target.checked) {
-            const updatedAdminUsers = [...this.state.adminUsers, ev.target.name]
-            this.setState({adminUsers: updatedAdminUsers})
-            console.log(`${ev.target.name} is now admin`);
-        }
-        else {
-            const updatedAdminUsers = this.state.adminUsers.filter( u => u !== ev.target.value)
-            this.setState({adminUsers: updatedAdminUsers});
-            console.log(`${ev.target.name} is no longer an admin`)
-        }
-    }
-
     handleResetPassword(ev){
-        //Needs to be integrated with backend
+        //Needs to be implemented
         alert("Needs to be integrated with backend")
     }
 
@@ -63,7 +34,7 @@ export class Users extends React.Component {
                <table id="table">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>Id</th>
                             <th>Email</th>
                             <th>Reset Password</th>
                             <th>Delete User</th>
@@ -75,19 +46,28 @@ export class Users extends React.Component {
                     this.state.users.map(user => {
                         return (
                             <tr key={user.id}>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
+                                <td>{user.id.slice(0,8)}</td>
+                                <td>{user.email}</td> 
+
+                                {/* Handels Resetting Password */}
                                 <td><button onClick={this.handleResetPassword}>Reset</button></td>
+
+                                {/* Handels Deleting a User */}
                                 <td><button name={user.name} value={user.id} onClick={() => {
-                                     if(this.state.adminUsers.includes(user.name)){
-                                         alert('Change admin status before deleting')
+                                     if(user.isAdmin === false){
+                                         alert('Not Authorized!')
                                      } else {
-                                         console.log(`${user.name} deleted`)
-                                         const updatedUsers = this.state.users.filter( u => u.name !== user.name)
+                                         const updatedUsers = this.state.users.filter( u => u.id !== user.id)
                                          this.setState({users: updatedUsers})
+                                         this.props.deleteUser(user)}
                                      }
-                                    this.props.deleteUser(user)}}>X</button></td>
-                                <td><input name={user.name} type="checkbox" onChange={this.handleChecked} /></td>
+                                    }>X</button></td>
+
+                                {/* Handels Updating a User to admin/!admin  */}
+                                <td><input name={user} type="checkbox" onChange={(ev) => {
+                                    user.isAdmin = !user.isAdmin;
+                                    this.props.updateAdminStatus(user)
+                                }} /></td>
                             </tr>
                             )}
                         )
@@ -108,7 +88,8 @@ const mapStateToProps  = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getUsers: () => dispatch(getUsers()),
-        deleteUser: (user) => dispatch(destroyUser(user))
+        deleteUser: (user) => dispatch(destroyUser(user)),
+        updateAdminStatus: (user) => dispatch(updateUser(user))
     }
 }
 

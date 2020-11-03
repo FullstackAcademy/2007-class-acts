@@ -6,6 +6,38 @@ const bcrypt = require('bcrypt');
 
 const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
 
+// GET /api/users
+router.get('/', async(req, res, next) => {
+  try {
+      const users = await User.findAll()
+      res.send(users)
+  } catch (err) {
+      next(err)
+  }
+})
+
+// DELETE /api/users/:userID
+router.delete('/:userID', async(req, res, next) => {
+  try {
+      await User.destroy({where: {id: req.params.userID}})
+      res.status(204)
+  }
+  catch (error){
+    next(error);
+  }
+});
+
+router.put('/:userID', async(req, res, next) => {
+  try {
+      const user = await User.findByPk(req.params.userID) 
+      await user.update(req.body)
+      res.json(user)
+  }
+  catch (error){
+    next(error);
+  }
+});
+
 // GET /api/users/:sessionId
 router.get('/:sessionId', async (req, res, next) => {
   try {
@@ -37,6 +69,8 @@ router.get('/:sessionId', async (req, res, next) => {
   }
 })
 
+
+
 // DELETE /api/users/:sessionId
 router.delete('/:sessionId', async (req, res, next) => {
   try {
@@ -51,28 +85,7 @@ router.delete('/:sessionId', async (req, res, next) => {
   }
 })
 
-// Add all users /api/users
-router.get('/', async(req, res, next) => {
-    try {
-        const users = await User.findAll()
-        res.send(users)
-    } catch (err) {
-        next(err)
-    }
-})
 
-// Delte user /api/users/:userID
-router.put('/:id', async(req, res, next) => {
-  try {
-      const user = await User.findByPk(req.params.id)
-      await user.destroy()
-      res.status(204)
-      res.json(user)
-  }
-  catch (error){
-    next(error);
-  }
-});
 
 // POST /api/users/
 router.post('/', async (req, res) => {
@@ -105,7 +118,6 @@ router.post('/', async (req, res) => {
 // POST /api/users/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-
   if (typeof email !== 'string' || typeof password !== 'string') {
     res.status(400).send({
       message: 'Email and password must both be strings.',
