@@ -2,11 +2,10 @@ import axios from 'axios'
 import { SET_USER } from './actionConstants'
 import { setCartItems } from './cart'
 
-
 //ACTION CREATOR
 export const setUser = (user) => ({
   type: SET_USER,
-  user
+  user,
 })
 
 //THUNK CREATOR
@@ -27,7 +26,7 @@ export const destroySession = (sessionId) => {
 export default function userReducer(state = {}, action) {
   switch (action.type) {
     case SET_USER:
-      return action.user;
+      return action.user
     default:
       return state
   }

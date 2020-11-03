@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import  { getUsers, destroyUser, updateUser }  from '../redux/users';
-import { Redirect } from 'react-router-dom'
+import { link } from 'react-router-dom'
+import { getUsers, destroyUser, updateUser }  from '../redux/users';
 import store from '../store'
 
 
@@ -29,12 +29,6 @@ export class Users extends React.Component {
            <div>
                <h1>Users</h1>
                 <h2>{`Admin: ${this.props.user.isAdmin}`}</h2>
-                
-               <div className="adminNav">
-                   <div>Products</div>
-                   <div>Users</div>
-                   <div>Orders</div>
-               </div>
                <table id="table">
                     <thead>
                         <tr>
@@ -58,16 +52,9 @@ export class Users extends React.Component {
 
                                 {/* Handels Deleting a User */}
                                 <td><button name={user.name} value={user.id} onClick={() => {
-                                     if(this.props.user.isAdmin === false ||this.props.user.isAdmin === undefined ){
-                                         alert('Not Authorized!')
-                                         setTimeout(<Redirect to = "/" />, 2000);
-
-                                     } else {
                                          const updatedUsers = this.state.users.filter( u => u.id !== user.id)
                                          this.setState({users: updatedUsers})
-                                         this.props.deleteUser(user)}
-                                     }
-                                    }>X</button></td>
+                                         this.props.deleteUser(user)}}>X</button></td>
 
                                 {/* Handels Updating a User to admin/!admin  */}
                                 <td><input name={user} value={user.isAdmin} type="checkbox" onChange={(ev) => {

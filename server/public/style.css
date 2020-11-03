@@ -28,7 +28,7 @@ table {
   font-family: 'Barlow', sans-serif;
   max-height: 1rem;
   width: 10rem;
-  margin: 1rem
+  margin: 1rem;
 }
 
 .top-section button {
@@ -79,33 +79,42 @@ table {
 .login.container {
   display: flex;
   align-items: center;
-  align-content: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
 #login-form {
   padding: 2em;
   display: flex;
   flex-flow: column nowrap;
-  border-radius: 7%;
-  width: 35%;
+  width: 40%;
   text-align: center;
   align-items: center;
   background: #eef0f2;
+  border-top: solid 1px #e5e6e7;
+  border-left: solid 1px #e5e6e7;
+  border-radius: 11px;
+  box-shadow: 4px 4px 3px #F6F7F8;
 }
 
-#login-form input, #login-button {
-  margin: 1em .5em;
-  font-size: .9em;
+#login-form input,
+#login-button {
+  margin: 1em 0.5em;
+  font-size: 1em;
   border-radius: 10px;
-  padding: .2em;
+  padding: 9px;
 }
 
 #login-form input {
-  border: 1px solid #93a0af;
+  border: 1px solid #DDDDDD;
 }
 
 #login-form hr {
   width: 75%;
+  border-top: 1px solid #adadad;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
 }
 
 #login-button {
@@ -119,6 +128,96 @@ table {
   margin: 0;
 }
 
+/*--- ADMIN NAV BAR --- */
+.admin-nav {
+  margin: 0;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-nav a {
+  width: 33%;
+  padding: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.admin-nav a,
+.admin-nav a:visited {
+  text-decoration: none;
+  background: #eef0f2;
+  color: #5e5e5e;
+}
+
+.admin-nav a:hover,
+.admin-nav a:active,
+.selected-admin-link {
+  color: #eef0f2;
+  background: #66717e;
+}
+
+/*--- ADMIN: EDIT/ADD ART SECTION --- */
+
+.artwork-form {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 60%;
+  margin: 0 1em;
+  border-top: solid 1px #eef0f2;
+  border-left: solid 1px #eef0f2;
+  border-radius: 11px;
+  box-shadow: 4px 4px 3px #F6F7F8;
+  padding: 1.3rem;
+}
+
+.artwork-form * {
+  font-size: 1em;
+}
+
+.artwork-form input,
+.artwork-form button,
+.artwork-form textarea {
+  padding: 2px;
+  margin: 0.5em 0;
+  border-radius: 7px;
+  border: solid 1px #DDDDDD;
+}
+
+.artwork-form button {
+  width: 100%;
+  align-self: center;
+  box-shadow: none;
+  padding: 3px;
+}
+
+.edit-container {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.form-container, .form-img-container {
+  flex: 1 0;
+}
+
+.full-form {
+  flex: 1 0 70%;
+  display: flex;
+  justify-content: center;
+}
+
+.genre-list {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: space-between;
+}
+
+.genre-item {
+  flex: 0 0 33%;
+  padding: 3px;
+}
 
 /* --- TABLE USER MANAGEMENT --- */
 .adminNav {
@@ -135,20 +234,19 @@ table {
   padding-right: 10%;
 }
 
-
 #table {
   text-align: center;
   border-collapse: collapse;
   width: 100%;
 }
 
-#table td, #table th {
+#table td,
+#table th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-
-#table tr:nth-child(even){
+#table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
@@ -177,7 +275,7 @@ table {
   padding: 1rem;
   max-width: 40%;
   min-width: 40%;
-  background-color: rgb(240, 240, 240)
+  background-color: rgb(240, 240, 240);
 }
 
 .singleArtImage {
@@ -192,7 +290,7 @@ table {
 }
 
 .underArt > span > * {
-  margin: .25rem;
+  margin: 0.25rem;
 }
 
 .noQty {
@@ -203,7 +301,36 @@ table {
   padding: 1rem;
 }
 
-/* --- ACCOUNT PAGE --- */
+/* --- ARTIST LIST --- */
+.artist-grid {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.artist-tile {
+  background: #eef0f2;
+  border-radius: 10px;
+  flex: 1 1 calc(25%);
+  margin: 1rem;
+  padding: .5rem;
+}
+
+.artist-tile a {
+  color: black;
+  text-decoration: none;
+  transition: all .5s;
+}
+
+.artist-tile a:hover {
+  color: #caa305;
+}
+
+.artist-tile h2 {
+  color: #4667b9;
+}
+  /* --- ACCOUNT PAGE --- */
+
 .account {
   margin: 1rem;
 }
