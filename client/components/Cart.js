@@ -1,12 +1,11 @@
 // LIBRARIES
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 // FILES
-import { getArtworks } from '../redux/artworks';
 import { getArtworks } from '../redux/artworks'
 import { changeCartItem, removeCartItem } from '../redux/cart'
-import Checkout from './Checkout';
+import Checkout from './Checkout'
 
 export class Cart extends Component {
   constructor(props) {
