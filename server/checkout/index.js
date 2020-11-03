@@ -12,13 +12,16 @@ router.post('/session', async (req, res, next) => {
     client_email = req.user.email
   }
   //if the user isnt logged in get the cart from local storage
-  const session = await stripe.checkout.session.create({
+  const session = await stripe.checkout.sessions.create({
     success_url: 'http://localhost:3000/',
     cancel_url: 'http://localhost:3000/',
     payment_method_types: ['card'],
-    client_reference_id: client_ref_id,
-    customer_email: client_email,
-    mode: 'payment'
+    line_items: [{
+      
+    }],
+    //client_reference_id: client_ref_id,
+    //customer_email: client_email,
+    mode: 'payment',
   })
   res.json({ id: session.id })
 })

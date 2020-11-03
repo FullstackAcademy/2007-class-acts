@@ -1,4 +1,5 @@
-const { Artwork, Artist, ShopImage, Genre, User, Order, OrderItem, syncDB } = require('./server/db')
+const { Artwork, Artist, ShopImage, Genre, User, Order, OrderItem, syncDB } = require('./server/db');
+const bcrypt = require('bcrypt');
 
 const artworkData = [[`A Bigger Splash`,`Painted in California between April and June 1967, and measuring 242.5 centimetres (95.5 in) by 243.9 centimetres (96.0 in), this painting depicts a swimming pool beside a modern house, disturbed by a large splash of water created by an unseen figure who has apparently just jumped in from a diving board.`,1967,`Graphic Art`,29.99,7],
 [`Unique Forms of Continuity in Space`,`Unique Forms of Continuity in Space (Italian: Forme uniche della continuità nello spazio) is a 1913 bronze Futurist sculpture by Umberto Boccioni. It is seen as an expression of movement and fluidity. The sculpture is depicted on the obverse of the Italian-issue 20 cent euro coin.`,1913,`Sculpture`,74.99,3],
@@ -71,7 +72,8 @@ const artistData = [
 [`Wassily Kandinsky`,`Wassily Wassilyevich Kandinsky was a Russian painter and art theorist. Kandinsky is generally credited as the pioneer of abstract art.`,`Russian`],
 [`John Constable`,`John Constable, was an English landscape painter in the Romantic tradition. Born in Suffolk, he is known principally for revolutionizing the genre of landscape painting with his pictures of Dedham Vale, the area surrounding his home – now known as "Constable Country" – which he invested with an intensity of affection`,`British`],
 [`Kerry James Marshall`,`Kerry James Marshall challenges the marginalization of African-Americans through his formally rigorous paintings, drawings, videos, and installations, whose central protagonists are always, in his words, “unequivocally, emphatically black.”`,`American`],
-[`Anita Malfatti`,`Anita Catarina Malfatti is heralded as the first Brazilian artist to introduce European and American forms of Modernism to Brazil. Her solo exhibition in Sao Paulo, from 1917–1918, was controversial at the time, and her expressionist style and subject were revolutionary for complacently old-fashioned art expectations.`,`Brazilian`]
+[`Anita Malfatti`, `Anita Catarina Malfatti is heralded as the first Brazilian artist to introduce European and American forms of Modernism to Brazil. Her solo exhibition in Sao Paulo, from 1917–1918, was controversial at the time, and her expressionist style and subject were revolutionary for complacently old-fashioned art expectations.`, `Brazilian`],
+[`Unknown`, `N/A`, `Unknown`]
 ]
 
 const genreData = [
@@ -282,18 +284,20 @@ const seed = async () => {
   //this sets the genres for each artist according to the association array above
 
   await Promise.all(artists.map((artist, ix) => {
-    const genreArray = artistAssociations[ix][1]
+    const genreArray = artistAssociations[ix] ? artistAssociations[ix][1] : []
     return genreArray.map(genreIx => {
       const genre = genres[genreIx - 1]
       return artist.addGenre(genre)
     })
   }).flat())
 
+  const hashedPW = await bcrypt.hash('test', 10)
+
   const [ zoe, zaina, adam, jamil ] = await Promise.all([
-    User.create({ email: 'zoe@zoe.com'}),
-    User.create({ email: 'zaina@zaina.com'}),
-    User.create({ email: 'adam@adam.com'}),
-    User.create({ email: 'jamil@jamil.com'})
+    User.create({ email: 'zoe@zoe.com', password: hashedPW }),
+    User.create({ email: 'zaina@zaina.com', password: hashedPW }),
+    User.create({ email: 'adam@adam.com', password: hashedPW }),
+    User.create({ email: 'jamil@jamil.com', password: hashedPW })
   ]);
 
   const today = new Date();

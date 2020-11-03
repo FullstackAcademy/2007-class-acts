@@ -1,5 +1,16 @@
-const mediums = ['Graphic Art','Sculpture', 'Installation', 'Performance Art']
+const mediums = ['Graphic Art', 'Sculpture', 'Installation', 'Performance Art']
 const orderStatuses = ['Created', 'Processing', 'Cancelled', 'Completed']
+const artistProperties = ['id', 'name', 'bio', 'nationality']
+const artProperties = [
+  'title',
+  'id',
+  'description',
+  'year',
+  'medium',
+  'price',
+  'quantity',
+  'artistId',
+]
 
 const minRating = 0
 
@@ -16,6 +27,8 @@ const stripeAPIKey = 'pk_test_51HjGjMLMMiRvpdjj8pIO1leyiuo0sHCfIcH4437cdtmWMq3aR
 module.exports = {
   mediums,
   orderStatuses,
+  artProperties,
+  artistProperties,
   minRating,
   maxRating,
   minReviewLength,

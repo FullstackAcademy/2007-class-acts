@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 // FILES
 import { getArtworks } from '../redux/artworks';
+import { getArtworks } from '../redux/artworks'
 import { changeCartItem, removeCartItem } from '../redux/cart'
 import Checkout from './Checkout';
 
@@ -11,7 +12,7 @@ export class Cart extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: true
+      loading: true,
     }
     this.quantitySelect = this.quantitySelect.bind(this)
     this.changeQuantity = this.changeQuantity.bind(this)
@@ -19,42 +20,46 @@ export class Cart extends Component {
   }
 
   //this has to be async/await so that the artworks are loaded
-  async componentDidMount(){
-    if(this.props.artworks.length === 0) await this.props.getArtworks();
-    this.setState({...this.state, loading: false})
+  async componentDidMount() {
+    if (this.props.artworks.length === 0) await this.props.getArtworks()
+    this.setState({ ...this.state, loading: false })
   }
 
   //build quantity select options based on max quantity of each artwork in the cart
-  quantitySelect(art){
+  quantitySelect(art) {
     const quantitySelection = []
     for (let i = 1; i <= art.quantity; i++) {
-      quantitySelection.push(<option key={i} value={i}>{i}</option>)
+      quantitySelection.push(
+        <option key={i} value={i}>
+          {i}
+        </option>
+      )
     }
     return quantitySelection
   }
 
-  changeQuantity(qty, cartItem){
+  changeQuantity(qty, cartItem) {
     let isLoggedIn = false
-    if(this.props.user.id) isLoggedIn = true
-    this.props.changeCartItem({...cartItem, quantity: +qty}, isLoggedIn)
+    if (this.props.user.id) isLoggedIn = true
+    this.props.changeCartItem({ ...cartItem, quantity: +qty }, isLoggedIn)
   }
 
-  removeItem(cartItem){
+  removeItem(cartItem) {
     let isLoggedIn = false
-    if(this.props.user.id) isLoggedIn = true
+    if (this.props.user.id) isLoggedIn = true
     this.props.removeCartItem(cartItem, isLoggedIn)
   }
 
   render() {
-    const { artworks, cart } = this.props;
+    const { artworks, cart } = this.props
 
     //a beautiful loading message
-    if(this.state.loading) {
-      return (<div>Loading</div>)
+    if (this.state.loading) {
+      return <div>Loading</div>
     }
 
     //if nothing in cart, say something nice:
-    if(cart.length === 0) {
+    if (cart.length === 0) {
       return (
         <div>
           <h2>Your cart is empty!</h2>
@@ -100,19 +105,21 @@ export class Cart extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     cart: state.cart,
     artworks: state.artworks,
-    user: state.user
+    user: state.user,
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getArtworks: () => dispatch(getArtworks()),
-    changeCartItem: (cartItem, isLoggedIn) => dispatch(changeCartItem(cartItem, isLoggedIn)),
-    removeCartItem: (cartItem, isLoggedIn) => dispatch(removeCartItem(cartItem, isLoggedIn))
+    changeCartItem: (cartItem, isLoggedIn) =>
+      dispatch(changeCartItem(cartItem, isLoggedIn)),
+    removeCartItem: (cartItem, isLoggedIn) =>
+      dispatch(removeCartItem(cartItem, isLoggedIn)),
   }
 }
 
