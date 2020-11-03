@@ -32,7 +32,7 @@ export const getUsers = () => {
 export const destroyUser = (user) => {
   return async (dispatch) => {
     try {
-      await axios.delete(`/api/users/${user.id}`, user)
+      await axios.delete(`/api/users/${user.id}`)
       dispatch(_destroyUser(user))
     } catch (err) {
       console.log(err)
@@ -42,11 +42,10 @@ export const destroyUser = (user) => {
 
 // Need to add the updateUser thunk
 export const updateUser = (user) => {
-  console.log('23231',user.id)
   return async (dispatch) => {
     try {
       const updatedUser = await axios.put(`/api/users/${user.id}`, user)
-      console.log("213131231", updatedUser)
+      console.log("updated", updatedUser)
       dispatch(_updateUser(user))
     } catch (err) {
       console.log(err)
