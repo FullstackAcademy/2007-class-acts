@@ -1,56 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { User, Session, Cart, CartItem } = require('../db')
+const { User, Session, Cart, CartItem, Order, OrderItem } = require('../db')
 const bcrypt = require('bcrypt');
 
 const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7
-
-// GET /api/users
-router.get('/', async(req, res, next) => {
-  try {
-      if(req.user.isAdmin) {
-        console.log('\nAuthorized...\n')
-        const users = await User.findAll()
-        res.send(users)
-      } else { req.sendStatus(401) }
-  } catch (error) {
-      console.log('\nNot Authorized...\n')
-      res.sendStatus(401)
-  }
-})
-
-// DELETE /api/users/:userID
-router.delete('/:userID', async(req, res, next) => {
-  try {
-    if(req.user.isAdmin) {
-      await User.destroy({where: {id: req.params.userID, isAdmin: false}})
-      res.sendStatus(200)
-    } else { req.sendStatus(401) }
-  }
-  catch (error){
-    console.log('\nNot Authorized...\n')
-    res.sendStatus(401)
-    next(error)
-  }
-});
-
-router.put('/:userID', async(req, res, next) => {
-    const hashedPW = await bcrypt.hash(req.body.password, 10)
-    req.body.password = hashedPW
-
-  try {
-    if(req.user.isAdmin){
-      const user = await User.findByPk(req.params.userID)
-      await user.update(req.body)
-      res.status(204).send(user)
-    } else { req.sendStatus(401) }
-  }
-  catch (error){
-    console.log('\nNot Authorized...\n')
-    res.sendStatus(401)
-    next(error)
-  }
-});
 
 // GET /api/users/:sessionId
 router.get('/:sessionId', async (req, res, next) => {
@@ -60,10 +13,16 @@ router.get('/:sessionId', async (req, res, next) => {
       include: [
         {
           model: User,
-          include: [ {
-            model: Cart,
-            include: [CartItem]
-          }]
+          include: [
+            {
+              model: Cart,
+              include: [CartItem],
+            },
+            {
+              model: Order,
+              include: OrderItem
+            }
+          ]
         }
       ]
     })
@@ -142,10 +101,17 @@ router.post('/login', async (req, res) => {
           email,
         },
         //we need to include the cart info w the user on login and on session recognition
-        include: [Session, {
-          model: Cart,
-          include: [CartItem]
-        }],
+        include: [
+          Session,
+          {
+            model: Order,
+            include: [OrderItem]
+          },
+          {
+            model: Cart,
+            include: [CartItem]
+          }
+        ],
       });
 
       if (foundUser) {
