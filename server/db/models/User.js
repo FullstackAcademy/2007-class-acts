@@ -7,6 +7,7 @@ const User = db.define('user', {
     defaultValue: UUIDV4,
     primaryKey: true,
   },
+
   email: {
     type: STRING,
     allowNull: false,
