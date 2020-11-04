@@ -2,18 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getUsers, destroyUser, updateUser }  from '../redux/users';
 import NotFound from './NotFound';
+import { Link } from 'react-router-dom'
+
 
 export class Users extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             users: [],
-            isChecked: true
         }
         this.handleResetPassword = this.handleResetPassword.bind(this)
-        // this.updateCheckbox = this.updateCheckbox.bind(this)
-        // this.pressButton = this.pressButton.bind(this)
-        
     }
 
     async componentDidMount(){
@@ -21,25 +19,6 @@ export class Users extends React.Component {
         this.setState({users: this.props.users})
 
     }
-
-    handleResetPassword(ev){
-        //Needs to be implemented
-        alert("Needs to be implemented")
-    }
-
-    // updateCheckbox(ev) {
-    //     this.state.users.map(u=>{
-    //         if(u.isAdmin){
-    //             ev.target.checked
-    //         }
-    //     })
-    // }
-
-    // pressButton(ev){
-    //     // ev.preventDefault();
-    //     this.setState({isChecked: !this.state.is_checked});
-    // }
-    
 
    render(){
        // Checks to see if user is admin or not. If user is admin, then this.props.users.length > 0
@@ -67,7 +46,7 @@ export class Users extends React.Component {
                                 <td>{user.email}</td> 
 
                                 {/* Handels Resetting Password */}
-                                <td><button onClick={this.handleResetPassword}>Reset</button></td>
+                                <td><Link value={user} to={`/admin/forgotpassword/:${user.id}`}>Reset</Link></td>
 
                                 {/* Handels Deleting a User */}
                                 <td><button id={user.id} value={user.id} onClick={() => {

@@ -44,7 +44,7 @@ export const destroyUser = (user) => {
 export const updateUser = (user) => {
   return async (dispatch) => {
     try {
-      const updatedUser = await axios.put(`/api/users/${user.id}`, user)
+      const updatedUser = await axios.put(`/api/users/:${user.id}`, user)
       dispatch(_updateUser(updatedUser.data))
     } catch (err) {
       console.log(err)
