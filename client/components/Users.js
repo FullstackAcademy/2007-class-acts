@@ -1,21 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import  { getUsers, destroyUser, updateUser }  from '../redux/users';
-import { Redirect } from 'react-router-dom'
-
+import { getUsers, destroyUser, updateUser }  from '../redux/users';
+import NotFound from './NotFound';
 
 export class Users extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             users: [],
+            isChecked: true
         }
         this.handleResetPassword = this.handleResetPassword.bind(this)
+        // this.updateCheckbox = this.updateCheckbox.bind(this)
+        // this.pressButton = this.pressButton.bind(this)
+        
     }
 
     async componentDidMount(){
         await this.props.getUsers()
         this.setState({users: this.props.users})
+
     }
 
     handleResetPassword(ev){
@@ -23,18 +27,27 @@ export class Users extends React.Component {
         alert("Needs to be implemented")
     }
 
+    // updateCheckbox(ev) {
+    //     this.state.users.map(u=>{
+    //         if(u.isAdmin){
+    //             ev.target.checked
+    //         }
+    //     })
+    // }
+
+    // pressButton(ev){
+    //     // ev.preventDefault();
+    //     this.setState({isChecked: !this.state.is_checked});
+    // }
+    
+
    render(){
-       if (this.props.user.isAdmin === undefined) return (<h1 style={{textAlign: "center"}}>Not Authorized</h1>)
+       // Checks to see if user is admin or not. If user is admin, then this.props.users.length > 0
+       if (this.props.users.length === 0) return <NotFound />
        return (
            <div>
                <h1>Users</h1>
                 <h2>{`Admin: ${this.props.user.isAdmin}`}</h2>
-                
-               <div className="adminNav">
-                   <div>Products</div>
-                   <div>Users</div>
-                   <div>Orders</div>
-               </div>
                <table id="table">
                     <thead>
                         <tr>
@@ -57,23 +70,17 @@ export class Users extends React.Component {
                                 <td><button onClick={this.handleResetPassword}>Reset</button></td>
 
                                 {/* Handels Deleting a User */}
-                                <td><button name={user.name} value={user.id} onClick={() => {
-                                     if(this.props.user.isAdmin === false ||this.props.user.isAdmin === undefined ){
-                                         alert('Not Authorized!')
-                                         setTimeout(<Redirect to = "/" />, 2000);
-
-                                     } else {
+                                <td><button id={user.id} value={user.id} onClick={() => {
                                          const updatedUsers = this.state.users.filter( u => u.id !== user.id)
                                          this.setState({users: updatedUsers})
-                                         this.props.deleteUser(user)}
-                                     }
-                                    }>X</button></td>
+                                         this.props.deleteUser(user)}}>X</button></td>
 
                                 {/* Handels Updating a User to admin/!admin  */}
-                                <td><input name={user} value={user.isAdmin} type="checkbox" onChange={(ev) => {
-                                    user.isAdmin = !user.isAdmin;
-                                    this.props.updateAdminStatus(user)
-                                }} /></td>
+                                    <td><input type="checkbox" checked={user.isAdmin ? "checked" : ""} onChange={ ()=>{
+                                        user.isAdmin = !user.isAdmin
+                                        this.props.updateAdminStatus(user)
+                                    }}/>  
+                                    </td>
                             </tr>
                             )}
                         )
