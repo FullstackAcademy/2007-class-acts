@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom';
 import { getArtworks } from '../redux/artworks';
 
 class UserOrders extends React.Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
       reviews: null
     }

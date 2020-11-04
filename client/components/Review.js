@@ -4,7 +4,7 @@ export const Review = ({ review }) => {
 
   const stars = (len) => {
     const starArray = []
-    for(let i = 0; i < len; i++) starArray.push(<img key={i} src='/img/star.png'/>)
+    for(let i = 0; i < len; i++) starArray.push(<span key={i} className="star">★</span>)
     return starArray
   }
 

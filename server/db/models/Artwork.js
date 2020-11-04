@@ -6,26 +6,26 @@ const Artwork = db.define('artwork', {
   id: {
     type: UUID,
     defaultValue: UUIDV4,
-    primaryKey: true
+    primaryKey: true,
   },
   title: {
     type: STRING,
-    allowNull: false
+    allowNull: false,
   },
   description: {
     type: TEXT,
-    allowNull: false
+    allowNull: false,
   },
   year: INTEGER,
   medium: ENUM(mediums),
   price: {
     type: DOUBLE,
-    allowNull: false
+    allowNull: false,
   },
   quantity: {
     type: INTEGER,
-    allowNull: false
-  }
+    allowNull: false,
+  },
 })
 
 module.exports = Artwork

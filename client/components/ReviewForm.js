@@ -7,7 +7,7 @@ export default class ReviewForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      rating: 1,
+      rating: 0,
       text: '',
       artwork: {},
       error: '',
@@ -34,6 +34,7 @@ export default class ReviewForm extends Component {
   async handleSubmit(ev) {
     ev.preventDefault()
     if(this.state.text.length < minReviewLength || this.state.text.length > maxReviewLength) this.setState({...this.state, error: `Review must be between ${minReviewLength} and ${maxReviewLength} characters.`})
+    else if(this.state.rating === 0) this.setState({...this.state, error:"Choose a star rating 1 to 5."})
     else {
       try {
         const review = (await axios.post('/api/reviews', { ...this.state })).data

@@ -4,3 +4,4 @@ server/public/bundle.js.map
 server/public/bundle.js.LICENSE.txt
 .idea
 .DS_Store
+.vscode
