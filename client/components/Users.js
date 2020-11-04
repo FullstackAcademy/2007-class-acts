@@ -20,10 +20,6 @@ export class Users extends React.Component {
 
     }
 
-    handleResetPassword(ev){
-       console.log('22222', ev.user)
-    }
-
    render(){
        // Checks to see if user is admin or not. If user is admin, then this.props.users.length > 0
        if (this.props.users.length === 0) return <NotFound />

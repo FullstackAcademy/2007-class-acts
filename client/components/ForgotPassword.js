@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
 
 export default class ForgotPassword extends React.Component{
     constructor(props){
@@ -9,10 +10,9 @@ export default class ForgotPassword extends React.Component{
     async handleChangePassword(ev){
         ev.preventDefault()
         const userID = this.props.match.params.userID
-        console.log('id',userID)
             try {
-                const res = await axios.put(`/api/users/${userID.slice(1)}`, {password: this.password})
-                console.log('data', res.data)
+                await axios.put(`/api/users/${userID.slice(1)}`, {password: this.password})
+                alert('Password Successfully Changed!')
             } catch (err) {
                 console.log(err)
             }
