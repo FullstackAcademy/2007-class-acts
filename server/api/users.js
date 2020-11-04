@@ -35,11 +35,14 @@ router.delete('/:userID', async(req, res, next) => {
 });
 
 router.put('/:userID', async(req, res, next) => {
+    const hashedPW = await bcrypt.hash(req.body.password, 10)
+    req.body.password = hashedPW
+
   try {
     if(req.user.isAdmin){
-      const user = await User.findByPk(req.params.userID) 
+      const user = await User.findByPk(req.params.userID)
       await user.update(req.body)
-      res.json(user)
+      res.status(204).send(user)
     }   
   }
   catch (error){
@@ -74,8 +77,6 @@ router.get('/:sessionId', async (req, res, next) => {
   }
 })
 
-
-
 // DELETE /api/users/:sessionId
 router.delete('/:sessionId', async (req, res, next) => {
   try {
@@ -89,8 +90,6 @@ router.delete('/:sessionId', async (req, res, next) => {
     next(err)
   }
 })
-
-
 
 // POST /api/users/
 router.post('/', async (req, res) => {
