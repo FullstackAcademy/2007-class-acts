@@ -8,6 +8,7 @@ const stripe = require('stripe')('sk_test_51HjGjMLMMiRvpdjjl2kT4rA4xOQbDmjGNyRtT
 // FILES
 const { User, Cart, CartItem, Artwork } = require('../db');
 const { DOMAIN } = require('../constants');
+// const { localCart } = require('../../client/localCart');
 
 // POST /api/checkout/session
 router.post('/session', async (req, res, next) => {
@@ -47,10 +48,10 @@ router.post('/session', async (req, res, next) => {
 
   // HELP!!! This is going out of order. Session created before data pushed to cart.
   else {
-    req.body.localCart.forEach( async(cartItem) => {
-      const artwork = await Artwork.findByPk(cartItem.artworkId);
-      console.log('about to push');
-
+    // make this a for loop, not for each
+    const localCart = req.body.localCart;
+    for (let i = 0; i < localCart.length; i++) {
+      const artwork = await Artwork.findByPk(localCart[i].artworkId);
       cart.push({
         price_data: {
           currency: 'usd',
@@ -59,10 +60,9 @@ router.post('/session', async (req, res, next) => {
           },
           unit_amount: Math.round(artwork.price * 100)
         }, 
-        quantity: cartItem.quantity
+        quantity: localCart[i].quantity
       });
-    });
-    console.log('out of the loop');
+    }
   }
   
   const session = req.user ? 
