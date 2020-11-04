@@ -1,4 +1,3 @@
-
 const { Artwork, Artist, ShopImage, Genre, User, Order, OrderItem, syncDB } = require('./server/db');
 const bcrypt = require('bcrypt');
 
