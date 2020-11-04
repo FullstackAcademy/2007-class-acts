@@ -294,10 +294,10 @@ const seed = async () => {
   const hashedPW = await bcrypt.hash('test', 10)
 
   const [ zoe, zaina, adam, jamil ] = await Promise.all([
-    User.create({ email: 'zoe@zoe.com', password: hashedPW }),
-    User.create({ email: 'zaina@zaina.com', password: hashedPW }),
-    User.create({ email: 'adam@adam.com', password: hashedPW }),
-    User.create({ email: 'jamil@jamil.com', password: hashedPW })
+    User.create({ email: 'zoe@zoe.com', password: hashedPW, isAdmin: true }),
+    User.create({ email: 'zaina@zaina.com', password: hashedPW, isAdmin: true }),
+    User.create({ email: 'adam@adam.com', password: hashedPW, isAdmin: true }),
+    User.create({ email: 'jamil@jamil.com', password: hashedPW, isAdmin: true })
   ]);
 
   const today = new Date();

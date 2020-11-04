@@ -12,10 +12,10 @@ router.get('/', async(req, res, next) => {
         console.log('\nAuthorized...\n')
         const users = await User.findAll()
         res.send(users)
-      } 
+      } else { req.sendStatus(401) }
   } catch (error) {
       console.log('\nNot Authorized...\n')
-      res.status(401)
+      res.sendStatus(401)
   }
 })
 
@@ -24,12 +24,12 @@ router.delete('/:userID', async(req, res, next) => {
   try {
     if(req.user.isAdmin) {
       await User.destroy({where: {id: req.params.userID, isAdmin: false}})
-      res.status(200)
-    } 
+      res.sendStatus(200)
+    } else { req.sendStatus(401) }
   }
   catch (error){
     console.log('\nNot Authorized...\n')
-    res.status(401)
+    res.sendStatus(401)
     next(error)
   }
 });
@@ -37,14 +37,14 @@ router.delete('/:userID', async(req, res, next) => {
 router.put('/:userID', async(req, res, next) => {
   try {
     if(req.user.isAdmin){
-      const user = await User.findByPk(req.params.userID) 
+      const user = await User.findByPk(req.params.userID)
       await user.update(req.body)
       res.json(user)
-    }   
+    } else { req.sendStatus(401) }
   }
   catch (error){
     console.log('\nNot Authorized...\n')
-    res.status(401)
+    res.sendStatus(401)
     next(error)
   }
 });
