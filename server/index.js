@@ -5,6 +5,8 @@ const auth = require('./middleware/auth')
 
 const app = express()
 
+const bodyParser = require('body-parser');
+app.use('/checkout/webhook', bodyParser.raw({type: "*/*"}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, './public')))

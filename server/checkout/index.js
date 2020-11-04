@@ -4,13 +4,14 @@ const router = express.Router();
 
 // might want to hide this key in .env file
 const stripe = require('stripe')('sk_test_51HjGjMLMMiRvpdjjl2kT4rA4xOQbDmjGNyRtTFpqSpFNwEf2u417KKyjgC0vVhvmS8JP6uYmJFtR0mSlumgBpKUZ00tarU8ly2');
+const endpointSecret = 'whsec_oOK87w36wnsRyQ5Sb9iuaYA0Cvz231hc';
 
 // FILES
 const { User, Cart, CartItem, Artwork } = require('../db');
 const { DOMAIN } = require('../constants');
 // const { localCart } = require('../../client/localCart');
 
-// POST /api/checkout/session
+// POST /checkout/session
 router.post('/session', async (req, res, next) => {
   let client_ref_id = null;
   let client_email = null;
@@ -86,18 +87,45 @@ router.post('/session', async (req, res, next) => {
   res.json({ id: session.id })
 })
 
-// Not hitting this route
+
+
+// router.use(bodyParser.json());
+
+
+const bodyParser = require('body-parser');
+
 // https://stripe.com/docs/payments/checkout/fulfill-orders
-router.post('/webhook', (req, res, next) => {
+router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res, next) => {
   const payload = req.body;
-  console.log("Got payload: ", payload);
+  const sig = req.headers['stripe-signature'];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
+    console.log('try', event)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
   // handleOrder();
   // sendConfirmationEmail();
-  res.status(200)
+
+  // Handle the checkout.session.completed event
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+
+    // Fulfill the purchase...
+    handleOrder(session);
+  }
+
+  res.status(200);
 })
 
 // TODO
-function handleOrder() {
+function handleOrder(session) {
+  console.log('session', session);
   // Create express routes for each step...
   // for each artwork in order, adjust quantity of artwork in db
   // add Order, OrderItem to db
