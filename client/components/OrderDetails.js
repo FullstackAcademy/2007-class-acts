@@ -7,7 +7,7 @@ const OrderDetails = ({order, artworks}) => {
   // calculate total price of each order
   const orderTotal = order.orderItems
     .map(item => item.orderedPrice * item.orderedQuantity)
-    .reduce((total, order) => total + order)
+    .reduce((total, order) => total + order, 0)
 
   // get artworks in order
   const orderItemArt = order.orderItems.map(oi => oi.artworkId);

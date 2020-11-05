@@ -14,6 +14,12 @@ const validateData = (obj, arr) => {
   return data
 }
 
+const getCookieValue = (name) => {
+  let result = document.cookie.match("(^|[^;]+)\\s*" + name + "\\s*=\\s*([^;]+)")
+  return result ? result.pop() : ""
+}
+
 module.exports = {
   validateData,
+  getCookieValue
 }

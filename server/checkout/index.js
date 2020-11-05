@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // LIBRARIES
 const express = require('express');
 const router = express.Router();
@@ -16,24 +17,27 @@ router.post('/session', async (req, res, next) => {
   let client_ref_id = null;
   let client_email = null;
   let cart = [];
+  //metadata allows you to pass info the stripe that isnt being used to process the payment
+  //metadata is used here to pass artworkIds
+  let metadata = {}
 
   // if the user is logged in...
   if (req.user) {
-    const user = await User.findByPk(req.user.id, { 
+    const user = await User.findByPk(req.user.id, {
       include: [{
-        model: Cart, 
+        model: Cart,
         include: [{
           model: CartItem,
           include: [Artwork]
-        }] 
-      }] 
+        }]
+      }]
     });
 
     client_ref_id = req.user.id;
     client_email = req.user.email;
 
     user.cart.cartItems.forEach(cartItem => {
-      cart.push({ 
+      cart.push({
         price_data: {
           currency: 'usd',
           product_data: {
@@ -41,10 +45,11 @@ router.post('/session', async (req, res, next) => {
           },
           unit_amount: Math.round(cartItem.artwork.price * 100)
         },
-        quantity: cartItem.quantity 
+        quantity: cartItem.quantity
       });
+      metadata[cartItem.artwork.title] = cartItem.artwork.id
     });
-  } 
+  }
   // if user isn't logged in, grab the cart from the local storage (passed in the req object)
   else {
     const localCart = req.body.localCart;
@@ -57,14 +62,15 @@ router.post('/session', async (req, res, next) => {
             name: artwork.title
           },
           unit_amount: Math.round(artwork.price * 100)
-        }, 
+        },
         quantity: localCart[i].quantity
       });
+      metadata[artwork.title] = artwork.id
     }
   }
-  
+  console.log(metadata)
   // send stripe user info, including ID and email if logged in
-  const session = req.user ? 
+  const session = req.user ?
     await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: cart,
@@ -73,14 +79,16 @@ router.post('/session', async (req, res, next) => {
       // shipping_address_collection: true,
       mode: 'payment',
       success_url: `${DOMAIN}/orderconfirmation`,
-      cancel_url: `${DOMAIN}/orderconfirmation`
+      cancel_url: `${DOMAIN}/orderconfirmation`,
+      metadata: metadata
     }) :
     await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: cart,
       mode: 'payment',
       success_url: `${DOMAIN}/orderconfirmation`,
-      cancel_url: `${DOMAIN}/orderconfirmation`
+      cancel_url: `${DOMAIN}/orderconfirmation`,
+      metadata: metadata
     });
 
   res.json({ id: session.id })
@@ -95,6 +103,7 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res, n
 
   try {
     event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
+    console.log(event)
   } catch (err) {
     console.log(err)
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -103,12 +112,11 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res, n
   // Handle the checkout.session.completed event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-
+    console.log('session:', session)
     // Fulfill the purchase...
     handleOrder(session);
     // sendConfirmationEmail();
   }
-
   res.status(200);
 })
 
@@ -116,7 +124,8 @@ function handleOrder(session) {
   if (session.payment_status === 'paid') {
     // if a logged in user
     if (session.customer_email !== null) {
-      handleAuthUser(session.client_reference_id);
+      handleAuthUser(session);
+
     } else {
       handleGuestUser(session);
     }
@@ -126,48 +135,41 @@ function handleOrder(session) {
   }
 }
 
-async function handleAuthUser(userId) {
-  const user = await User.findByPk(userId, { 
-    include: [{
-      model: Cart, 
-      include: [{
-        model: CartItem,
-        include: [Artwork]
-      }] 
-    }] 
-  }); 
+async function handleAuthUser(session) {
+  const userId = session.client_reference_id
+  //get line items from Stripe
+  const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+  console.log('line items:', lineItems);
+  //get object with artwork IDs from Stripe
+  const artData = session.metadata
+
   const now = new Date();
   const order = await Order.create({
       date: now,
       status: 'Created',
+      //associate user with order
+      userId: userId
       // address: '1234 First St' -- HOW TO GET SHIPPING ADDRESS FROM STRIPE?
   });
 
-  // CHANGE TO GET FROM STRIPE LINE ITEMS
-  for (let i = 0; i < user.cart.cartItems.length; i++) {
-    // Put items in the cart into the OrderItem table -- IS THERE A WAY TO GET THIS DATA BACK FROM STRIPE INSTEAD?
+  for (let i = 0; i < lineItems.data.length; i++) {
+    //Use line items to generate orderItems in DB
     const orderItem = await OrderItem.create({
-      orderedPrice: user.cart.cartItems[i].artwork.price,
-      orderedQuantity: user.cart.cartItems[i].quantity
+      orderedPrice: lineItems.data[i].amount_subtotal / 100,
+      orderedQuantity: lineItems.data[i].quantity,
+      // associate orderItems with the main order
+      orderId: order.id,
+      // Associate artwork with OrderItem
+      artworkId: artData[lineItems.data[i].description]
     });
 
-    // ADD ARTWORK ID TO STRIPE REQUEST OBJECT, THEN HARVEST IT HERE SOMEHOW
-    // Associate artwork with OrderItem
-    const artwork = await Artwork.findByPk(user.cart.cartItems[i].artwork.id);
-    artwork.addOrderItem(orderItem);
-
-    // associate orderItems with the main order
-    order.addOrderItem(orderItem);
-
     // decrement quantity in stock
-    await artwork.update({ quantity: artwork.quantity - user.cart.cartItems[i].quantity });
+    const artwork = await Artwork.findByPk(orderItem.artworkId)
+    await artwork.update({ quantity: artwork.quantity - lineItems.data[i].quantity });
   }
 
-  // associate the order with the user
-  user.addOrder(order);
-
   // clear the cart
-  const userCart = await Cart.findByPk(user.cart.id);
+  const userCart = await Cart.findOne({ where: { userId } });
   await CartItem.destroy({
     where: { cartId: userCart.id }
   });
@@ -177,7 +179,8 @@ async function handleAuthUser(userId) {
 async function handleGuestUser(session) {
   // Get line items from Stripe req object
   const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-  console.log(lineItems);
+  console.log('line items:', lineItems);
+  const artData = session.metadata
 
   // create order
   const now = new Date();
@@ -191,23 +194,20 @@ async function handleGuestUser(session) {
     // Put items in the cart into the OrderItem table
     const orderItem = await OrderItem.create({
       orderedPrice: lineItems.data[i].amount_subtotal / 100, // CONFIRM THAT THIS IS THE CORRECT $$
-      orderedQuantity: lineItems.data[i].quantity
+      orderedQuantity: lineItems.data[i].quantity,
+      //data description is the title, which is the key for the artworkId in the artdata object
+      artworkId: artData[lineItems.data[i].description],
+      orderId: order.id
     });
 
-    // Associate artwork with OrderItem -- NEED TO PUT ARTWORK ID IN THE DATA SENT TO STRIPE
-    // const artwork = await Artwork.findByPk(user.cart.cartItems[i].artwork.id);
-    // artwork.addOrderItem(orderItem);
-
-    // associate orderItems with the main order
-    order.addOrderItem(orderItem);
-
     // decrement quantity in stock
-    // await artwork.update({ quantity: artwork.quantity - user.cart.cartItems[i].quantity }); -- NEED TO GET ARTWORK FROM ABOVE LINE
-  
+    const artwork = await Artwork.findByPk(orderItem.artworkId)
+    await artwork.update({ quantity: artwork.quantity-=lineItems.data[i].quantity})
   }
   // TODO: CLEAR THE LOCAL CART IN THE ORDER CONFIRMATION COMPONENT AT COMPONENT DID MOUNT
 
 }
+
 // TODO
 function sendConfirmationEmail() {
 

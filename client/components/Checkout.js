@@ -1,5 +1,6 @@
 import axios from 'axios'
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { loadStripe } from '@stripe/stripe-js'
 import { stripeAPIKey } from '../../server/constants'
 import { localCart } from '../localCart';
@@ -13,9 +14,16 @@ class Checkout extends Component {
   }
 
   async handleClick() {
-    const stripe = await stripePromise;
-    const checkoutSession = (await axios.post('/checkout/session', { localCart: localCart })).data;
-    stripe.redirectToCheckout({ sessionId: checkoutSession.id })
+    try {
+      const stripe = await stripePromise;
+      console.log(localCart)
+      const checkoutSession = (await axios.post('/checkout/session', { localCart: this.props.cart })).data;
+      console.log(checkoutSession)
+      stripe.redirectToCheckout({ sessionId: checkoutSession.id })
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
   }
 
   render() {
@@ -43,4 +51,10 @@ class Checkout extends Component {
   }
 }
 
-export default Checkout;
+const mapState = (state) => {
+  return {
+    cart: state.cart
+  }
+}
+
+export default connect(mapState)(Checkout);

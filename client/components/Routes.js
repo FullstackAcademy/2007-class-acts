@@ -45,8 +45,8 @@ const Routes = () => {
           <Route exact path='/admin/users' component={Users} />
           <Route exact path="/cart" component={Cart} />
           <Route exact path="/review/:id" component={ReviewForm} />
-          <Route component={NotFound} />
           <Route exact path='/orderconfirmation' component={OrderConfirmation} />
+          <Route component={NotFound} />
         </Switch>
       </div>
     </Router>
