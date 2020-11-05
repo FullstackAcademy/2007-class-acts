@@ -37,7 +37,6 @@ router.delete('/:userID', async(req, res, next) => {
 router.put('/:userID', async(req, res, next) => {
   const hashedPW = await bcrypt.hash(req.body.password, 10)
   req.body.password = hashedPW
-
   try {
     if(req.user.isAdmin){
       const user = await User.findByPk(req.params.userID)

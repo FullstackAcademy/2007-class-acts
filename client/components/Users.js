@@ -16,7 +16,6 @@ export class Users extends React.Component {
     async componentDidMount(){
         await this.props.getUsers()
         this.setState({users: this.props.users})
-
     }
 
    render(){
@@ -45,7 +44,7 @@ export class Users extends React.Component {
                                 <td>{user.email}</td>
 
                                 {/* Handels Resetting Password */}
-                                <td><Link value={user} to={`/admin/forgotpassword/:${user.id}`}>Reset</Link></td>
+                                <td><Link value={user} to={`/admin/forgotpassword/${user.id}`}>Reset</Link></td>
 
                                 {/* Handels Deleting a User */}
                                 <td><button id={user.id} value={user.id} onClick={() => {

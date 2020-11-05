@@ -21,7 +21,7 @@ export default class ForgotPassword extends React.Component{
         ev.preventDefault()
         const userID = this.props.match.params.userID
             try {
-                const user = (await axios.put(`/api/users/${userID.slice(1)}`, {password: this.state.password})).data
+                const user = (await axios.put(`/api/users/${userID}`, {password: this.state.password})).data
                 if(user.id) this.setState({...this.state, message: 'PW reset successful!', color: 'green'})
                 else this.setState({...this.state, message: 'PW reset FAILED'})
             } catch (err) {
