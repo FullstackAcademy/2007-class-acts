@@ -17,7 +17,12 @@ class Checkout extends Component {
     try {
       const stripe = await stripePromise;
       const checkoutSession = (await axios.post('/checkout/session', { localCart: this.props.cart })).data;
-      stripe.redirectToCheckout({ sessionId: checkoutSession.id })
+      stripe.redirectToCheckout({ sessionId: checkoutSession.id }).then(function (result) {
+        if (result.error) {
+            alert(result.error.message);
+        }
+      }
+      )
     } catch (err) {
       console.log(err)
       throw err

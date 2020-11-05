@@ -88,7 +88,7 @@ router.post('/session', async (req, res, next) => {
       payment_method_types: ['card'],
       line_items: cart,
       mode: 'payment',
-      success_url: `${DOMAIN}/orderconfirmation`,
+      success_url: `${DOMAIN}/orderconfirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${DOMAIN}/orderconfirmation`,
       metadata: metadata
     });
@@ -154,7 +154,9 @@ async function handleAuthUser(session) {
       date: now,
       status: 'Created',
       //associate user with order
-      userId: userId
+    userId: userId,
+      //add stripe ref ID so we can look up order based on stripe session
+      stripeRefId: session.id
       // address: '1234 First St' -- HOW TO GET SHIPPING ADDRESS FROM STRIPE?
   });
 
@@ -173,7 +175,7 @@ async function handleAuthUser(session) {
     const artwork = await Artwork.findByPk(orderItem.artworkId)
     await artwork.update({ quantity: artwork.quantity - lineItems.data[i].quantity });
   }
-
+  session.metadata.orderId = order.id
   // clear the cart
   const userCart = await Cart.findOne({ where: { userId } });
   await CartItem.destroy({
@@ -194,6 +196,7 @@ async function handleGuestUser(session) {
       date: now,
       status: 'Created',
       // address: '1234 First St' -- HOW TO GET SHIPPING ADDRESS FROM STRIPE?
+      stripeRefId: session.id
   });
 
   for (let i = 0; i < lineItems.data.length; i++) {
@@ -210,6 +213,7 @@ async function handleGuestUser(session) {
     const artwork = await Artwork.findByPk(orderItem.artworkId)
     await artwork.update({ quantity: artwork.quantity-=lineItems.data[i].quantity})
   }
+  session.metadata.orderId = order.id
   //return order
   // TODO: CLEAR THE LOCAL CART IN THE ORDER CONFIRMATION COMPONENT AT COMPONENT DID MOUNT
 
@@ -219,5 +223,10 @@ async function handleGuestUser(session) {
 function sendConfirmationEmail() {
 
 }
+
+router.get('/session/:id', async (req, res, next) => {
+  const session = await stripe.checkout.sessions.retrieve(req.params.id)
+  res.send(session)
+})
 
 module.exports = router;

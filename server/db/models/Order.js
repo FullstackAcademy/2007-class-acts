@@ -11,6 +11,7 @@ const Order = db.define('order', {
   date: DATE,
   status: ENUM(orderStatuses),
   address: STRING,
+  stripeRefId: STRING
 })
 
 module.exports = Order

@@ -2,8 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import dayjs from 'dayjs'
+import { getArtworks } from '../redux/artworks'
 
-const OrderDetails = ({order, artworks}) => {
+const OrderDetails = ({ order, artworks, getArt }) => {
+
+  if (!artworks.length) {
+    getArt()
+  }
   // calculate total price of each order
   const orderTotal = order.orderItems
     .map(item => item.orderedPrice * item.orderedQuantity)
@@ -61,4 +66,10 @@ const mapState = (state) => {
   }
 }
 
-export default connect(mapState)(OrderDetails)
+const mapDispatch = (dispatch) => {
+  return {
+    getArt: () => dispatch(getArtworks())
+  }
+}
+
+export default connect(mapState, mapDispatch)(OrderDetails)
