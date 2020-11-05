@@ -50,6 +50,7 @@ User.hasOne(Cart)
 
 Cart.hasMany(CartItem)
 Artwork.hasMany(CartItem)
+CartItem.belongsTo(Artwork)
 
 const syncDB = async (forceSeed = false) => {
   // Took out force: true so the db didn't drop the seeded data every time

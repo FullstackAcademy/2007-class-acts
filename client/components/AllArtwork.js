@@ -116,7 +116,8 @@ export class AllArtwork extends Component {
     return(
       <div>
         <div className="top-section">
-          <ArtFilters artworks={ this.props.artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
+        <h1>Stackeby's</h1>
+          <ArtFilters artworks={ artworks } artists={ artists } genres={ genres } changeFilter={ changeFilter } />
           <div className="side-bar">
             <input
               type="text"

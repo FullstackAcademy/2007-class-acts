@@ -16,7 +16,7 @@ const ArtworkGrid = ({ artworks }) => {
                 <Link to={`/artworks/${artwork.id}`}>
                   <img
                     src={
-                      artwork.shopImages && artwork.shopImages.length
+                      (artwork.shopImages && artwork.shopImages.length)
                         ? artwork.shopImages[0].imageURL
                         : '/img/default.jpg'
                     }

@@ -301,6 +301,39 @@ table {
   padding: 1rem;
 }
 
+/* --- CART VIEW --- */
+
+.all-cart {
+  display: flex;
+  flex-direction: row;
+}
+.cart-items {
+  align-content: left;
+  width: 66%
+}
+.cart-item {
+  background-color: lightgray;
+  padding: 2rem;
+  margin: 1rem;
+}
+.checkout {
+  align-content: left;
+  margin: 1rem;
+  width: 33%;
+}
+.line-item {
+  display: flex;
+  justify-content: space-between;
+}
+#checkout-btn {
+  width: 100%;
+  height: 2.5rem;
+  background-color: black;
+  color: white;
+  font-size: large;
+  align-self: center;
+}
+
 /* --- ARTIST LIST --- */
 .artist-grid {
   display: flex;
@@ -329,8 +362,9 @@ table {
 .artist-tile h2 {
   color: #4667b9;
 }
-  /* --- ACCOUNT PAGE --- */
 
+
+  /* --- ACCOUNT PAGE --- */
 .account {
   margin: 1rem;
 }

@@ -16,6 +16,7 @@ import NotFound from './NotFound'
 import ArtistForm from './ArtistForm'
 import ArtworkForm from './ArtworkForm'
 import ArtistList from './ArtistList'
+import OrderConfirmation from './OrderConfirmation'
 
 
 const Routes = () => {
@@ -24,12 +25,12 @@ const Routes = () => {
       <div>
         <Navbar />
         <Switch>
-          <Route exact path="/" component={AllArtwork} />
-          <Route exact path="/artworks/:id" component={SingleArtwork} />
-          <Route exact path="/login" component={LoginScreen} />
-          <Route exact path="/newuser" component={NewUser} />
-          <Route exact path="/account" component={Account} />
-          <Route exact path="/admin/users" component={Users} />
+          <Route exact path='/' component={AllArtwork} />
+          <Route exact path='/artworks/:id' component={SingleArtwork} />
+          <Route exact path='/login' component={LoginScreen} />
+          <Route exact path='/newuser' component={NewUser} />
+          <Route exact path='/account' component={Account} />
+          <Route exact path='/admin/users' component={Users} />
           <Route exact path='/admin/newartist' component={ArtistForm} />
           <Route exact path='/admin/artists' component={ArtistList} />
           <Route
@@ -45,6 +46,7 @@ const Routes = () => {
           <Route exact path="/cart" component={Cart} />
           <Route exact path="/review/:id" component={ReviewForm} />
           <Route component={NotFound} />
+          <Route exact path='/orderconfirmation' component={OrderConfirmation} />
         </Switch>
       </div>
     </Router>
