@@ -1,11 +1,11 @@
-import axios from 'axios';
-import { GET_USERS, DESTROY_USER, UPDATE_USER } from './actionConstants';
+import axios from 'axios'
+import { GET_USERS, DESTROY_USER, UPDATE_USER } from './actionConstants'
 
 // ACTION CREATORS
-export const _getUsers = users => {
+export const _getUsers = (users) => {
   return {
     type: GET_USERS,
-    users
+    users,
   }
 };
 
@@ -55,12 +55,8 @@ export const updateUser = (user) => {
 export default function usersReducer(state = [], action) {
   switch (action.type) {
     case GET_USERS:
-      return action.users;
-    case DESTROY_USER:
-      return state.filter(user => user.id !== action.user.id)
-    case UPDATE_USER:
-      return [...state.filter(user => user.id !== action.user.id), action.user]
+      return action.users
     default:
-      return state;
+      return state
   }
 }

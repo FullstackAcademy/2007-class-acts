@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { User, Session, Cart, CartItem } = require('../db')
+const { User, Session, Cart, CartItem, Order, OrderItem } = require('../db')
 const bcrypt = require('bcrypt');
 
 const A_WEEK_IN_SECONDS = 60 * 60 * 24 * 7
@@ -60,10 +60,16 @@ router.get('/:sessionId', async (req, res, next) => {
       include: [
         {
           model: User,
-          include: [ {
-            model: Cart,
-            include: [CartItem]
-          }]
+          include: [
+            {
+              model: Cart,
+              include: [CartItem],
+            },
+            {
+              model: Order,
+              include: OrderItem
+            }
+          ]
         }
       ]
     })
@@ -142,10 +148,17 @@ router.post('/login', async (req, res) => {
           email,
         },
         //we need to include the cart info w the user on login and on session recognition
-        include: [Session, {
-          model: Cart,
-          include: [CartItem]
-        }],
+        include: [
+          Session,
+          {
+            model: Order,
+            include: [OrderItem]
+          },
+          {
+            model: Cart,
+            include: [CartItem]
+          }
+        ],
       });
 
       if (foundUser) {
