@@ -11,11 +11,12 @@ import Navbar from './Navbar'
 import Account from './Account'
 import Users from './Users'
 import Cart from './Cart'
+import ReviewForm from './ReviewForm'
 import NotFound from './NotFound'
 import ArtistForm from './ArtistForm'
 import ArtworkForm from './ArtworkForm'
 import ArtistList from './ArtistList'
-
+import ForgotPassword from './ForgotPassword'
 
 const Routes = () => {
   return (
@@ -42,6 +43,8 @@ const Routes = () => {
           <Route exact path='/admin/addnew' component={ArtworkForm} />
           <Route exact path='/admin/users' component={Users} />
           <Route exact path="/cart" component={Cart} />
+          <Route exact path="/admin/forgotpassword/:userID" component={ForgotPassword} />
+          <Route exact path="/review/:id" component={ReviewForm} />
           <Route component={NotFound} />
         </Switch>
       </div>

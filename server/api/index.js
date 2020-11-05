@@ -6,5 +6,7 @@ router.use('/artworks', require('./artworks'))
 router.use('/genres', require('./genres'))
 router.use('/users', require('./users'))
 router.use('/cart', require('./cart'))
+router.use('/reviews', require('./reviews'))
+
 
 module.exports = router

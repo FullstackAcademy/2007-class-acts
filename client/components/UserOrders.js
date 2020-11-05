@@ -1,6 +1,7 @@
 // LIBRARIES
 import React from 'react';
 import dayjs from 'dayjs';
+import axios from 'axios'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -8,11 +9,28 @@ import { Link } from 'react-router-dom';
 import { getArtworks } from '../redux/artworks';
 
 class UserOrders extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      reviews: null
+    }
+  }
   componentDidMount() {
     this.props.getArtworks();
   }
+
+  //get user's reviews so that user can not re-review
+  async componentDidUpdate() {
+    if(this.props.user.id && !this.state.reviews) {
+      const reviews = (await axios.get(`/api/reviews/user/${this.props.user.id}`)).data
+      this.setState({...this.state, reviews})
+    }
+  }
+
   render () {
     const { user, artworks } = this.props;
+    const { reviews } = this.state
+
     return (
       <div className="order-history-section">
         <h3>Past Orders</h3>
@@ -62,6 +80,16 @@ class UserOrders extends React.Component {
                           return (
                             <div key={ oi.id }>
                               <Link to={ artLink }><img className="order-item-img" src={oi.shopImages[0].imageURL} /></Link>
+                              <span className='rev'>
+                                {/* this below is to remove review link if you've already reviewed */}
+                                { reviews ?
+                                    reviews.map(r=>r.artworkId).includes(oi.id) ?
+                                    null :
+                                    <Link to={`/review/${oi.id}`}>Leave a review.</Link>
+                                    :
+                                  null
+                                }
+                              </span>
                             </div>
                           )
                         })
