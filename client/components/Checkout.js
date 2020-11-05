@@ -16,9 +16,7 @@ class Checkout extends Component {
   async handleClick() {
     try {
       const stripe = await stripePromise;
-      console.log(localCart)
       const checkoutSession = (await axios.post('/checkout/session', { localCart: this.props.cart })).data;
-      console.log(checkoutSession)
       stripe.redirectToCheckout({ sessionId: checkoutSession.id })
     } catch (err) {
       console.log(err)

@@ -49,9 +49,8 @@ router.post('/session', async (req, res, next) => {
       });
       metadata[cartItem.artwork.title] = cartItem.artwork.id
     });
-  }
-  // if user isn't logged in, grab the cart from the local storage (passed in the req object)
-  else {
+  } else {
+    // if user isn't logged in, grab the cart from the local storage (passed in the req object)
     const localCart = req.body.localCart;
     for (let i = 0; i < localCart.length; i++) {
       const artwork = await Artwork.findByPk(localCart[i].artworkId);
@@ -68,7 +67,6 @@ router.post('/session', async (req, res, next) => {
       metadata[artwork.title] = artwork.id
     }
   }
-  console.log(metadata)
   // send stripe user info, including ID and email if logged in
   const session = req.user ?
     await stripe.checkout.sessions.create({
@@ -76,7 +74,11 @@ router.post('/session', async (req, res, next) => {
       line_items: cart,
       client_reference_id: client_ref_id,
       customer_email: client_email,
-      // shipping_address_collection: true,
+      //billing_address_collection: required,
+      //NOTE: COULDNT GET ADDRESS TO SHOW UP, MAYBE IT DOESNT COLLECT ADDRESS IS TEST MODE?
+      shipping_address_collection: {
+        allowed_countries: ['US']
+      },
       mode: 'payment',
       success_url: `${DOMAIN}/orderconfirmation`,
       cancel_url: `${DOMAIN}/orderconfirmation`,
@@ -103,7 +105,6 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res, n
 
   try {
     event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
-    console.log(event)
   } catch (err) {
     console.log(err)
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -112,34 +113,39 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res, n
   // Handle the checkout.session.completed event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    console.log('session:', session)
+    console.log(session)
+    res.status(200);
     // Fulfill the purchase...
-    handleOrder(session);
+    const handledOrder = handleOrder(session);
     // sendConfirmationEmail();
+    res.send(handledOrder)
   }
-  res.status(200);
 })
 
 function handleOrder(session) {
+  //NOTE: I tried returning the orders to see if we could send them as a response from the webhook
+  //but that didnt really work
+  let orderInfo
   if (session.payment_status === 'paid') {
     // if a logged in user
     if (session.customer_email !== null) {
-      handleAuthUser(session);
-
+      //orderInfo =
+        handleAuthUser(session);
     } else {
-      handleGuestUser(session);
+     // orderInfo =
+        handleGuestUser(session);
     }
   }
   else {
     console.log('You didn\'t pay, petty art thief!!!'); // ADD MORE ROBUST ERROR HANDLING HERE
   }
+  return orderInfo
 }
 
 async function handleAuthUser(session) {
   const userId = session.client_reference_id
   //get line items from Stripe
   const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-  console.log('line items:', lineItems);
   //get object with artwork IDs from Stripe
   const artData = session.metadata
 
@@ -174,12 +180,12 @@ async function handleAuthUser(session) {
     where: { cartId: userCart.id }
   });
   await userCart.destroy();
+  //return order
 }
 
 async function handleGuestUser(session) {
   // Get line items from Stripe req object
   const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-  console.log('line items:', lineItems);
   const artData = session.metadata
 
   // create order
@@ -204,6 +210,7 @@ async function handleGuestUser(session) {
     const artwork = await Artwork.findByPk(orderItem.artworkId)
     await artwork.update({ quantity: artwork.quantity-=lineItems.data[i].quantity})
   }
+  //return order
   // TODO: CLEAR THE LOCAL CART IN THE ORDER CONFIRMATION COMPONENT AT COMPONENT DID MOUNT
 
 }
