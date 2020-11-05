@@ -11,7 +11,6 @@ export class Users extends React.Component {
         this.state = {
             users: [],
         }
-        this.handleResetPassword = this.handleResetPassword.bind(this)
     }
 
     async componentDidMount(){
@@ -43,7 +42,7 @@ export class Users extends React.Component {
                         return (
                             <tr key={user.id}>
                                 <td>{user.id.slice(0,8)}</td>
-                                <td>{user.email}</td> 
+                                <td>{user.email}</td>
 
                                 {/* Handels Resetting Password */}
                                 <td><Link value={user} to={`/admin/forgotpassword/:${user.id}`}>Reset</Link></td>
@@ -58,7 +57,7 @@ export class Users extends React.Component {
                                     <td><input type="checkbox" checked={user.isAdmin ? "checked" : ""} onChange={ ()=>{
                                         user.isAdmin = !user.isAdmin
                                         this.props.updateAdminStatus(user)
-                                    }}/>  
+                                    }}/>
                                     </td>
                             </tr>
                             )}

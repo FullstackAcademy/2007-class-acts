@@ -35,17 +35,18 @@ router.delete('/:userID', async(req, res, next) => {
 });
 
 router.put('/:userID', async(req, res, next) => {
-    const hashedPW = await bcrypt.hash(req.body.password, 10)
-    req.body.password = hashedPW
+  const hashedPW = await bcrypt.hash(req.body.password, 10)
+  req.body.password = hashedPW
 
   try {
     if(req.user.isAdmin){
       const user = await User.findByPk(req.params.userID)
       await user.update(req.body)
-      res.status(204).send(user)
+      res.status(200).send(user)
     } else { req.sendStatus(401) }
   }
   catch (error){
+    console.log(error)
     console.log('\nNot Authorized...\n')
     res.sendStatus(401)
     next(error)
@@ -78,7 +79,7 @@ router.get('/:sessionId', async (req, res, next) => {
 })
 
 // DELETE /api/users/:sessionId
-router.delete('/:sessionId', async (req, res, next) => {
+router.delete('/session/:sessionId', async (req, res, next) => {
   try {
     await Session.destroy({
       where: {
