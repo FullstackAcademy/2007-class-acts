@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios'
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom'
 import { orderStatuses } from '../../server/constants'
 
 export default class Orders extends React.Component{
@@ -35,7 +36,7 @@ export default class Orders extends React.Component{
     return (
       <div>
         <h1>Orders</h1>
-        <table id="table">
+        <table className="gs-table">
           <thead>
             <tr>
               <th>Id</th>
@@ -51,7 +52,10 @@ export default class Orders extends React.Component{
             .map(order=>{
             return (
               <tr key={order.id}>
-                <td>{order.id.slice(0,8)}</td>
+                <td><Link to={{
+                 pathname: `/admin/orders/${order.id}`,
+                 state: order
+                }}>{order.id.slice(0,8)}</Link></td>
                 <td>{dayjs(order.date).format('MMM D, YYYY h:mm A')}</td>
                 <td>
                   <select onChange={(ev)=>this.changeOrderStatus(ev,order)} value={order.status}>

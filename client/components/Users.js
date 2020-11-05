@@ -25,7 +25,7 @@ export class Users extends React.Component {
            <div>
                <h1>Users</h1>
                 <h2>{`Admin: ${this.props.user.isAdmin}`}</h2>
-               <table id="table">
+               <table className="gs-table">
                     <thead>
                         <tr>
                             <th>Id</th>
