@@ -1,4 +1,4 @@
-const { Artwork, Artist, ShopImage, Genre, User, Order, OrderItem, syncDB } = require('./server/db');
+const { Artwork, Artist, ShopImage, Genre, User, Order, OrderItem, Review, syncDB } = require('./server/db');
 const bcrypt = require('bcrypt');
 
 const artworkData = [[`A Bigger Splash`,`Painted in California between April and June 1967, and measuring 242.5 centimetres (95.5 in) by 243.9 centimetres (96.0 in), this painting depicts a swimming pool beside a modern house, disturbed by a large splash of water created by an unseen figure who has apparently just jumped in from a diving board.`,1967,`Graphic Art`,29.99,7],
@@ -358,6 +358,24 @@ const seed = async () => {
     }
     return User.create(user);
   }))
+
+  const [review0, review1, review2] = await Promise.all([
+    Review.create({
+      rating: 5,
+      text: `This painting ruuules!!`
+    }),
+    Review.create({
+      rating: 2,
+      text: `I used to swim a lot, and I don't get this painting. Stupid title.`
+    }),
+    Review.create({
+      rating: 4,
+      text: `Big time ouch.`
+    })
+  ])
+  artworks[0].addReview(review0)
+  artworks[0].addReview(review1)
+  artworks[3].addReview(review2)
 }
 
 seed()
