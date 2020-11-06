@@ -234,27 +234,27 @@ table {
   padding-right: 10%;
 }
 
-#table {
+.gs-table {
   text-align: center;
   border-collapse: collapse;
   width: 100%;
 }
 
-#table td,
-#table th {
+.gs-table td,
+.gs-table th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-#table tr:nth-child(even) {
+.gs-table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-#table tr:hover {
+.gs-table tr:hover {
   background-color: #ddd;
 }
 
-#table th {
+.gs-table th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
