@@ -19,13 +19,13 @@ class OrderConfirmation extends Component {
       const session = await axios.get(`/api/checkout/session/${sessionId}`)
       if (session.data.payment_status === 'paid') {
         const order = await axios.get(`/api/orders/stripeRefId/${sessionId}`)
+        clearLocalCart()
+        this.props.clearCart()
         this.setState({ order: order.data })
         /*NOTE: if for some reason, someone returns to the order confirmation page after
         they have added more items to their cart, this will clear what was in their cart before.
         seems like an edge case so i didnt account for that here.
         */
-        clearLocalCart()
-        this.props.clearCart()
       }
     } else {
       this.setState({
@@ -55,7 +55,7 @@ class OrderConfirmation extends Component {
 
 const mapDispatch = (dispatch) => {
   return {
-    clearCart: () => dispatch(clearCart),
+    clearCart: () => dispatch(clearCart()),
   }
 }
 
