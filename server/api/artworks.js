@@ -22,7 +22,12 @@ router.post('/', async (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     try {
       const art = validateData(req.body, artProperties)
-      const newArt = await Artwork.create(art, { include: [Artist] })
+
+      //temp fix for new art having no genre
+      //artwork needs an array of genres for some frontend mapping
+      art.genres=[]
+
+      const newArt = await Artwork.create(art, { include: [Artist, Genre] })
       if (req.body.artistId) {
         const artist = await Artist.findByPk(req.body.artistId)
         await newArt.setArtist(artist)
@@ -55,7 +60,7 @@ router.put('/:artworkId', async (req, res, next) => {
     try {
       const art = validateData(req.body, artProperties)
       const artwork = await Artwork.findByPk(req.params.artworkId, {
-        include: [ShopImage, Artist],
+        include: [ShopImage, Artist, Genre],
       })
       await artwork.update(art, {include: [Artist]})
       res.send(artwork)
