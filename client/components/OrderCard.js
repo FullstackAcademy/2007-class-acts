@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import dayjs from 'dayjs'
 import { getArtworks } from '../redux/artworks'
 
-const OrderCard = ({ order, artworks, getArt }) => {
+const OrderCard = ({ order, artworks, reviews, getArt }) => {
 
   if (!artworks.length) {
     getArt()
@@ -51,18 +51,29 @@ const OrderCard = ({ order, artworks, getArt }) => {
             return (
               <div key={oi.id}>
                 <Link to={artLink}><img className="order-item-img" src={oi.shopImages[0].imageURL} /></Link>
+                  <span className='rev'>
+                  {/* this below is to remove review link if you've already reviewed */}
+                  { reviews ?
+                      reviews.map(r=>r.artworkId).includes(oi.id) ?
+                      null :
+                      <Link to={`/review/${oi.id}`}>Leave a review.</Link>
+                      :
+                    null
+                  }
+                </span>
               </div>
             )
           })
         }
-    </div>
+      </div>
     </div>
   )
 }
 
 const mapState = (state) => {
   return {
-    artworks: state.artworks
+    artworks: state.artworks,
+    reviews: state.reviews
   }
 }
 
