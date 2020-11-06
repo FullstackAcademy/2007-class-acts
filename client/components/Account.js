@@ -7,10 +7,11 @@ import { connect } from 'react-redux';
 import { destroySession } from '../redux/user';
 import { setCartItems } from '../redux/cart';
 import UserOrders from './UserOrders';
+import { getCookieValue } from '../../server/utils'
 
 const Account = ({ user, _destroySession, setCartItems }) => {
   const { email, isAdmin } = user
-  const sessionId = document.cookie.split('=')[1]
+  const sessionId = getCookieValue('sessionId')
   if (!sessionId) return <Redirect to="/" />
   return (
     <div className="account">
