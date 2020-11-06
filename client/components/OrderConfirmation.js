@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import OrderDetails from './OrderDetails'
+import OrderCard from './OrderCard'
 import { clearLocalCart } from '../localCart'
 import { clearCart } from '../redux/cart'
 
@@ -41,7 +41,7 @@ class OrderConfirmation extends Component {
         {Object.keys(this.state.order).length ? (
           <div>
             <h2>Order Details</h2>
-            <OrderDetails order={this.state.order} />
+            <OrderCard order={this.state.order} />
           </div>
         ) : this.state.error ? (
           <h2>{this.state.error}</h2>

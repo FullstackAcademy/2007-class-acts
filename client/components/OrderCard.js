@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import dayjs from 'dayjs'
 import { getArtworks } from '../redux/artworks'
 
-const OrderDetails = ({ order, artworks, getArt }) => {
+const OrderCard = ({ order, artworks, getArt }) => {
 
   if (!artworks.length) {
     getArt()
@@ -72,4 +72,4 @@ const mapDispatch = (dispatch) => {
   }
 }
 
-export default connect(mapState, mapDispatch)(OrderDetails)
+export default connect(mapState, mapDispatch)(OrderCard)

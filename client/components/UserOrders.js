@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 // FILES
 import { getArtworks } from '../redux/artworks';
-import OrderDetails from './OrderDetails'
+import OrderCard from './OrderCard'
 
 class UserOrders extends React.Component {
   constructor(props){
@@ -38,7 +38,7 @@ class UserOrders extends React.Component {
           { user.orders ?
             user.orders.length > 0 ?
               user.orders.map(order => {
-                return <OrderDetails order={order} key={order.id} />
+                return <OrderCard order={order} key={order.id} />
               }) :
             <p>No past orders. Begin your first order!</p> :
             <p>No past orders. Begin your first order!</p>
