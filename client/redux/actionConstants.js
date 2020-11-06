@@ -18,3 +18,7 @@ export const CLEAR_CART = 'CLEAR_CART'
 export const GET_ARTIST = 'GET_ARTIST'
 export const EDIT_ARTIST = 'EDIT_ARTIST'
 export const CREATE_ARTIST = 'CREATE_ARTIST'
+
+export const SET_USERS = "SET_USERS"
+export const DESTROY_USER = "DESTROY_USER"
+export const UPDATE_USER = "UPDATE_USER"

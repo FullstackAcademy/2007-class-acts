@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_USERS } from './actionConstants'
+import { GET_USERS, DESTROY_USER, UPDATE_USER } from './actionConstants'
 
 // ACTION CREATORS
 export const _getUsers = (users) => {
@@ -7,13 +7,48 @@ export const _getUsers = (users) => {
     type: GET_USERS,
     users,
   }
-}
+};
+
+export const _destroyUser = (user) => ({
+  type: DESTROY_USER,
+  user
+
+})
+
+export const _updateUser = (user) => ({
+  type: UPDATE_USER,
+  user
+})
+
 
 // THUNK CREATORS
 export const getUsers = () => {
   return async (dispatch) => {
-    const users = await axios.get('/api/users')
-    dispatch(_getUsers(users.data))
+    const users = await axios.get('/api/users');
+    dispatch(_getUsers(users.data));
+  }
+};
+
+export const destroyUser = (user) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`/api/users/${user.id}`)
+      dispatch(_destroyUser(user))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+// Need to add the updateUser thunk
+export const updateUser = (user) => {
+  return async (dispatch) => {
+    try {
+      const updatedUser = await axios.put(`/api/users/${user.id}`, user)
+      dispatch(_updateUser(updatedUser.data))
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 
