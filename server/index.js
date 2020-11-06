@@ -2,8 +2,11 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const path = require('path')
 const auth = require('./middleware/auth')
+const fileUpload = require('express-fileupload');
 
 const app = express()
+
+app.use(fileUpload({createParentPath: true}));
 
 const bodyParser = require('body-parser');
 app.use('/checkout/webhook', bodyParser.raw({type: "*/*"}))

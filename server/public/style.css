@@ -456,3 +456,9 @@ table {
   color: black;
   font-size: 2rem;
 }
+
+.imgArrow > span {
+  font-size: 2rem;
+  padding-right: 1rem;
+  cursor: pointer;
+}
