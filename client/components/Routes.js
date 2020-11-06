@@ -17,7 +17,7 @@ import ArtistForm from './ArtistForm'
 import ArtworkForm from './ArtworkForm'
 import ArtistList from './ArtistList'
 import OrderConfirmation from './OrderConfirmation'
-
+import ForgotPassword from './ForgotPassword'
 
 const Routes = () => {
   return (
@@ -44,6 +44,7 @@ const Routes = () => {
           <Route exact path='/admin/addnew' component={ArtworkForm} />
           <Route exact path='/admin/users' component={Users} />
           <Route exact path="/cart" component={Cart} />
+          <Route exact path="/admin/forgotpassword/:userID" component={ForgotPassword} />
           <Route exact path="/review/:id" component={ReviewForm} />
           <Route component={NotFound} />
           <Route exact path='/orderconfirmation' component={OrderConfirmation} />

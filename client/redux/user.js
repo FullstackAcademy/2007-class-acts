@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { SET_USER } from './actionConstants'
-import { setCartItems } from './cart'
 
 //ACTION CREATOR
 export const setUser = (user) => ({
@@ -18,7 +17,7 @@ export const getUser = (sessionId) => {
 
 export const destroySession = (sessionId) => {
   return async (dispatch) => {
-    await axios.delete(`/api/users/${sessionId}`)
+    await axios.delete(`/api/users/session/${sessionId}`)
     dispatch(setUser({}))
   }
 }
