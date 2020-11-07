@@ -69,7 +69,7 @@ class NewUser extends Component {
     }
     return (
       <div className="container login">
-        <form id="login-form" onSubmit={this.handleLogin}>
+        <form className="login-form" onSubmit={this.handleLogin}>
           <h2>Create A New Account</h2>
           <hr />
           <input name="email" placeholder="Email" onChange={this.handleChange}/>

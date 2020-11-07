@@ -83,7 +83,7 @@ table {
   padding: 2rem;
 }
 
-#login-form {
+.login-form {
   padding: 2em;
   display: flex;
   flex-flow: column nowrap;
@@ -97,7 +97,7 @@ table {
   box-shadow: 4px 4px 3px #F6F7F8;
 }
 
-#login-form input,
+.login-form input,
 #login-button {
   margin: 1em 0.5em;
   font-size: 1em;
@@ -105,11 +105,11 @@ table {
   padding: 9px;
 }
 
-#login-form input {
+.login-form input {
   border: 1px solid #DDDDDD;
 }
 
-#login-form hr {
+.login-form hr {
   width: 75%;
   border-top: 1px solid #adadad;
   border-left: none;
@@ -124,7 +124,7 @@ table {
   background: #5b84ec;
 }
 
-#login-form h2 {
+.login-form h2 {
   margin: 0;
 }
 

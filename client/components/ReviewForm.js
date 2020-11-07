@@ -58,7 +58,7 @@ export default class ReviewForm extends Component {
     return (
       <div>
         {artwork.id ?
-          <form id="login-form" onSubmit={this.handleSubmit}>
+          <form className="login-form" onSubmit={this.handleSubmit}>
             <h3>Leave your review for:</h3>
             <h2><i>{artwork.title}</i></h2>
             <h4>by {artwork.artist.name}</h4>
