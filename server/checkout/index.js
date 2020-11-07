@@ -192,7 +192,7 @@ async function handleAuthUser(session) {
 async function handleGuestUser(session) {
   // Get line items from Stripe req object
   const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-  const email = session.customer_email
+  const email = "test@test.com"
   const artData = session.metadata
   const { address } = session.shipping
 
