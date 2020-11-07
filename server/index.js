@@ -5,6 +5,8 @@ const auth = require('./middleware/auth')
 
 const app = express()
 
+const bodyParser = require('body-parser');
+app.use('/checkout/webhook', bodyParser.raw({type: "*/*"}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, './public')))
@@ -13,6 +15,7 @@ app.use(cookieParser())
 app.use(auth)
 
 app.use('/api', require('./api'))
+app.use('/checkout', require('./checkout'))
 
 //This sends the HTML file for all default requests.
 //We'll have to set up some front-end error handling

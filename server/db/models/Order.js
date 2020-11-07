@@ -10,7 +10,14 @@ const Order = db.define('order', {
   },
   date: DATE,
   status: ENUM(orderStatuses),
+  email: {
+    type: STRING,
+    validate: {
+      isEmail: true
+    }
+  },
   address: STRING,
+  stripeRefId: STRING
 })
 
 module.exports = Order

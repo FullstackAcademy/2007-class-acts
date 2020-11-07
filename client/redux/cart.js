@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import axios from 'axios'
 import {
   ADD_CART_ITEM,
@@ -6,6 +7,7 @@ import {
   CHANGE_CART_ITEM,
   REMOVE_CART_ITEM,
   SET_USER,
+  CLEAR_CART
 } from './actionConstants'
 import {
   addLocalCartItem,
@@ -46,6 +48,12 @@ export const _addMultipleCartItems = (cartItems) => {
   return {
     type: ADD_MULTIPLE_CART_ITEMS,
     cartItems,
+  }
+}
+
+export const clearCart = () => {
+  return {
+    type: CLEAR_CART
   }
 }
 
@@ -146,6 +154,8 @@ export default function cartReducer(state = [], action) {
       if (action.user.cart && action.user.cart.cartItems)
         return [...action.user.cart.cartItems]
       return state
+    case CLEAR_CART:
+      return []
     default:
       return state
   }

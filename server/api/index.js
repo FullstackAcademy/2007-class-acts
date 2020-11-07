@@ -9,5 +9,6 @@ router.use('/cart', require('./cart'))
 router.use('/reviews', require('./reviews'))
 router.use('/orders', require('./orders'))
 
+router.use('/checkout', require('../checkout/index'))
 
 module.exports = router

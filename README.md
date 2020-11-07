@@ -19,6 +19,10 @@ Other NPM Scripts
 Stackeby's currently implemented or in progress features
 - create an account, log in and log out
 - view the entire collection of artworks, filter by artist, genre, or medium, search for art by title and artist
+- add to cart, update cart
+- view all orders from your account
+- admin view to add and edit art, manager user orders, etc.
+- checkout with stripe
 
 ### To-Do
 - add to cart and update cart

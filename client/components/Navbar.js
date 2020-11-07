@@ -6,6 +6,7 @@ import { getUser } from '../redux/user'
 import { setCartItems } from '../redux/cart'
 import { localCart } from '../localCart/'
 import AdminNavBar from './AdminNavBar'
+import { getCookieValue } from '../../server/utils'
 
 export class Navbar extends Component {
   render() {
@@ -15,7 +16,7 @@ export class Navbar extends Component {
       isAdmin = this.props.user.isAdmin
     } else {
       //if there's a session cookie, get user info, update store, etc.
-      const sessionId = document.cookie.split('=')[1]
+      const sessionId = getCookieValue('sessionId')
       if (sessionId) {
         //set the user if there's a session ID
         this.props.getUser(sessionId)
