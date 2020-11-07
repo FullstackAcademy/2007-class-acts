@@ -1,6 +1,5 @@
 // LIBRARIES
 import React from 'react';
-import dayjs from 'dayjs';
 import axios from 'axios'
 import { connect } from 'react-redux';
 
@@ -12,7 +11,7 @@ class UserOrders extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      reviews: null
+      reviews: []
     }
   }
   componentDidMount() {
@@ -23,12 +22,12 @@ class UserOrders extends React.Component {
   async componentDidUpdate() {
     if(this.props.user.id && !this.state.reviews) {
       const reviews = (await axios.get(`/api/reviews/user/${this.props.user.id}`)).data
-      this.setState({...this.state, reviews})
+      this.setState({ reviews})
     }
   }
 
   render () {
-    const { user, artworks } = this.props;
+    const { user } = this.props;
     const { reviews } = this.state
 
     return (
@@ -38,7 +37,7 @@ class UserOrders extends React.Component {
           { user.orders ?
             user.orders.length > 0 ?
               user.orders.map(order => {
-                return <OrderCard order={order} key={order.id} />
+                return <OrderCard order={order} key={order.id} reviews={reviews} />
               }) :
             <p>No past orders. Begin your first order!</p> :
             <p>No past orders. Begin your first order!</p>

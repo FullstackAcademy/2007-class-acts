@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import OrderCard from './OrderCard'
 import { clearLocalCart } from '../localCart'
@@ -29,7 +30,7 @@ class OrderConfirmation extends Component {
       }
     } else {
       this.setState({
-        error: 'Something went wrong with your order. Try again later.',
+        error: 'Sorry, your order could not be processed. Try again later.',
       })
     }
   }
@@ -44,7 +45,10 @@ class OrderConfirmation extends Component {
             <OrderCard order={this.state.order} />
           </div>
         ) : this.state.error ? (
-          <h2>{this.state.error}</h2>
+            <div>
+              <h2>{this.state.error}</h2>
+              <Link to="/cart">Back to Cart</Link>
+            </div>
         ) : (
           <h2>Loading order details...</h2>
         )}

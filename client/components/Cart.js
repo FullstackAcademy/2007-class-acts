@@ -79,9 +79,8 @@ export class Cart extends Component {
                 <div key={cartItem.artworkId} className="cart-item">
                   <h4>{ cartItemArtwork.title }</h4>
                   <h5><i>{ cartItemArtwork.artist.name }</i></h5>
-                  { exceedsArtworkQuantity ?
+                  { exceedsArtworkQuantity &&
                     <h5 className="noQty">You've added more to your cart ({cartItem.quantity}) than is currently in stock! Please choose a revised quantity.</h5>
-                  : null
                   }
                   <h5>
                     Quantity:
@@ -92,13 +91,13 @@ export class Cart extends Component {
                     {this.quantitySelect(cartItemArtwork)}
                   </select>
                   </h5>
-                  <button onClick={()=>this.removeItem(cartItem)}>Remove from cart</button>
+                  <button type="button" onClick={()=>this.removeItem(cartItem)}>Remove from cart</button>
                   <hr />
                 </div>
               )
             })}
         </div>
-        <Checkout cart={ cart } artworks={ artworks } />
+        <Checkout cart={cart} artworks={artworks} />
       </div>
     )
   }

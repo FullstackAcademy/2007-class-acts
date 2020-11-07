@@ -48,7 +48,7 @@ class Checkout extends Component {
         {//if the client isnt logged in, get the cart from localstorage and send to db
         }
         {/* only enable this button if there are 1+ items in the cart */}
-        <button id="checkout-btn" type="button" onClick={this.handleClick}>CHECKOUT</button>
+        {cart.length && <button id="checkout-btn" type="button" onClick={this.handleClick}>CHECKOUT</button>}
       </div>
     )
   }

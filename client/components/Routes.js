@@ -3,6 +3,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 // FILES
+import AdminRoutes from './AdminRoutes'
 import AllArtwork from './AllArtwork'
 import SingleArtwork from './SingleArtwork'
 import LoginScreen from './LoginScreen'
@@ -32,23 +33,23 @@ const Routes = () => {
           <Route exact path='/login' component={LoginScreen} />
           <Route exact path='/newuser' component={NewUser} />
           <Route exact path='/account' component={Account} />
-          <Route exact path='/admin/users' component={Users} />
-          <Route exact path='/admin/newartist' component={ArtistForm} />
-          <Route exact path='/admin/artists' component={ArtistList} />
-          <Route
+          <AdminRoutes exact path='/admin/users' component={Users} />
+          <AdminRoutes exact path='/admin/newartist' component={ArtistForm} />
+          <AdminRoutes exact path='/admin/artists' component={ArtistList} />
+          <AdminRoutes
             exact path='/admin/artist/edit/:id'
             render={(props) => <ArtistForm {...props} isEditing={true} />}
           />
-          <Route
+          <AdminRoutes
             exact path='/admin/artworks/edit/:id'
             render={(props) => <ArtworkForm {...props} isEditing={true} />}
           />
-          <Route exact path='/admin/addnew' component={ArtworkForm} />
-          <Route exact path='/admin/users' component={Users} />
-          <Route exact path='/admin/orders' component={Orders} />
-          <Route exact path='/admin/orders/:id' component={OrderDetails} />
+          <AdminRoutes exact path='/admin/addnew' component={ArtworkForm} />
+          <AdminRoutes exact path='/admin/users' component={Users} />
+          <AdminRoutes exact path='/admin/orders' component={Orders} />
+          <AdminRoutes exact path='/admin/orders/:id' component={OrderDetails} />
           <Route exact path="/cart" component={Cart} />
-          <Route exact path="/admin/forgotpassword/:userID" component={ForgotPassword} />
+          <AdminRoutes exact path="/admin/forgotpassword/:userID" component={ForgotPassword} />
           <Route exact path="/review/:id" component={ReviewForm} />
           <Route exact path='/orderconfirmation' component={OrderConfirmation} />
           <Route component={NotFound} />
