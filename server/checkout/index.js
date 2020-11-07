@@ -10,7 +10,7 @@ const endpointSecret = 'whsec_oOK87w36wnsRyQ5Sb9iuaYA0Cvz231hc';
 
 // FILES
 const { User, Cart, CartItem, Artwork, Order, OrderItem } = require('../db');
-const { DOMAIN } = require('../constants');
+const { DOMAIN, LOCAL_DOMAIN } = require('../constants');
 
 // POST /checkout/session
 router.post('/session', async (req, res, next) => {
