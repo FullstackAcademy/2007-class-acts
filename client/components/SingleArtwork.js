@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import axios from 'axios'
 import React from  'react';
 import { connect } from 'react-redux';
@@ -11,9 +12,11 @@ export class SingleArtwork extends React.Component {
     super(props)
     this.state = {
       reviews: [],
-      loading: true
+      loading: true,
+      imageIx: 0
     }
     this.addQty = this.addQty.bind(this)
+    this.changeImg = this.changeImg.bind(this)
   }
 
   addQty() {
@@ -24,6 +27,13 @@ export class SingleArtwork extends React.Component {
     let isLoggedIn = false
     if (this.props.user.id) isLoggedIn = true
     this.props.addCartItem(cartItem, isLoggedIn)
+  }
+
+  changeImg(inc) {
+    const { imageIx } = this.state
+    const maxLength = this.props.artwork.shopImages.length - 1
+    const newIx = Math.max(Math.min(imageIx + inc,maxLength),0)
+    this.setState({...this.state, imageIx: newIx})
   }
 
   async componentDidMount(){
@@ -45,19 +55,25 @@ export class SingleArtwork extends React.Component {
     if(!this.state.loading && !this.props.artwork.id) return (<h4 className="noQty">This ain't no artwork. This ain't no disco.</h4>)
     if(this.state.loading) return (<h5>Loading</h5>)
     const quantitySelection = []
-    const { reviews } = this.state
+    const { reviews, imageIx } = this.state
     for (let i = 1; i <= this.props.artwork.quantity; i++) {
         quantitySelection.push(<option key={i} value={i}>{i}</option>)
     }
     const { isAdmin, artwork } = this.props
     return (
       <div>
-        {(this.props.artwork.shopImages)
-            ?
         <div>
           <div className="singleArtwork">
             <div className="singleArtImageContainer">
-                <img className="singleArtImage" src = {this.props.artwork.shopImages[0].imageURL} />
+              {(artwork.shopImages && artwork.shopImages.length) ?
+                <img className="singleArtImage" src = {artwork.shopImages[imageIx].imageURL}/>
+                : <img className="singleArtImage" src='/img/default.jpg'/>}
+              {(artwork.shopImages && artwork.shopImages.length > 1) ?
+                <div className="imgArrow">
+                  <span onClick={()=>this.changeImg(-1)}>&#8249;</span>
+                  <span onClick={()=>this.changeImg(1)}>&#8250;</span>
+                </div>
+              :null}
                 <div className="underArt">
                     <Link to="/">Back</Link>
                     { quantitySelection.length !== 0 ?
@@ -109,8 +125,6 @@ export class SingleArtwork extends React.Component {
               }
           </div>
         </div>
-        :
-        <h2>No image found</h2>}
       </div>
     )
   }
