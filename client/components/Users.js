@@ -24,7 +24,6 @@ export class Users extends React.Component {
        return (
            <div>
                <h1>Users</h1>
-                <h2>{`Admin: ${this.props.user.isAdmin}`}</h2>
                <table className="gs-table">
                     <thead>
                         <tr>
@@ -47,7 +46,7 @@ export class Users extends React.Component {
                                 <td><Link value={user} to={`/admin/forgotpassword/${user.id}`}>Reset</Link></td>
 
                                 {/* Handels Deleting a User */}
-                                <td><button id={user.id} value={user.id} onClick={() => {
+                                <td><button type="button" id={user.id} value={user.id} onClick={() => {
                                          const updatedUsers = this.state.users.filter( u => u.id !== user.id)
                                          this.setState({users: updatedUsers})
                                          this.props.deleteUser(user)}}>X</button></td>

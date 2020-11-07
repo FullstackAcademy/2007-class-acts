@@ -65,7 +65,7 @@ export default class Orders extends React.Component{
                   </select>
                 </td>
                 <td>{order.address}</td>
-                <td>{order.user.email}</td>
+                <td>{order.user ? order.user.email : order.email}</td>
               </tr>
             )
           })}

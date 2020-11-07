@@ -112,14 +112,20 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res, n
   }
 
   // Handle the checkout.session.completed event
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    console.log(session)
-    res.status(200);
-    // Fulfill the purchase...
-    handleOrder(session);
-    // sendConfirmationEmail();
-    res.send(session.id)
+  switch (event.type) {
+    case ('charge.succeeded' || 'payment_method.attached' || 'customer.created' || 'payment_intent.succeeded' || 'payment_intent.created'):
+      res.status(200)
+      break
+    case 'checkout.session.completed':
+      const session = event.data.object;
+      res.status(200)
+      //Fulfull the purchase
+      handleOrder(session)
+      // sendConfirmationEmail()
+      break
+    default:
+      console.log(`Unhandled event type ${event.type}`)
+      res.status(400)
   }
 })
 
@@ -184,6 +190,7 @@ async function handleAuthUser(session) {
 async function handleGuestUser(session) {
   // Get line items from Stripe req object
   const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+  const email = session.customer_email
   const artData = session.metadata
   const { address } = session.shipping
 
@@ -194,7 +201,8 @@ async function handleGuestUser(session) {
     status: 'Created',
     stripeRefId: session.id,
     address: `${address.line1} ${address.line2 ? ', ' + address.line2 : ''}
-    ${address.city}, ${address.state} ${address.postal_code}`
+    ${address.city}, ${address.state} ${address.postal_code}`,
+    email: email
   });
 
   for (let i = 0; i < lineItems.data.length; i++) {
