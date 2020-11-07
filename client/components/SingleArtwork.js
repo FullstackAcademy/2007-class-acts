@@ -59,7 +59,6 @@ export class SingleArtwork extends React.Component {
             <div className="singleArtImageContainer">
                 <img className="singleArtImage" src = {this.props.artwork.shopImages[0].imageURL} />
                 <div className="underArt">
-                    <Link to="/">Back</Link>
                     { quantitySelection.length !== 0 ?
                         <span>
                             Quantity
@@ -71,6 +70,7 @@ export class SingleArtwork extends React.Component {
                         : <span className="noQty">Artwork out of stock</span>
                     }
                 </div>
+                <Link to="/">Back</Link>
             </div>
             <div className="singleArtInfo">
               {!!isAdmin && (

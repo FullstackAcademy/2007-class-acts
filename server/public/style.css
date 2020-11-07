@@ -422,3 +422,54 @@ table {
   color: black;
   font-size: 2rem;
 }
+
+/* Mobile Responsive CSS */
+@media all and (max-width: 600px) {
+  nav {
+  flex-direction: column;
+  text-align: center;
+  height: 75px;
+  }
+
+  nav > a {
+    padding: 1px;
+  }
+
+  .art-grid > * {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .tile > a > img {
+
+    width: 100%;
+    height: 100%;
+  }
+
+  .art-description p {
+    text-align: center;
+  }
+
+  .singleArtImageContainer {
+    max-width: 100%;
+  }
+
+  .singleArtwork {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .singleArtwork a {
+    justify-content: left;
+  }
+
+  .underArt {
+    justify-content: center;
+  }
+
+  .reviews h5 {
+    margin: 1rem;
+  }
+}
+
