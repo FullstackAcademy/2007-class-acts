@@ -75,6 +75,9 @@ router.post('/session', async (req, res, next) => {
       //including ID and email of user if logged in
       client_reference_id: client_ref_id,
       customer_email: client_email,
+      payment_intent_data: {
+        receipt_email: client_email
+      },
       shipping_address_collection: {
         allowed_countries: ['US']
       },
@@ -114,18 +117,17 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res, n
   // Handle the checkout.session.completed event
   switch (event.type) {
     case ('charge.succeeded' || 'payment_method.attached' || 'customer.created' || 'payment_intent.succeeded' || 'payment_intent.created'):
-      res.status(200)
-      break
+      res.status(200);
+      break;
     case 'checkout.session.completed':
       const session = event.data.object;
-      res.status(200)
+      res.status(200);
       //Fulfull the purchase
-      handleOrder(session)
-      // sendConfirmationEmail()
-      break
+      handleOrder(session);
+      break;
     default:
-      console.log(`Unhandled event type ${event.type}`)
-      res.status(400)
+      console.log(`Unhandled event type ${event.type}`);
+      res.status(400);
   }
 })
 
@@ -219,11 +221,6 @@ async function handleGuestUser(session) {
     const artwork = await Artwork.findByPk(orderItem.artworkId)
     await artwork.update({ quantity: artwork.quantity-=lineItems.data[i].quantity})
   }
-}
-
-// TODO
-function sendConfirmationEmail() {
-
 }
 
 router.get('/session/:id', async (req, res, next) => {
