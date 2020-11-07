@@ -88,4 +88,36 @@ router.delete(':/artworkId', async (req, res, next) => {
     res.sendStatus(401)
   }
 })
+
+router.delete('/images/:imgId', async (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    try {
+      const imgToDelete = await ShopImage.findByPk(req.params.imgId)
+      await imgToDelete.destroy()
+      res.sendStatus(204)
+    } catch (err) {
+      next(err)
+    }
+  } else {
+    res.sendStatus(401)
+  }
+})
+
+router.post('/images/:artworkId', async (req, res, next) => {
+  if (req.user && req.user.isAdmin && req.files) {
+    console.log(req.files)
+    let img = req.files.image
+    const newImg = await ShopImage.create({
+      artworkId: req.params.artworkId
+    })
+    const nm = req.files.image.name
+    const ext = nm.slice(nm.lastIndexOf('.'))
+    await newImg.update({imageURL: `/img/${newImg.id}${ext}`})
+    img.mv(`./server/public/img/${newImg.id}${ext}`);
+    res.sendStatus(200)
+  } else {
+    res.sendStatus(401)
+  }
+})
+
 module.exports = router

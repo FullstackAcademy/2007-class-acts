@@ -1,8 +1,10 @@
+/* eslint-disable complexity */
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { addArtwork, editArtwork, getArtwork } from '../redux/artwork'
 import { mediums } from '../../server/constants'
+import axios from 'axios'
 
 class ArtworkForm extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ class ArtworkForm extends Component {
     this.handleChange = this.handleChange.bind(this)
     //this.handleGenreChange = this.handleGenreChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.upload = this.upload.bind(this)
   }
 
   componentDidMount() {
@@ -79,10 +82,25 @@ class ArtworkForm extends Component {
     }
   }
 
+  async deleteImage(imgId) {
+    await axios.delete(`/api/artworks/images/${imgId}`)
+    this.props.getArtwork(this.props.match.params.id)
+  }
+
+  async upload(e) {
+    let img = e.target.files[0]
+    let fd= new FormData()
+    fd.append('image', img)
+    await axios.post(`/api/artworks/images/${this.props.match.params.id}`, fd)
+    this.props.getArtwork(this.props.match.params.id)
+  }
+
   /*
     To-do: handle adding genres thru associations.
   */
   render() {
+    const newImg = document.getElementById('newImg')
+    if(newImg) newImg.addEventListener('change',e=>this.upload(e))
     const {
       title,
       description,
@@ -106,13 +124,22 @@ class ArtworkForm extends Component {
           <div className="edit-container">
             {!!isEditing && (
               <div className="form-img-container">
-                <img className="singleArtImage" src={
-                  this.props.artwork.shopImages.length
-                    ? this.props.artwork.shopImages[0].imageURL
-                    : '/img/default.jpg'
-                } />
+                {
+                  artwork.shopImages.length && artwork.shopImages.length > 0
+                  ? artwork.shopImages.map(si => {
+                    return (
+                      <span key={si.id} >
+                        <img className="order-item-img" src={si.imageURL}/>
+                        <span className="noQty" onClick={()=>this.deleteImage(si.id)}>X</span>
+                      </span>
+                    )
+                  })
+                  : <img className="order-item-img" src='/img/default.jpg'/>
+                }
               </div>
             )}
+          <label htmlFor="newImg">Upload Image:</label>
+          <input type="file" id="newImg" name="newImg"/>
           <div className={isEditing ? "form-container" : "full-form"}>
             <form className="artwork-form" onSubmit={this.handleSubmit}>
               <label htmlFor="title">Title</label>

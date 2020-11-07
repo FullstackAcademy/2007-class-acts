@@ -1,5 +1,9 @@
 node_modules
+<<<<<<< HEAD
+server/public/**.js**
+=======
 server/public/bundle*
+>>>>>>> dev
 .idea
 .DS_Store
 .vscode
