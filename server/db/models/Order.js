@@ -1,16 +1,23 @@
 const { orderStatuses } = require('../../constants')
-const { STRING, ENUM, UUID, UUIDV4, DATE } = require("sequelize")
+const { STRING, ENUM, UUID, UUIDV4, DATE } = require('sequelize')
 const db = require('../db')
 
 const Order = db.define('order', {
   id: {
     type: UUID,
     defaultValue: UUIDV4,
-    primaryKey: true
+    primaryKey: true,
   },
   date: DATE,
   status: ENUM(orderStatuses),
-  address: STRING
+  email: {
+    type: STRING,
+    validate: {
+      isEmail: true
+    }
+  },
+  address: STRING,
+  stripeRefId: STRING
 })
 
 module.exports = Order

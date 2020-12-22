@@ -11,17 +11,18 @@ const {
   Cart,
   Session,
   Order,
-  OrderItem
+  OrderItem,
+  CartItem,
 } = require('./models')
 
 Artwork.belongsTo(Artist)
 Artist.hasMany(Artwork)
 
-Artwork.belongsToMany(Genre, {through: 'artworkGenre'})
-Genre.belongsToMany(Artwork, {through: 'artworkGenre'})
+Artwork.belongsToMany(Genre, { through: 'artworkGenre' })
+Genre.belongsToMany(Artwork, { through: 'artworkGenre' })
 
-Artist.belongsToMany(Genre, {through: 'artistGenre'})
-Genre.belongsToMany(Artist, {through: 'artistGenre'})
+Artist.belongsToMany(Genre, { through: 'artistGenre' })
+Genre.belongsToMany(Artist, { through: 'artistGenre' })
 
 Artwork.hasMany(ShopImage)
 ShopImage.belongsTo(Artwork)
@@ -47,12 +48,14 @@ OrderItem.belongsTo(Order)
 Cart.belongsTo(User)
 User.hasOne(Cart)
 
-Artwork.belongsToMany(Cart, {through: 'cartItem'})
+Cart.hasMany(CartItem)
+Artwork.hasMany(CartItem)
+CartItem.belongsTo(Artwork)
 
-const syncDB = async(forceSeed = false)=> {
+const syncDB = async (forceSeed = false) => {
   // Took out force: true so the db didn't drop the seeded data every time
-  await db.sync({ force: forceSeed });
-};
+  await db.sync({ force: forceSeed })
+}
 
 module.exports = {
   db,
@@ -66,5 +69,6 @@ module.exports = {
   Session,
   Order,
   OrderItem,
-  syncDB
+  CartItem,
+  syncDB,
 }

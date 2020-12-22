@@ -6,21 +6,21 @@ const Review = db.define('review', {
   id: {
     type: UUID,
     defaultValue: UUIDV4,
-    primaryKey: true
+    primaryKey: true,
   },
   rating: {
     type: INTEGER,
     validate: {
       min: minRating,
-      max: maxRating
-    }
+      max: maxRating,
+    },
   },
   text: {
     type: TEXT,
     validate: {
-      len: [minReviewLength, maxReviewLength]
-    }
-  }
+      len: [minReviewLength, maxReviewLength],
+    },
+  },
 })
 
 module.exports = Review

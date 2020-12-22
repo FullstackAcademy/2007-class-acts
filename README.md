@@ -1,7 +1,9 @@
 # 2007-class-acts
 
 ## Introduction
-Welcome to Stackeby's! An e-commerce site where you can get a totally original Monet piece for $49.99. Created with react, redux, node.js, and express.
+Welcome to Stackeby's! An e-commerce site where you can get a totally original Monet piece for $49.99. Created with postgreSQL, react, redux, node.js, and express.
+
+https://stackebys.herokuapp.com/
 
 ## Installation & Setup
 To run this project locally and seed the database
@@ -19,8 +21,10 @@ Other NPM Scripts
 Stackeby's currently implemented or in progress features
 - create an account, log in and log out
 - view the entire collection of artworks, filter by artist, genre, or medium, search for art by title and artist
-
-### To-Do
+- add to cart, update cart
+- view all orders from your account
+- admin view to add and edit art, manager user orders, etc.
+- checkout with stripe
 - add to cart and update cart
 - admin view to add and edit art
 

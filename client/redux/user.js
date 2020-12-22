@@ -1,11 +1,10 @@
 import axios from 'axios'
 import { SET_USER } from './actionConstants'
 
-
 //ACTION CREATOR
 export const setUser = (user) => ({
   type: SET_USER,
-  user
+  user,
 })
 
 //THUNK CREATOR
@@ -18,7 +17,7 @@ export const getUser = (sessionId) => {
 
 export const destroySession = (sessionId) => {
   return async (dispatch) => {
-    await axios.delete(`/api/users/${sessionId}`)
+    await axios.delete(`/api/users/session/${sessionId}`)
     dispatch(setUser({}))
   }
 }
@@ -26,11 +25,8 @@ export const destroySession = (sessionId) => {
 export default function userReducer(state = {}, action) {
   switch (action.type) {
     case SET_USER:
-      return action.user;
+      return action.user
     default:
       return state
   }
 }
-
-
-
