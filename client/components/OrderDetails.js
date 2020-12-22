@@ -32,7 +32,7 @@ class OrderDetails extends React.Component {
                 <td>{dayjs(order.date).format('MMM D, YYYY h:mm A')}</td>
                 <td>{order.status}</td>
                 <td>{order.address}</td>
-                <td>{order.user.email}</td>
+                <td>{ order.user ? order.user.email : order.email }</td>
               </tr>
             </tbody>
           </table>

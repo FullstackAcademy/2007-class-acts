@@ -10,7 +10,7 @@ const endpointSecret = 'whsec_oOK87w36wnsRyQ5Sb9iuaYA0Cvz231hc';
 
 // FILES
 const { User, Cart, CartItem, Artwork, Order, OrderItem } = require('../db');
-const { DOMAIN } = require('../constants');
+const { DOMAIN, LOCAL_DOMAIN } = require('../constants');
 
 // POST /checkout/session
 router.post('/session', async (req, res, next) => {
@@ -192,7 +192,7 @@ async function handleAuthUser(session) {
 async function handleGuestUser(session) {
   // Get line items from Stripe req object
   const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-  const email = session.customer_email
+  const email = "test@test.com"
   const artData = session.metadata
   const { address } = session.shipping
 
